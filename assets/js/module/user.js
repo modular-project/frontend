@@ -15,21 +15,52 @@ export class User {
     this.is_verifid = data["is_verifid"];
     this.role_id = data["role_id"];
     this.est_id = data["est_id"];
+    this.data = data;
   }
 
   async change_password(pwd) {
     if (!validate_password(pwd)) {
       throw Error("Contraseña invalida");
     }
+    let t = this.token;
+    if (!t) {
+      throw Error("Usuario sin autentificar");
+    }
     await fetch(`${API_URL_USER}password/`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json;charset=utf-8" },
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json;charset=utf-8",
+        Authorization: t,
+      },
       body: JSON.stringify({ password: pwd }),
     }).then((r) => {
       if (!r.ok) {
         throw r;
       }
     });
+  }
+
+  async update() {
+    let t = this.token;
+    if (!t) {
+      throw Error("Usuario sin autentificar");
+    }
+    await fetch(`${API_URL_USER}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json;charset=utf-8",
+        Authorization: t,
+      },
+      body: this.data,
+    }).then((r) => {
+      if (!r.ok) {
+        throw r;
+      }
+    });
+  }
+
+  get token() {
+    return get_token();
   }
 }
 
@@ -41,7 +72,10 @@ export async function user() {
 }
 
 export async function refresh() {
-  await fetch(`${API_URL_USER}refresh/`, { method: "POST" }).then((r) => {
+  await fetch(`${API_URL_USER}refresh/`, {
+    method: "POST",
+    credentials: "include",
+  }).then((r) => {
     if (r.ok) {
       r.json().then((data) => save_token(data["message"]));
     } else {

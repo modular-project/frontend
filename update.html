@@ -1,17 +1,20 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Inicia sesión o regístrate</title>
-  
+
   <!-- Favicons -->
   <link href="assets/img/favicon.png" rel="icon">
   <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
 
   <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css?family=Poppins:300,300i,400,400i,600,600i,700,700i|Satisfy|Comic+Neue:300,300i,400,400i,700,700i" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css?family=Poppins:300,300i,400,400i,600,600i,700,700i|Satisfy|Comic+Neue:300,300i,400,400i,700,700i"
+    rel="stylesheet">
 
   <!-- Vendor CSS Files -->
   <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -26,7 +29,7 @@
 </head>
 
 <body>
-  
+
   <!-- ======= Top Bar ======= -->
   <section id="topbar" class="d-none d-lg-flex align-items-center fixed-top topbar-transparent">
     <div class="container text-right">
@@ -57,7 +60,8 @@
   <section class="footcolor" style="padding: 70px 0;"></section>
 
   <div class="container">
-    <h1 class="alignanycenter" style="margin: 40px 0 0;"><strong>Actualización de <span style="color: #ffb03b;">información personal</span></strong></h1>
+    <h1 class="alignanycenter" style="margin: 40px 0 0;"><strong>Actualización de <span
+          style="color: #ffb03b;">información personal</span></strong></h1>
   </div>
 
   <section id="contact" class="contact" style="padding: 1px 0;">
@@ -69,23 +73,26 @@
 
         <div class="form-group">
           <label for="name"><b>Nombre</b></label>
-          <input type="text" name="name" id="name" placeholder="Introduzca su nombre" data-rule="minlen:4"/>
+          <input type="text" name="name" id="name" placeholder="Introduzca su nombre" data-rule="minlen:4" />
         </div>
 
         <div class="form-group">
           <label for="url"><b>Dirección Web</b></label>
-          <input type="text" name="url" id="url" placeholder="Introduzca la URL"/>
+          <input type="text" name="url" id="url" placeholder="Introduzca la URL" />
         </div>
 
         <div class="form-group">
           <label for="bdate"><b>Fecha de nacimiento</b></label>
-          <input type="date" style="padding: 10px 12px; margin: 0 0 0 10px;" name="bdate" id="bdate" placeholder="Introduzca su fecha de nacimiento"/>
+          <input type="date" style="padding: 10px 12px; margin: 0 0 0 10px;" name="bdate" id="bdate"
+            placeholder="Introduzca su fecha de nacimiento" />
         </div>
 
         <div class="text-center">
-          <button type="button" id="updatebtn" onclick="update()" class="login" style="background: #ffb03b;">Iniciar Sesión</button>
+          <button type="button" id="updatebtn" onclick="update_user()" class="login"
+            style="background: #ffb03b;">Iniciar
+            Sesión</button>
         </div>
-        
+
       </form>
     </div>
   </section>
@@ -113,7 +120,7 @@
 
   <a href="#" class="back-to-top"><i class="icofont-simple-up"></i></a>
 
-  <script src="assets/js/update.js"></script>
+  <script type="module" , src="assets/js/update.js"></script>
 
   <!-- Vendor JS Files -->
   <script src="assets/vendor/jquery/jquery.min.js"></script>
@@ -129,4 +136,5 @@
   <script src="assets/js/main.js"></script>
 
 </body>
+
 </html>

@@ -1,4 +1,7 @@
-export const API_URL = `https://e5a924a0-82cc-4cae-a959-8c29cceba390.mock.pstmn.io`;
+// export const API_URL = `https://e5a924a0-82cc-4cae-a959-8c29cceba390.mock.pstmn.io`;
+export const API_URL = `http://127.0.0.1:4001`;
+
+export const ERROR_UNAUTHORIZED = Error("Usuario sin autentificar");
 
 export function save_token(token) {
   window.localStorage.setItem("token", `Bearer ${token}`);

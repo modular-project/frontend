@@ -18,6 +18,13 @@ function switch_log_button(is_logged) {
   }
 }
 
+function show_user_data_button(is_logged) {
+  let btn = document.getElementById("user-data-button");
+  if (is_logged) {
+    btn.innerHTML = `<a href="update.html">Mis Datos</a>`;
+  }
+}
+
 /**
  *
  * @param {user_module.User} user
@@ -39,6 +46,7 @@ async function load_home() {
   }
   try {
     switch_log_button(is_logged); // Hacer funciones que tomen como parametro al usuario o el estado is_logged
+    show_user_data_button(is_logged);
   } catch (err) {
     handler_errors(err);
   }
