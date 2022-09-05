@@ -4,6 +4,7 @@ import {
   get_token,
   remove_token,
   new_response_error,
+  ERROR_UNAUTHORIZED,
 } from "./utils.js";
 
 const API_URL_USER = `${API_URL}/api/v1/user/`;
@@ -18,10 +19,49 @@ export class User {
     this.id = data["id"];
     this.email = data["email"];
     this.bdata = data["bdate"];
-    this.is_verifid = data["is_verifid"];
+    this.is_verified = data["is_verified"];
     this.role_id = data["role_id"];
     this.est_id = data["est_id"];
     this.data = data;
+  }
+
+  static async generate_verification_code() {
+    let t = get_token();
+    if (!t) {
+      throw ERROR_UNAUTHORIZED;
+    }
+    if (this.is_verified) {
+      throw Error("Usuario actualmente verificado");
+    }
+    fetch(`${API_URL_USER}verify/`, {
+      method: "POST",
+      headers: { Authorization: t },
+    }).then((r) => {
+      if (!r.ok) {
+        throw new_response_error(r);
+      }
+    });
+  }
+
+  static async verify(code) {
+    if (!code) {
+      throw Error("Se necesita un codigo");
+    }
+    let t = get_token();
+    if (!t) {
+      throw ERROR_UNAUTHORIZED;
+    }
+    if (this.is_verified) {
+      throw Error("Usuario actualmente verificado");
+    }
+    fetch(`${API_URL_USER}verify/?code=${code}`, {
+      method: "PATCH",
+      headers: { Authorization: t },
+    }).then((r) => {
+      if (!r.ok) {
+        throw new_response_error(r);
+      }
+    });
   }
 
   static async change_password(pwd) {
@@ -30,7 +70,7 @@ export class User {
     }
     let t = get_token();
     if (!t) {
-      throw Error("Usuario sin autentificar");
+      throw ERROR_UNAUTHORIZED;
     }
     await fetch(`${API_URL_USER}password/`, {
       method: "PATCH",
@@ -60,7 +100,7 @@ export class User {
   async update() {
     let t = this.token;
     if (!t) {
-      throw Error("Usuario sin autentificar");
+      throw ERROR_UNAUTHORIZED;
     }
     await fetch(`${API_URL_USER}`, {
       method: "PUT",
