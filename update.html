@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Inicia sesión o regístrate</title>
+  <title>Mis Datos</title>
 
   <!-- Favicons -->
   <link href="assets/img/favicon.png" rel="icon">
@@ -24,6 +24,10 @@
   <link href="assets/vendor/venobox/venobox.css" rel="stylesheet">
   <link href="assets/vendor/owl.carousel/assets/owl.carousel.min.css" rel="stylesheet">
 
+  <!-- CSS only -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+
   <!-- Template Main CSS File -->
   <link href="assets/css/style.css" rel="stylesheet">
 </head>
@@ -39,7 +43,7 @@
   </section>
 
   <!-- ======= Header ======= -->
-  <header id="header" class="fixed-top d-flex align-items-center header-transparent">
+  <header id="header" class="fixed-top align-items-center header-transparent">
     <div class="container d-flex align-items-center">
 
       <div class="logo mr-auto">
@@ -55,7 +59,16 @@
       </nav><!-- .nav-menu -->
 
     </div>
+    <div id="ch-alert"></div>
+    <!-- <div id="ch-alert" class=" alert alert-success alert-dismissible">
+      <a href="#" onclick='close_alert("ch-alert"); return false;' id="ch-alert-close" class="close"
+        aria-label="close">&times;</a>
+      <strong>Success!</strong> Indicates a successful or positive action.
+    </div> -->
   </header><!-- End Header -->
+
+
+
 
   <section class="footcolor" style="padding: 70px 0;"></section>
 
@@ -89,8 +102,34 @@
 
         <div class="text-center">
           <button type="button" id="updatebtn" onclick="update_user()" class="login"
-            style="background: #ffb03b;">Iniciar
-            Sesión</button>
+            style="background: #ffb03b;">Actualizar infromacion</button>
+        </div>
+
+      </form>
+    </div>
+  </section>
+
+  <section id="contact" class="contact" style="padding: 1px 0;">
+
+    <div class="container mt-5">
+      <form method="post" role="form" class="php-email-form">
+        <div class="imgcontainer">
+          <img src="assets/img/dataUpdateIcon.png" alt="Avatar" class="avatar" style="border-radius: 10%;">
+        </div>
+        <!-- <div id="ch-alert" class="alert alert-success alert-dismissible collapse">
+          <a href="#" onclick='close_alert("ch-alert"); return false;' id="ch-alert-close" class="close"
+            aria-label="close">&times;</a>
+          <strong>Success!</strong> Indicates a successful or positive action.
+        </div> -->
+        <div class="form-group">
+          <label for="name"><b>Contraseña</b></label>
+          <input oninput="enable_ch_btn()" type="password" name="pwd" id="ch_pwd"
+            placeholder="Introduzca una contraseña" />
+        </div>
+
+        <div class="text-center">
+          <button type="button" id="ch_pwd_btn" onclick="change_password()" class="login" disabled="true"
+            style="background: #ffb03b;">Cambiar contraseña</button>
         </div>
 
       </form>
@@ -134,7 +173,12 @@
 
   <!-- Template Main JS File -->
   <script src="assets/js/main.js"></script>
+  <!-- JavaScript Bundle with Popper -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
+    crossorigin="anonymous"></script>
 
+  <script src="http://code.jquery.com/jquery.js"></script>
 </body>
 
 </html>

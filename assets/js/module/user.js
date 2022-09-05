@@ -1,4 +1,10 @@
-import { API_URL, save_token, get_token, remove_token } from "./utils.js";
+import {
+  API_URL,
+  save_token,
+  get_token,
+  remove_token,
+  new_response_error,
+} from "./utils.js";
 
 const API_URL_USER = `${API_URL}/api/v1/user/`;
 
@@ -18,11 +24,11 @@ export class User {
     this.data = data;
   }
 
-  async change_password(pwd) {
+  static async change_password(pwd) {
     if (!validate_password(pwd)) {
       throw Error("Contraseña invalida");
     }
-    let t = this.token;
+    let t = get_token();
     if (!t) {
       throw Error("Usuario sin autentificar");
     }
@@ -34,9 +40,20 @@ export class User {
       },
       body: JSON.stringify({ password: pwd }),
     }).then((r) => {
+      console.log(typeof r, r == "Response", r == Response, r.type);
       if (!r.ok) {
-        throw r;
+        throw new_response_error(r);
       }
+    });
+  }
+
+  /**
+   *
+   * @returns {Promise<User>}
+   */
+  static async get_data() {
+    return await get_user_data().then((data) => {
+      return new User(data);
     });
   }
 
@@ -54,7 +71,7 @@ export class User {
       body: this.data,
     }).then((r) => {
       if (!r.ok) {
-        throw r;
+        throw new_response_error(r);
       }
     });
   }
@@ -79,7 +96,7 @@ export async function refresh() {
     if (r.ok) {
       r.json().then((data) => save_token(data["message"]));
     } else {
-      throw r;
+      throw new_response_error(r);
     }
   });
 }
@@ -89,7 +106,7 @@ export async function signout() {
   document.cookie = "";
   await fetch(`${API_URL_USER}refresh/`, { method: "DELETE" }).then((r) => {
     if (!r.ok) {
-      throw r;
+      throw new_response_error(r);
     }
   });
 }
@@ -101,12 +118,13 @@ export async function login(user, pwd) {
     body: JSON.stringify({ user: user, password: pwd }),
   }).then((r) => {
     if (!r.ok) {
-      throw r;
+      throw new_response_error(r);
     }
     r.json().then((data) => save_token(data["message"]));
   });
 }
 
+// Return a JSON object data
 export async function get_user_data() {
   let token = get_token(); // Get Token From storage
   if (!token) {
@@ -119,7 +137,7 @@ export async function get_user_data() {
   myHeaders.append("Authorization", token);
   return await fetch(`${API_URL_USER}`, { headers: myHeaders }).then((r) => {
     if (!r.ok) {
-      throw r;
+      throw new_response_error(r);
     }
     return r.json();
   });

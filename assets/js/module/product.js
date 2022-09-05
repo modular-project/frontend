@@ -1,4 +1,9 @@
-import { API_URL, get_token, ERROR_UNAUTHORIZED } from "./utils.js";
+import {
+  API_URL,
+  get_token,
+  ERROR_UNAUTHORIZED,
+  new_response_error,
+} from "./utils.js";
 
 const API_URL_PRODUCT = `${API_URL}/api/v1/product/`;
 
@@ -38,7 +43,7 @@ export class Product {
       method: "POST",
     }).then((r) => {
       if (!r.ok) {
-        throw r;
+        throw new_response_error(r);
       }
       let id;
       r.json((data) => (id = data["id"]));
@@ -55,7 +60,7 @@ export class Product {
       headers: { Authorization: t },
     }).then((r) => {
       if (!r.ok) {
-        throw r;
+        throw new_response_error(r);
       }
       let data;
       r.json().then((d) => (data = d));
@@ -70,7 +75,7 @@ export class Product {
   static async get_all() {
     return await fetch(`${API_URL_PRODUCT}`).then((r) => {
       if (!r.ok) {
-        throw r;
+        throw new_response_error(r);
       }
       const ps = new Map();
       r.json().then((data) => {
@@ -98,7 +103,7 @@ export class Product {
       method: "POST",
     }).then((r) => {
       if (!r.ok) {
-        throw r;
+        throw new_response_error(r);
       }
       const ps = new Map();
       r.json().then((data) => {
@@ -126,7 +131,7 @@ export class Product {
       method: "PUT",
     }).then((r) => {
       if (!r.ok) {
-        throw r;
+        throw new_response_error(r);
       }
       let id;
       r.json((data) => (id = data["id"]));
@@ -144,7 +149,7 @@ export class Product {
       method: "DELETE",
     }).then((r) => {
       if (!r.ok) {
-        throw r;
+        throw new_response_error(r);
       }
     });
   }
