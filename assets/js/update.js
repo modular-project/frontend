@@ -7,17 +7,33 @@ import { new_function } from "./module/utils.js";
 
 // window.close_alert = (id) => $(`#alert-${id}`).remove();
 
-window.update_user = function update_user() {
-  let name = document.getElementById("name").value;
-  let url = document.getElementById("url").value;
-  let bdate = document.getElementById("bdate").value;
-
-  const date = new Date(bdate);
-  let u = new User(
-    JSON.stringify({ name: name, url: url, bdate: date.toISOString() })
-  );
-  u.update();
+window.update_user = () => {
+  new_function(async () => {
+    // Obtener Datos
+    let name = document.getElementById("name").value;
+    let url = document.getElementById("url").value;
+    let bdate = document.getElementById("bdate").value;
+    const date = new Date(bdate);
+    // Conectar con el modulo o Hacer peticion
+    let u = new User(
+      JSON.stringify({ name: name, url: url, bdate: date.toISOString() })
+    );
+    // Aqui conectamos antes con el modulo y luego hacemos peticion
+    // Depente de la funcion a utilizar
+    u.update();
+  });
 };
+// function update_user() {
+//   let name = document.getElementById("name").value;
+//   let url = document.getElementById("url").value;
+//   let bdate = document.getElementById("bdate").value;
+
+//   const date = new Date(bdate);
+//   let u = new User(
+//     JSON.stringify({ name: name, url: url, bdate: date.toISOString() })
+//   );
+//   u.update();
+// };
 
 // const create_alert = (id, type, msg) => {
 //   return `<div id="alert-${id}" class="my-alert alert ${type} alert-dismissible">
