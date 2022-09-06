@@ -1645,17 +1645,8 @@ img.avatar {
   border-radius: 50%;
 }
 
-.container {
-  padding: 16px;
-}
-
 .footcolor {
   background-color: #444444;
-}
-
-span.psw {
-  float: right;
-  padding-top: 16px;
 }
 
 input[type=text], input[type=password] {
@@ -1669,14 +1660,6 @@ input[type=text], input[type=password] {
 
 button:hover {
   opacity: 0.8;
-}
-
-a.login {
-  font-weight: bold;
-}
-
-.bgcolor {
-  background-color: #ffc56e
 }
 
 button.login {
