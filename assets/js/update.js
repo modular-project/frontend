@@ -20,7 +20,7 @@ window.update_user = () => {
     );
     // Aqui conectamos antes con el modulo y luego hacemos peticion
     // Depente de la funcion a utilizar
-    u.update();
+    await u.update();
   });
 };
 // function update_user() {
@@ -69,7 +69,8 @@ window.change_password = () =>
   new_function(async () => {
     let pwd = document.getElementById("ch_pwd").value;
     await User.change_password(pwd);
-  }, "Contraseña actualizada");
+  }, "Contraseña actualizada"
+);
 
 // METODO 2
 
@@ -91,6 +92,19 @@ window.change_password = () =>
 //     handler_errors(err);
 //   }
 // };
+
+window.generate_verification_code = () =>
+  new_function(async () => {
+    await User.generate_verification_code();
+  }, "El código de verificación fue enviado con éxito a su correo"
+);
+
+window.verify = () =>
+  new_function(async () => {
+    let code = document.getElementById("verify_code").value;
+    await User.verify(code);
+  }, "Usuario verificado satisfactoriamente"
+);
 
 window.enable_ch_btn = function enable_ch_btn() {
   let pwd = document.getElementById("ch_pwd").value;

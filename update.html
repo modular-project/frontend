@@ -67,9 +67,6 @@
     </div> -->
   </header><!-- End Header -->
 
-
-
-
   <section class="footcolor" style="padding: 70px 0;"></section>
 
   <div class="container">
@@ -77,6 +74,7 @@
           style="color: #ffb03b;">información personal</span></strong></h1>
   </div>
 
+  <!-- ======= Actualizar datos personales ======= -->
   <section id="contact" class="contact" style="padding: 1px 0;">
     <div class="container mt-5">
       <form method="post" role="form" class="php-email-form">
@@ -102,15 +100,15 @@
 
         <div class="text-center">
           <button type="button" id="updatebtn" onclick="update_user()" class="login"
-            style="background: #ffb03b;">Actualizar infromacion</button>
+            style="background: #ffb03b;">Actualizar información</button>
         </div>
 
       </form>
     </div>
   </section>
 
+  <!-- ======= Cambiar contraseña ======= -->
   <section id="contact" class="contact" style="padding: 1px 0;">
-
     <div class="container mt-5">
       <form method="post" role="form" class="php-email-form">
         <div class="imgcontainer">
@@ -132,6 +130,45 @@
             style="background: #ffb03b;">Cambiar contraseña</button>
         </div>
 
+      </form>
+    </div>
+  </section>
+
+  <!-- ======= Generar código de verificación ======= -->
+  <section id="contact" class="contact" style="padding: 1px 0;">
+    <div class="container mt-5">
+      <form method="post" role="form" class="php-email-form">
+        <div class="imgcontainer">
+          <img src="assets/img/dataUpdateIcon.png" alt="Avatar" class="avatar" style="border-radius: 10%;">
+        </div>
+
+        <div class="text-center">
+          <button type="button" id="gen_ver_cod_btn" onclick="generate_verification_code()" class="login"
+            style="background: #ffb03b;">Generar código de verificación</button>
+        </div>
+
+      </form>
+    </div>
+  </section>
+
+  <!-- ======= Verificar cuenta ======= -->
+  <section id="contact" class="contact" style="padding: 1px 0;">
+    <div class="container mt-5">
+      <form method="post" role="form" class="php-email-form">
+        <div class="imgcontainer">
+          <img src="assets/img/dataUpdateIcon.png" alt="Avatar" class="avatar" style="border-radius: 10%;">
+        </div>
+
+        <div class="form-group">
+          <label for="name"><b>Código de verificación</b></label>
+          <input type="text" name="verify_code" id="verify_code"
+            placeholder="Introduzca el código de verificación" />
+        </div>
+        
+        <div class="text-center">
+          <button type="button" id="verify_btn" onclick="verify()" class="login"
+            style="background: #ffb03b;">Verificar cuenta</button>
+        </div>
       </form>
     </div>
   </section>
