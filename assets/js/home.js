@@ -21,16 +21,8 @@ function switch_log_button(is_logged) {
 function show_user_data_button(is_logged) {
   let btn = document.getElementById("user-data-button");
   if (is_logged) {
-    btn.innerHTML = `<a href="update.html">Mis Datos</a>`;
+    btn.innerHTML = `<a href="user.html">Mis Datos</a>`;
   }
-}
-
-/**
- *
- * @param {user_module.User} user
- */
-function example_user(user) {
-  console.log(user.email, user.role_id);
 }
 
 async function load_home() {
