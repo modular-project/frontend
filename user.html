@@ -83,13 +83,17 @@
         </div>
 
         <div class="form-group">
-          <label for="name"><b>Nombre</b></label>
-          <input type="text" name="name" id="name" placeholder="Introduzca su nombre" data-rule="minlen:4" />
+          <img class="img-thumbnail img-fluid rounded mx-auto d-block" id="profile-pic"
+            src="https://drive.google.com/uc?export=view&id=1FejimhUzbVvRUhOFZbGLIYXomo2rs7xg" alt="Chania">
+          <div class="mb-3">
+            <label for="formFileSm" class="form-label"><b>Actualizar imagen</b></label>
+            <input class="form-control form-control-sm" id="form-img" type="file" onchange="change_prof_pic()">
+          </div>
         </div>
 
         <div class="form-group">
-          <label for="url"><b>Dirección Web</b></label>
-          <input type="text" name="url" id="url" placeholder="Introduzca la URL" />
+          <label for="name"><b>Nombre</b></label>
+          <input type="text" name="name" id="name" placeholder="Introduzca su nombre" data-rule="minlen:4" />
         </div>
 
         <div class="form-group">
@@ -135,7 +139,7 @@
   </section>
 
   <!-- ======= Generar código de verificación ======= -->
-  <section id="contact" class="contact" style="padding: 1px 0;">
+  <section id="gen_ver_code_form" class="contact" style="padding: 1px 0;">
     <div class="container mt-5">
       <form method="post" role="form" class="php-email-form">
         <div class="imgcontainer">
@@ -152,7 +156,7 @@
   </section>
 
   <!-- ======= Verificar cuenta ======= -->
-  <section id="contact" class="contact" style="padding: 1px 0;">
+  <section id="ver_user_form" class="contact" style="padding: 1px 0;">
     <div class="container mt-5">
       <form method="post" role="form" class="php-email-form">
         <div class="imgcontainer">
@@ -161,13 +165,12 @@
 
         <div class="form-group">
           <label for="name"><b>Código de verificación</b></label>
-          <input type="text" name="verify_code" id="verify_code"
-            placeholder="Introduzca el código de verificación" />
+          <input type="text" name="verify_code" id="verify_code" placeholder="Introduzca el código de verificación" />
         </div>
-        
+
         <div class="text-center">
-          <button type="button" id="verify_btn" onclick="verify()" class="login"
-            style="background: #ffb03b;">Verificar cuenta</button>
+          <button type="button" id="verify_btn" onclick="verify()" class="login" style="background: #ffb03b;">Verificar
+            cuenta</button>
         </div>
       </form>
     </div>
@@ -196,7 +199,7 @@
 
   <a href="#" class="back-to-top"><i class="icofont-simple-up"></i></a>
 
-  <script type="module" , src="assets/js/update.js"></script>
+  <script type="module" , src="assets/js/user.js"></script>
 
   <!-- Vendor JS Files -->
   <script src="assets/vendor/jquery/jquery.min.js"></script>

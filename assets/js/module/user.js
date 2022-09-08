@@ -25,7 +25,7 @@ export class User {
     this.data = data;
   }
 
-  static async generate_verification_code() {
+  async generate_verification_code() {
     let t = get_token();
     if (!t) {
       throw ERROR_UNAUTHORIZED;
@@ -33,7 +33,7 @@ export class User {
     if (this.is_verified) {
       throw Error("Usuario actualmente verificado");
     }
-    fetch(`${API_URL_USER}verify/`, {
+    await fetch(`${API_URL_USER}verify/`, {
       method: "POST",
       headers: { Authorization: t },
     }).then((r) => {
@@ -43,7 +43,7 @@ export class User {
     });
   }
 
-  static async verify(code) {
+  async verify(code) {
     if (!code) {
       throw Error("Se necesita un codigo");
     }
@@ -54,7 +54,7 @@ export class User {
     if (this.is_verified) {
       throw Error("Usuario actualmente verificado");
     }
-    fetch(`${API_URL_USER}verify/?code=${code}`, {
+    await fetch(`${API_URL_USER}verify/?code=${code}`, {
       method: "PATCH",
       headers: { Authorization: t },
     }).then((r) => {
