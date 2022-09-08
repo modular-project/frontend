@@ -189,8 +189,34 @@ export function validate_email(email) {
   );
 }
 
-export function validate_password(pwd) {
-  return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!¡%*¿?/&\+\-\\#'.$($)$-$_])[A-Za-z\d$@$!¡%*¿?/&\+\-\\#'.$($)$-$_]{8,15}$/.test(
-    pwd
-  );
+export function validate_password(password) {
+  // return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!¡%*¿?/&\+\-\\#'.$($)$-$_])[A-Za-z\d$@$!¡%*¿?/&\+\-\\#'.$($)$-$_]{8,15}$/.test(
+  //   pwd
+  // );
+  if (password.length >= 8) {
+    var mayuscula = false;
+    var minuscula = false;
+    var numero = false;
+    var caracter_raro = false;
+
+    for (var i = 0; i < password.length; i++) {
+      if (mayuscula && minuscula && numero && caracter_raro) {
+        return true;
+      }
+      if (password.charCodeAt(i) >= 65 && password.charCodeAt(i) <= 90) {
+        mayuscula = true;
+      } else if (
+        password.charCodeAt(i) >= 97 &&
+        password.charCodeAt(i) <= 122
+      ) {
+        minuscula = true;
+      } else if (password.charCodeAt(i) >= 48 && password.charCodeAt(i) <= 57) {
+        numero = true;
+      } else {
+        caracter_raro = true;
+      }
+    }
+    return mayuscula && minuscula && numero && caracter_raro;
+  }
+  return false;
 }
