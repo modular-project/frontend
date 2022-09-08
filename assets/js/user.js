@@ -1,3 +1,4 @@
+import { upload_img } from "./module/image.js";
 import { User, validate_password } from "./module/user.js";
 import { new_function } from "./module/utils.js";
 
@@ -6,17 +7,35 @@ import { new_function } from "./module/utils.js";
  */
 let user;
 
+let is_img_updated = false;
+
 window.update_user = () => {
   new_function(async () => {
     // Obtener Datos
     let name = document.getElementById("name").value;
-    let url = document.getElementById("url").value;
     let bdate = document.getElementById("bdate").value;
-    const date = new Date(bdate);
+    if (bdate) {
+      const date = new Date(bdate);
+      bdate = date.toISOString();
+    } else {
+      bdate = null;
+    }
+    let url = user.url;
     // Conectar con el modulo o Hacer peticion
-    let u = new User(
-      JSON.stringify({ name: name, url: url, bdate: date.toISOString() })
-    );
+    if (is_img_updated) {
+      let n = user.email;
+      n = `${n}.png`;
+      await upload_img(
+        "user",
+        document.getElementById("form-img").files[0],
+        n
+      ).then(
+        (r) => (url = `https://drive.google.com/uc?export=view&id=${r.message}`)
+      );
+      is_img_updated = false;
+      user.url = url;
+    }
+    let u = new User(JSON.stringify({ name: name, url: url, bdate: bdate }));
     // Aqui conectamos antes con el modulo y luego hacemos peticion
     // Depente de la funcion a utilizar
     await u.update();
@@ -53,8 +72,10 @@ window.enable_ch_btn = function enable_ch_btn() {
 
 window.change_prof_pic = () => {
   let new_img = document.getElementById("form-img");
-  let old = document.getElementById("profile-pic");
-  old.src = URL.createObjectURL(new_img.target.files[0]);
+  document.getElementById("profile-pic").src = URL.createObjectURL(
+    new_img.files[0]
+  );
+  is_img_updated = true;
 };
 
 const load_user_data = async () => {
@@ -68,7 +89,10 @@ const load_user_data = async () => {
       document.getElementById("bdate").value = user.bdata.substring(0, 10);
     }
     if (user.url) {
-      document.getElementById("url").value = user.url;
+      document.getElementById("profile-pic").src = user.url;
+    } else {
+      document.getElementById("profile-pic").src =
+        "https://cdn-icons-png.flaticon.com/512/149/149071.png";
     }
     if (user.is_verified) {
       document.getElementById("gen_ver_code_form").hidden = true;
