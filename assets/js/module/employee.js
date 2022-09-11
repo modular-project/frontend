@@ -275,11 +275,11 @@ export class Employee {
       headers: {
         Authorization: t,
       },
-    }).then((r) => {
+    }).then(async (r) => {
       if (!r.ok) {
         throw new_response_error(r);
       }
-      r.json().then((data) => {
+      await r.json().then((data) => {
         u = new User(data["user"]);
         for (let d of data) {
           jobs.set(d["id"], new Job(d));
@@ -303,11 +303,11 @@ export class Employee {
       headers: {
         Authorization: t,
       },
-    }).then((r) => {
+    }).then(async (r) => {
       if (!r.ok) {
         throw new_response_error(r);
       }
-      r.json().then((data) => {
+      await r.json().then((data) => {
         for (let d of data["jobs"]) {
           jobs.set(d["id"], new Job(d));
         }
@@ -337,11 +337,11 @@ export class Employee {
         Authorization: t,
       },
       method: "POST",
-    }).then((r) => {
+    }).then(async (r) => {
       if (!r.ok) {
         throw new_response_error(r);
       }
-      r.json().then((data) => {
+      await r.json().then((data) => {
         for (let d of data) {
           users.set(d["id"], new User(d));
         }
@@ -371,11 +371,11 @@ export class Employee {
         Authorization: t,
       },
       method: "POST",
-    }).then((r) => {
+    }).then(async (r) => {
       if (!r.ok) {
         throw new_response_error(r);
       }
-      r.json().then((data) => {
+      await r.json().then((data) => {
         for (let d of data) {
           users.set(d["id"], new User(d));
         }

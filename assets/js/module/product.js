@@ -41,12 +41,12 @@ export class Product {
       headers: { Authorization: t, "Content-Type": "application/json" },
       body: this.data,
       method: "POST",
-    }).then((r) => {
+    }).then(async (r) => {
       if (!r.ok) {
         throw new_response_error(r);
       }
       let id;
-      r.json((data) => (id = data["id"]));
+      await r.json((data) => (id = data["id"]));
       return id;
     });
   }
@@ -73,12 +73,12 @@ export class Product {
    * @returns {Promise<Map<BigInt, Product>>}
    */
   static async get_all() {
-    return await fetch(`${API_URL_PRODUCT}`).then((r) => {
+    return await fetch(`${API_URL_PRODUCT}`).then(async (r) => {
+      let ps = new Map();
       if (!r.ok) {
         throw new_response_error(r);
       }
-      const ps = new Map();
-      r.json().then((data) => {
+      await r.json().then((data) => {
         for (let d of data) {
           ps.set(d["id"], new Product(d));
         }
@@ -101,12 +101,12 @@ export class Product {
       headers: { Authorization: t, "Content-Type": "application/json" },
       body: JSON.stringify({ ids: ids }),
       method: "POST",
-    }).then((r) => {
+    }).then(async (r) => {
       if (!r.ok) {
         throw new_response_error(r);
       }
       const ps = new Map();
-      r.json().then((data) => {
+      await r.json().then((data) => {
         for (let d of data) {
           ps.set(d["id"], new Product(d));
         }
@@ -129,12 +129,12 @@ export class Product {
       headers: { Authorization: t, "Content-Type": "application/json" },
       body: this.data,
       method: "PUT",
-    }).then((r) => {
+    }).then(async (r) => {
       if (!r.ok) {
         throw new_response_error(r);
       }
       let id;
-      r.json((data) => (id = data["id"]));
+      await r.json((data) => (id = data["id"]));
       return id;
     });
   }
