@@ -66,7 +66,7 @@
 
   <div class="container">
     <h1 class="alignanycenter" style="margin: 40px 0 0;"><strong>Revisa nuestro sabroso <span
-      style="color: #ffb03b;">Menú</span></strong>
+          style="color: #ffb03b;">Menú</span></strong>
     </h1>
   </div>
 
@@ -91,7 +91,7 @@
     <template id="template-menu">
       <div class="col-lg-6 menu-item filter-starters">
         <div class="menu-content">
-          <a href="#">${nombre}</a><span>$${precio}</span>
+          <a href=${url} class="venobox" data-gall="gallery-item">${nombre}</a><span>$</span>
         </div>
         <div class="menu-ingredients">
           ${descripcion}
@@ -99,7 +99,8 @@
       </div>
     </template>
 
-  </section><!-- End Menu Section --><!-- End Menu Section -->
+  </section><!-- End Menu Section -->
+  <!-- End Menu Section -->
 
   <!-- ======= Footer ======= -->
   <footer id="footer" style="margin: 20px auto auto;">
@@ -124,7 +125,7 @@
 
   <a href="#" class="back-to-top"><i class="icofont-simple-up"></i></a>
 
-  <script type="module" src="assets/js/admin.js"></script>
+  <script type="module" src="assets/js/product.js"></script>
 
   <!-- Vendor JS Files -->
   <script src="assets/vendor/jquery/jquery.min.js"></script>
