@@ -27,6 +27,9 @@ export class Product {
   get price() {
     return this.data["price"];
   }
+  get base() {
+    return this.data["base"];
+  }
 
   /**
    *
