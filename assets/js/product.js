@@ -19,6 +19,7 @@ const load = async () => {
     for (const [num, p] of ps) {
         console.log(p);
         template.querySelector('.menu-content a').textContent = p.name;
+        template.querySelector('.menu-content a').href = `assets/img/gallery/gallery-2.jpg`;
         template.querySelector('span').textContent = p.price;
         template.querySelector('.menu-ingredients').textContent = p.description;
         const clone = template.cloneNode(true);
@@ -27,6 +28,7 @@ const load = async () => {
 
     menu_products.appendChild(fragment);
 
+    $(".venobox").venobox();
     // var menuIsotope = $(".menu-container").isotope({
     //     itemSelector: ".menu-item",
     //     layoutMode: "fitRows",
