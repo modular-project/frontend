@@ -72,11 +72,7 @@
 
   <!-- ======= Menu Section ======= -->
   <section id="menu" class="menu">
-    <div class="container" id="menu-products">
-
-      <div class="section-title">
-        <h2>Revisa nuestro sabroso <span>Menú</span></h2>
-      </div>
+    <div class="container">
 
       <div class="row">
         <div class="col-lg-12 d-flex justify-content-center">
@@ -89,93 +85,21 @@
         </div>
       </div>
 
-      <div class="row menu-container">
-
-        <div class="col-lg-6 menu-item filter-starters">
-          <div class="menu-content">
-            <a href="#">Sopa de langosta</a><span>$5.95</span>
-          </div>
-          <div class="menu-ingredients">
-            Langosta, tomate, pimienta, cebolla
-          </div>
-        </div>
-
-        <div class="col-lg-6 menu-item filter-specialty">
-          <div class="menu-content">
-            <a href="#">Barril de pan</a><span>$6.95</span>
-          </div>
-          <div class="menu-ingredients">
-            Pan integral, jamón, lechuga, tomate
-          </div>
-        </div>
-
-        <div class="col-lg-6 menu-item filter-starters">
-          <div class="menu-content">
-            <a href="#">Pastel de cangrejo</a><span>$7.95</span>
-          </div>
-          <div class="menu-ingredients">
-            Un delicado pastel de cangrejo servido en un panecillo tostado con lechuga y salsa tártara
-          </div>
-        </div>
-
-        <div class="col-lg-6 menu-item filter-salads">
-          <div class="menu-content">
-            <a href="#">Selecciones "Caesar"</a><span>$8.95</span>
-          </div>
-          <div class="menu-ingredients">
-            Ingredientes secretos, especiales de la casa
-          </div>
-        </div>
-
-        <div class="col-lg-6 menu-item filter-specialty">
-          <div class="menu-content">
-            <a href="#">Toscano a la parrilla</a><span>$9.95</span>
-          </div>
-          <div class="menu-ingredients">
-            Pollo a la plancha con provolone, corazones de alcachofa y pesto rojo asado
-          </div>
-        </div>
-
-        <div class="col-lg-6 menu-item filter-starters">
-          <div class="menu-content">
-            <a href="#">Palito de Mozzarella</a><span>$4.95</span>
-          </div>
-          <div class="menu-ingredients">
-            Queso Mozzarella, especias y condimentos
-          </div>
-        </div>
-
-        <div class="col-lg-6 menu-item filter-salads">
-          <div class="menu-content">
-            <a href="#">Ensalada Griega</a><span>$9.95</span>
-          </div>
-          <div class="menu-ingredients">
-            Espinaca fresca, lechuga romana crujiente, tomates y aceitunas griegas
-          </div>
-        </div>
-
-        <div class="col-lg-6 menu-item filter-salads">
-          <div class="menu-content">
-            <a href="#">Ensalada de espinaca</a><span>$9.95</span>
-          </div>
-          <div class="menu-ingredients">
-            Espinaca fresca con champiñones, huevo duro y vinagreta tibia de tocino
-          </div>
-        </div>
-
-        <div class="col-lg-6 menu-item filter-specialty">
-          <div class="menu-content">
-            <a href="#">Rollo de Langosta</a><span>$12.95</span>
-          </div>
-          <div class="menu-ingredients">
-            Carne de langosta regordeta, mayonesa y lechuga crujiente en un rollo voluminoso tostado
-          </div>
-        </div>
-
-      </div>
-
+      <div class="row menu-container" id="menu-products"></div>
     </div>
-  </section><!-- End Menu Section -->
+
+    <template id="template-menu">
+      <div class="col-lg-6 menu-item filter-starters">
+        <div class="menu-content">
+          <a href="#">${nombre}</a><span>$${precio}</span>
+        </div>
+        <div class="menu-ingredients">
+          ${descripcion}
+        </div>
+      </div>
+    </template>
+
+  </section><!-- End Menu Section --><!-- End Menu Section -->
 
   <!-- ======= Footer ======= -->
   <footer id="footer" style="margin: 20px auto auto;">
@@ -200,7 +124,7 @@
 
   <a href="#" class="back-to-top"><i class="icofont-simple-up"></i></a>
 
-  <script type="module" , src="assets/js/admin.js"></script>
+  <script type="module" src="assets/js/admin.js"></script>
 
   <!-- Vendor JS Files -->
   <script src="assets/vendor/jquery/jquery.min.js"></script>
