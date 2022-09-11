@@ -1,5 +1,6 @@
 import * as user_module from "./module/user.js";
 import { handler_errors } from "./module/utils.js";
+import { load_menu } from "./product.js";
 
 // Exportar funciones para usar en HTML
 window.signout = function () {
@@ -28,8 +29,9 @@ function show_user_data_button(is_logged) {
 async function load_home() {
   let user;
   let is_logged = false;
+  load_menu();
   try {
-    user = await user_module.user();
+    //user = await user_module.user(); TODO: UNCOMMENT THIS
     is_logged = true;
     console.log("usuario logeado");
   } catch (err) {

@@ -252,19 +252,37 @@
               <li data-filter=".filter-starters">Entradas</li>
               <li data-filter=".filter-salads">Ensaladas</li>
               <li data-filter=".filter-specialty">Especialidades</li>
+              <li data-filter=".base-2">Especialidades</li>
             </ul>
           </div>
         </div>
-  
+
+        <div class="row">
+          <nav class="navbar navbar-light col-lg-12 d-flex justify-content-center">
+            <form class="form-inline" id="search-product-name-form">
+              <input name="search" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+              <button type="button" class="btn btn-outline-success my-2 my-sm-0">Search</button>
+            </form>
+          </nav>
+          <nav class="navbar navbar-light col-lg-12 d-flex justify-content-center">
+            <p>No conoces el nombre del producto? Prueba a buscarlo por su imagen</p>
+          </nav>
+          <nav class="navbar navbar-light col-lg-12 d-flex justify-content-center">
+            <form class="form-inline">
+              <input class="form-control mr-sm-2" type="file" id="formFile" aria-label="Buscar por imagen">
+              <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            </form>
+          </nav>
+        </div>
+
         <div class="row menu-container" id="menu-products"></div>
 
         <template id="template-menu">
-          <div class="col-lg-6 menu-item filter-starters">
+          <div class="col-lg-6 menu-item">
             <div class="menu-content">
-              <a href="#">${nombre}</a><span>$${precio}</span>
+              <a class="venobox" data-gall="gallery-item"></a><span></span>
             </div>
             <div class="menu-ingredients">
-              ${descripcion}
             </div>
           </div>
         </template>
@@ -363,7 +381,7 @@
             </div>
           </div-->
 
-        </div>
+      </div>
 
       </div>
     </section><!-- End Menu Section -->
