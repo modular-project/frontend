@@ -65,14 +65,18 @@
   <section class="footcolor" style="padding: 70px 0;"></section>
 
   <div class="container">
-    <h1 class="alignanycenter" style="margin: 40px 0 0;"><strong>Revisa nuestro sabroso <span
-          style="color: #ffb03b;">Menú</span></strong>
+    <h1 class="alignanycenter" style="margin: 40px 0 0;"><strong>Herramientas del <span
+          style="color: #ffb03b;">Administrador</span></strong>
     </h1>
   </div>
 
   <!-- ======= Menu Section ======= -->
   <section id="menu" class="menu">
     <div class="container">
+
+      <div class="section-title">
+        <h2>Revisa nuestro sabroso <span>Menú</span></h2>
+      </div>
 
       <div class="row">
         <div class="col-lg-12 d-flex justify-content-center">
@@ -81,26 +85,34 @@
             <li data-filter=".filter-starters">Entradas</li>
             <li data-filter=".filter-salads">Ensaladas</li>
             <li data-filter=".filter-specialty">Especialidades</li>
+            <li data-filter=".base-2">Base</li>
           </ul>
         </div>
       </div>
 
-      <div class="row menu-container" id="menu-products"></div>
-    </div>
-
-    <template id="template-menu">
-      <div class="col-lg-6 menu-item filter-starters">
-        <div class="menu-content">
-          <a href=${url} class="venobox" data-gall="gallery-item">${nombre}</a><span>$</span>
-        </div>
-        <div class="menu-ingredients">
-          ${descripcion}
-        </div>
+      <div class="row">
+        <nav class="navbar navbar-light col-lg-12 d-flex justify-content-center">
+          <form class="form-inline" id="search-product-name-form">
+            <input name="search" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            <button type="button" class="btn btn-outline-success my-2 my-sm-0">Search</button>
+          </form>
+        </nav>
       </div>
-    </template>
 
+      <div class="row menu-container" id="menu-products"></div>
+      
+      <template id="template-menu">
+        <div class="col-lg-6 menu-item">
+          <div class="menu-content">
+            <a class="venobox" data-gall="gallery-item"></a><span></span>
+          </div>
+          <div class="menu-ingredients">
+          </div>
+        </div>
+      </template>
+      
+    </div>
   </section><!-- End Menu Section -->
-  <!-- End Menu Section -->
 
   <!-- ======= Footer ======= -->
   <footer id="footer" style="margin: 20px auto auto;">
@@ -126,6 +138,7 @@
   <a href="#" class="back-to-top"><i class="icofont-simple-up"></i></a>
 
   <script type="module" src="assets/js/product.js"></script>
+  <script type="module" src="assets/js/admin.js"></script>
 
   <!-- Vendor JS Files -->
   <script src="assets/vendor/jquery/jquery.min.js"></script>
