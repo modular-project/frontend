@@ -1,22 +1,87 @@
 import { Product } from "./module/product.js";
 
+export const BASES = [
+  "apple_pie",
+  "baklava",
+  "beef_carpaccio",
+  "beignets",
+  "bread_pudding",
+  "breakfast_burrito",
+  "caesar_salad",
+  "caprese_salad",
+  "carrot_cake",
+  "cheesecake",
+  "chicken_curry",
+  "chicken_wings",
+  "chocolate_cake",
+  "churros",
+  "clam_chowder",
+  "club_sandwich",
+  "creme_brulee",
+  "deviled_eggs",
+  "donuts",
+  "eggs_benedict",
+  "falafel",
+  "filet_mignon",
+  "foie_gras",
+  "french_fries",
+  "french_toast",
+  "fried_calamari",
+  "fried_rice",
+  "garlic_bread",
+  "greek_salad",
+  "grilled_salmon",
+  "guacamole",
+  "hamburger",
+  "hot_dog",
+  "huevos_rancheros",
+  "ice_cream",
+  "lasagna",
+  "lobster_bisque",
+  "macaroni_and_cheese",
+  "macarons",
+  "miso_soup",
+  "nachos",
+  "omelette",
+  "onion_rings",
+  "oysters",
+  "paella",
+  "pancakes",
+  "panna_cotta",
+  "peking_duck",
+  "pizza",
+  "pork_chop",
+  "poutine",
+  "prime_rib",
+  "pulled_pork_sandwich",
+  "ramen",
+  "ravioli",
+  "red_velvet_cake",
+  "risotto",
+  "samosa",
+  "sashimi",
+  "scallops",
+  "shrimp_and_grits",
+  "spaghetti_bolognese",
+  "spaghetti_carbonara",
+  "spring_rolls",
+  "steak",
+  "strawberry_shortcake",
+  "sushi",
+  "tacos",
+  "takoyaki",
+  "tiramisu",
+  "waffles",
+];
+
 /**
  *
  * @type {Map<BigInt, Product>}
  */
 let ps;
 
-// var menuIsotope = $(".menu-container").isotope({
-//   itemSelector: ".menu-item",
-//   layoutMode: "fitRows",
-// });
-
 export const load_menu = async (type) => {
   await Product.get_all().then((d) => (ps = d));
-
-  // for (const [num, p] of ps) {
-  //     document.getElementById("menu-products").innerHTML += product_to_html(p)
-  // }
 
   const menu_products = document.querySelector("#menu-products");
   const template = document.querySelector("#template-menu").content;
@@ -43,24 +108,13 @@ export const load_menu = async (type) => {
   });
 
   $("#search-product-name-form button").on("click", function () {
-    //$(this).addClass("filter-active");
     const form = document.getElementById("search-product-name-form");
     const ids = search_product(form["search"].value);
     console.log("encontradoL: ", ids);
-    //$("#menu-flters li").removeClass("filter-active");
-    //$(this).addClass("filter-active");
     menuIsotope.isotope({
       filter: ids,
     });
   });
-  // $("#menu-flters li").on("click", function () {
-  //   $("#menu-flters li").removeClass("filter-active");
-  //   //$(this).addClass("filter-active");
-  //   console.log(this, $(this).data("filter"));
-  //   menuIsotope.isotope({
-  //     filter: $(this).data("filter"),
-  //   });
-  // });
   $(".venobox").venobox();
 };
 
@@ -84,16 +138,3 @@ export const search_product = (name) => {
   });
   return ids;
 };
-
-// window.search_product_name = () => {
-//   console.log("buscando");
-//   const form = document.getElementById("search-product-name-form");
-//   const ids = search_product(form["search"].value);
-//   console.log("encontradoL: ", ids);
-//   $("#menu-flters li").removeClass("filter-active");
-//   //$(this).addClass("filter-active");
-
-//   menuIsotope.isotope({
-//     filter: ids,
-//   });
-// };
