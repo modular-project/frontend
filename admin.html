@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mis Datos</title>
+  <title>Administrador</title>
 
   <!-- Favicons -->
   <link href="assets/img/favicon.png" rel="icon">
@@ -60,21 +60,112 @@
 
     </div>
     <div id="ch-alert"></div>
-      <!-- <div id="ch-alert" class=" alert alert-success alert-dismissible">
-    <a href="#" onclick='close_alert("ch-alert"); return false;' id="ch-alert-close" class="close"
-      aria-label="close">&times;</a>
-    <strong>Success!</strong> Indicates a successful or positive action.
-  </div> -->
   </header><!-- End Header -->
 
   <section class="footcolor" style="padding: 70px 0;"></section>
 
   <div class="container">
-    <h1 class="alignanycenter" style="margin: 40px 0 0;"><strong>Sección de 
-      <span style="color: #ffb03b;">empleados</span></strong>
+    <h1 class="alignanycenter" style="margin: 40px 0 0;"><strong>Herramientas del <span
+          style="color: #ffb03b;">Administrador</span></strong>
     </h1>
   </div>
 
+  <!-- ======= Menu Section ======= -->
+  <section id="menu" class="menu">
+    <div class="container">
+
+      <div class="section-title">
+        <h2>Revisa nuestro sabroso <span>Menú</span></h2>
+      </div>
+
+      <div class="row">
+        <div class="col-lg-12 d-flex justify-content-center">
+          <ul id="menu-flters">
+            <li data-filter="*" class="filter-active">Todos</li>
+            <li data-filter=".filter-starters">Entradas</li>
+            <li data-filter=".filter-salads">Ensaladas</li>
+            <li data-filter=".filter-specialty">Especialidades</li>
+            <li data-filter=".base-2">Base</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="row">
+        <nav class="navbar navbar-light col-lg-12 d-flex justify-content-center">
+          <form class="form-inline" id="search-product-name-form">
+            <input name="search" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            <button type="button" class="btn btn-outline-success my-2 my-sm-0">Search</button>
+          </form>
+        </nav>
+      </div>
+
+      <div class="row menu-container" id="menu-products"></div>
+      
+      <template id="template-menu">
+        <div class="col-lg-6 menu-item">
+          <div class="menu-content">
+            <a class="venobox" data-gall="gallery-item"></a><span></span>
+          </div>
+          <div class="menu-ingredients">
+          </div>
+        </div>
+      </template>
+      
+    </div>
+  </section><!-- End Menu Section -->
+
+  <!-- ======= Crear Producto ======= -->
+  <section class="contact" style="padding: 1px 0;">
+    <div class="container mt-5">
+      <form method="post" role="form" class="php-email-form">
+
+        <div class="imgcontainer">
+          <img src="assets/img/plato.png" style="border-radius: 10%; width: 10%;">
+        </div>
+
+        <div class="form-row">
+          <div class="col-md-6 form-group">
+            <label for="name"><b>Nombre</b></label>
+            <input type="text" id="nombre" class="form-control" placeholder="Nombre"/>
+          </div>
+          <div class="col-md-6 form-group">
+            <label for="name"><b>Precio</b></label>
+            <input type="text" id="precio" class="form-control" placeholder="Precio"/>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="name"><b>Descripción</b></label>
+          <textarea class="form-control" id="desc" rows="2" placeholder="Mensaje"></textarea>
+        </div>
+
+        <div class="form-group">
+          <img class="img-thumbnail img-fluid rounded mx-auto d-block" id="profile-pic" src="" alt="Chania"
+            style="max-width: 256px; max-height: 256px; max-width: 100%; height:auto;">
+          <div class="mb-3">
+            <label for="formFileSm" class="form-label"><b>URL / Imagen</b></label>
+            <input class="form-control form-control-sm" id="form-img" type="file" oninput="change_prof_pic()">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label><b>Base</b></label>
+          <select class="form-select" id="base" aria-label="Default select example">
+            <option selected>Selecciona una opción</option>
+            <option value="1">One</option>
+            <option value="2">Two</option>
+            <option value="3">Three</option>
+          </select>
+        </div>
+
+        <div class="text-center">
+          <button type="button" onclick="createProduct()" class="login" 
+            style="background: #ffb03b;">Crear producto</button>
+        </div>
+
+      </form>
+    </div>
+  </section>
 
   <!-- ======= Footer ======= -->
   <footer id="footer" style="margin: 20px auto auto;">
@@ -99,7 +190,8 @@
 
   <a href="#" class="back-to-top"><i class="icofont-simple-up"></i></a>
 
-  <script type="module" , src="assets/js/module/employee.js"></script>
+  <script type="module" src="assets/js/product.js"></script>
+  <script type="module" src="assets/js/admin.js"></script>
 
   <!-- Vendor JS Files -->
   <script src="assets/vendor/jquery/jquery.min.js"></script>
