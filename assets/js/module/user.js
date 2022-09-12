@@ -175,12 +175,14 @@ export async function get_user_data() {
   }
   let myHeaders = new Headers();
   myHeaders.append("Authorization", token);
-  return await fetch(`${API_URL_USER}`, { headers: myHeaders }).then((r) => {
-    if (!r.ok) {
-      throw new_response_error(r);
+  return await fetch(`${API_URL_USER}`, { headers: myHeaders }).then(
+    async (r) => {
+      if (!r.ok) {
+        throw new_response_error(r);
+      }
+      return await r.json();
     }
-    return r.json();
-  });
+  );
 }
 
 export function validate_email(email) {
