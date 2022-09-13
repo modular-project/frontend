@@ -1,4 +1,5 @@
 import { load_menu } from "./product.js";
+import { validate_email } from "./module/user.js";
 
 window.createProduct = () => {
     let nombre = document.getElementById("nombre").value;
@@ -9,13 +10,13 @@ window.createProduct = () => {
     if (!nombre) {
         throw Error("Ingresa un nombre para el producto");
     }
-    else if (!precio) {
+    if (!precio) {
         throw Error("Ingresa un precio para el producto");
     }
-    else if (!descripcion) {
+    if (!descripcion) {
         throw Error("Ingresa una descripción para el producto");
     }
-    else if (base === 'Selecciona una opción') {
+    if (base === 'Selecciona una opción') {
         throw Error("Ingresa una base para el producto");
     }
     else {
@@ -35,26 +36,44 @@ window.createEstablishment = () => {
     if (!calle) {
         throw Error("Ingresa una calle para el establecimiento");
     }
-    else if (!numero) {
+    if (!numero) {
         throw Error("Ingresa un numero para el establecimiento");
     }
-    else if (!colonia) {
+    if (!colonia) {
         throw Error("Ingresa una colonia para el establecimiento");
     }
-    else if (!ciudad) {
+    if (!ciudad) {
         throw Error("Ingresa una ciudad para el establecimiento");
     }
-    else if (!codigoPostal) {
+    if (!codigoPostal) {
         throw Error("Ingresa un código postal para el establecimiento");
     }
-    else if (!estado) {
+    if (!estado) {
         throw Error("Ingresa un estado para el establecimiento");
     }
-    else if (!pais) {
+    if (!pais) {
         throw Error("Ingresa un pais para el establecimiento");
     }
     else {
         console.log(`${calle} ${numero} ${colonia} ${ciudad} ${codigoPostal} ${estado} ${pais}`);
+    }
+}
+
+window.hireAdmin = () => {
+    let email = document.getElementById("emailCA").value;
+    let salario = document.getElementById("salarioCA").value;
+
+    if (!email) {
+        throw Error("Ingresa un correo electrónico para el administrador");
+    }
+    if (!validate_email(email)) {
+        throw Error("Ingresa un correo electrónico válido");
+    }
+    if (!salario) {
+        throw Error("Ingresa un salario para el administrador");
+    }
+    else {
+        console.log(`${email} ${salario}`);
     }
 }
 
