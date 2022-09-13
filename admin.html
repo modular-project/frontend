@@ -130,7 +130,8 @@
           </div>
           <div class="col-md-6 form-group">
             <label for="name"><b>Precio</b></label>
-            <input type="text" id="precio" class="form-control" placeholder="Precio"/>
+            <input type="number" id="precio" class="form-control" placeholder="Precio"
+              style="margin: 8px auto auto;"/>
           </div>
         </div>
 
@@ -161,6 +162,64 @@
         <div class="text-center">
           <button type="button" onclick="createProduct()" class="login" 
             style="background: #ffb03b;">Crear producto</button>
+        </div>
+
+      </form>
+    </div>
+  </section>
+
+  <!-- ======= Crear Establecimiento ======= -->
+  <section class="contact" style="padding: 1px 0;">
+    <div class="container mt-5">
+      <form method="post" role="form" class="php-email-form">
+
+        <div class="imgcontainer">
+          <img src="assets/img/restaurant-icon.png" style="border-radius: 10%; width: 8%;">
+        </div>
+
+        <div class="form-row">
+          <div class="col-md-6 form-group">
+            <label><b>Calle</b></label>
+            <input type="text" id="calleCE" class="form-control" placeholder="Nombre de la calle"/>
+          </div>
+          <div class="col-md-6 form-group">
+            <label><b>Número</b></label>
+            <input type="number" id="numCE" class="form-control" placeholder="Número del local"
+              style="margin: 8px auto auto;"/>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label><b>Colonia</b></label>
+          <input type="text" id="colCE" placeholder="Colonia o condominio"/>
+        </div>
+
+        <div class="form-row">
+          <div class="col-md-6 form-group">
+            <label><b>Ciudad</b></label>
+            <input type="text" id="ciudadCE" class="form-control" placeholder="Ciudad o localidad"/>
+          </div>
+          <div class="col-md-6 form-group">
+            <label><b>Código Postal</b></label>
+            <input type="number" id="cpCE" class="form-control" placeholder="Código Postal"
+              style="margin: 8px auto auto;"/>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="col-md-6 form-group">
+            <label><b>Estado</b></label>
+            <input type="text" id="estadoCE" class="form-control" placeholder="Estado o entidad federativa"/>
+          </div>
+          <div class="col-md-6 form-group">
+            <label><b>País</b></label>
+            <input type="text" id="paisCE" class="form-control" placeholder="País"/>
+          </div>
+        </div>
+
+        <div class="text-center">
+          <button type="button" onclick="createEstablishment()" class="login" 
+            style="background: #ffb03b;">Crear establecimiento</button>
         </div>
 
       </form>
