@@ -1,12 +1,148 @@
 <!DOCTYPE html>
 <html>
 
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+    <!-- Vendor CSS Files -->
+    <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/vendor/icofont/icofont.min.css" rel="stylesheet">
+    <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="assets/vendor/animate.css/animate.min.css" rel="stylesheet">
+    <link href="assets/vendor/venobox/venobox.css" rel="stylesheet">
+    <link href="assets/vendor/owl.carousel/assets/owl.carousel.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
+
+
+    <!-- Template Main CSS File -->
+    <link href="assets/css/style.css" rel="stylesheet">
+</head>
+
 <body>
-    <img src="https://drive.google.com/uc?export=view&id=1FejimhUzbVvRUhOFZbGLIYXomo2rs7xg">
-    <script type="module" src="./user.js"></script>
-    <script type="module" src="./utils.js"></script>
-    <script type="module" src="./home.js"></script>
-    <input id="label-is-user"></input>
+
+    <!-- <img src="https://drive.google.com/uc?export=view&id=1FejimhUzbVvRUhOFZbGLIYXomo2rs7xg"> -->
+    <!-- <script type="module" src="assets/js/user.js"></script>
+    <script type="module" src="assets/js/module/utils.js"></script>
+    <script type="module" src="assets/js/home.js"></script>
+    <script type="module" src="assets/js/product.js"></script> -->
+    <!-- <div class="form-group">
+        <img class="img-thumbnail img-fluid rounded mx-auto d-block" id="profile-pic" src="" alt="Chania"
+            style="max-width: 256px; max-height: 256px; max-width: 100%; height:auto;">
+        <div class="mb-3">
+            <label for="formFileSm" class="form-label"><b>Actualizar imagen</b></label>
+            <input class="form-control form-control-sm" id="form-img" type="file">
+        </div>
+    </div>
+    <button onclick="classify_img()">Enviar</button>
+    <input id="label-is-user"></input> -->
+    <section class="contact" style="padding: 1px 0;">
+        <div class="container table-responsive">
+            <table class="table caption-top" id="test-table">
+                <!-- <thead class="table-dark">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">First</th>
+                        <th scope="col">Last</th>
+                        <th scope="col">Handle</th>
+                    </tr>
+                    <tr>
+                        <th scope="row">
+                            <button type="button" class="btn btn-outline-success my-2 my-sm-0">Search</button>
+                        </th>
+                        <th>
+                            <form class="form-inline" id="search-product-name-form">
+                                <input id="s-first" name="search" class="form-control mr-sm-2" type="search"
+                                    placeholder="Search" aria-label="Search">
+                                <select id="sort" name="search" class="order_by">
+                                    <option value=0 selected></option>
+                                    <option value=1>up</option>
+                                    <option value=-1>down</option>
+                                </select>
+                            </form>
+                        </th>
+                        <th>
+                            <form class="form-inline" id="search-product-name-form">
+                                <input id="s-last" name="search" class="form-control mr-sm-2" type="search"
+                                    placeholder="Search" aria-label="Search">
+                                <select>
+                                    <option value="" selected></option>
+                                    <option value="up">up</option>
+                                    <option value="down">down</option>
+                                </select>
+                            </form>
+                        </th>
+                        <th>
+                            <form class="form-inline" id="search-product-name-form">
+                                <input id="s-handle" name="search" class="form-control mr-sm-2" type="search"
+                                    placeholder="Search" aria-label="Search">
+                                <select>
+                                    <option value="" selected></option>
+                                    <option value="up">up</option>
+                                    <option value="down">down</option>
+                                </select>
+                            </form>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    
+                    <tr>
+                        <th scope="row">2</th>
+                        <td>Jacob</td>
+                        <td>Thornton</td>
+                        <td>@fat</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">3</th>
+                        <td>Jacob</td>
+                        <td>Thornton</td>
+                        <td>@twitter</td>
+                    </tr>
+                </tbody> -->
+            </table>
+        </div>
+    </section>
+
+    <!-- TEMPLATE -->
+    <template id="t-search">
+        <thead class="table-dark">
+            <tr class="head">
+                <th scope="col">#</th>
+                <!-- Add headers -->
+            </tr>
+            <tr class="filter">
+                <td scope="row">
+                    <button type="button" class="btn btn-outline-success my-2 my-sm-0">Buscar</button>
+                </td>
+                <!-- Agregar filter headers -->
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Agregar datos (tr) -->
+        </tbody>
+    </template>
+    <!-- END TEMPLATE -->
+
+    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
+        crossorigin="anonymous"></script> -->
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script type="text/javascript" charset="utf8"
+        src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script> -->
+    <!-- Vendor JS Files -->
+    <script src="assets/vendor/jquery/jquery.min.js"></script>
+    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/vendor/jquery.easing/jquery.easing.min.js"></script>
+    <script src="assets/vendor/php-email-form/validate.js"></script>
+    <script src="assets/vendor/jquery-sticky/jquery.sticky.js"></script>
+    <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+    <script src="assets/vendor/venobox/venobox.min.js"></script>
+    <script src="assets/vendor/owl.carousel/owl.carousel.min.js"></script>
+    <!-- Template Main JS File -->
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/admin.js" type="module"></script>
 </body>
 
 </html>

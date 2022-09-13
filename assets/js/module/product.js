@@ -7,6 +7,80 @@ import {
 
 const API_URL_PRODUCT = `${API_URL}/api/v1/product/`;
 
+export const BASES = [
+  "apple_pie",
+  "baklava",
+  "beef_carpaccio",
+  "beignets",
+  "bread_pudding",
+  "breakfast_burrito",
+  "caesar_salad",
+  "caprese_salad",
+  "carrot_cake",
+  "cheesecake",
+  "chicken_curry",
+  "chicken_wings",
+  "chocolate_cake",
+  "churros",
+  "clam_chowder",
+  "club_sandwich",
+  "creme_brulee",
+  "deviled_eggs",
+  "donuts",
+  "eggs_benedict",
+  "falafel",
+  "filet_mignon",
+  "foie_gras",
+  "french_fries",
+  "french_toast",
+  "fried_calamari",
+  "fried_rice",
+  "garlic_bread",
+  "greek_salad",
+  "grilled_salmon",
+  "guacamole",
+  "hamburger",
+  "hot_dog",
+  "huevos_rancheros",
+  "ice_cream",
+  "lasagna",
+  "lobster_bisque",
+  "macaroni_and_cheese",
+  "macarons",
+  "miso_soup",
+  "nachos",
+  "omelette",
+  "onion_rings",
+  "oysters",
+  "paella",
+  "pancakes",
+  "panna_cotta",
+  "peking_duck",
+  "pizza",
+  "pork_chop",
+  "poutine",
+  "prime_rib",
+  "pulled_pork_sandwich",
+  "ramen",
+  "ravioli",
+  "red_velvet_cake",
+  "risotto",
+  "samosa",
+  "sashimi",
+  "scallops",
+  "shrimp_and_grits",
+  "spaghetti_bolognese",
+  "spaghetti_carbonara",
+  "spring_rolls",
+  "steak",
+  "strawberry_shortcake",
+  "sushi",
+  "tacos",
+  "takoyaki",
+  "tiramisu",
+  "waffles",
+];
+
 export class Product {
   constructor(data) {
     this.data = data;
@@ -33,7 +107,7 @@ export class Product {
 
   /**
    *
-   * @returns {BigInt}
+   * @returns {Promise<BigInt>}
    */
   async save() {
     let t = get_token();
@@ -41,17 +115,26 @@ export class Product {
       throw ERROR_UNAUTHORIZED;
     }
     return await fetch(`${API_URL_PRODUCT}`, {
-      headers: { Authorization: t, "Content-Type": "application/json" },
+      headers: {
+        Authorization: t,
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
       body: this.data,
       method: "POST",
-    }).then((r) => {
-      if (!r.ok) {
-        throw new_response_error(r);
-      }
-      let id;
-      r.json((data) => (id = data["id"]));
-      return id;
-    });
+    })
+      .then(async (r) => {
+        if (!r.ok) {
+          throw new_response_error(r);
+        }
+        let id;
+        await r.json((data) => (id = data["id"]));
+        return id;
+      })
+      .catch((e) => {
+        console.error(e);
+        throw Error("No se pudo realizar la peticion");
+      });
   }
 
   static async get_by_id(id) {
@@ -104,12 +187,12 @@ export class Product {
       headers: { Authorization: t, "Content-Type": "application/json" },
       body: JSON.stringify({ ids: ids }),
       method: "POST",
-    }).then((r) => {
+    }).then(async (r) => {
       if (!r.ok) {
         throw new_response_error(r);
       }
       const ps = new Map();
-      r.json().then((data) => {
+      await r.json().then((data) => {
         for (let d of data) {
           ps.set(d["id"], new Product(d));
         }
@@ -132,12 +215,12 @@ export class Product {
       headers: { Authorization: t, "Content-Type": "application/json" },
       body: this.data,
       method: "PUT",
-    }).then((r) => {
+    }).then(async (r) => {
       if (!r.ok) {
         throw new_response_error(r);
       }
       let id;
-      r.json((data) => (id = data["id"]));
+      await r.json((data) => (id = data["id"]));
       return id;
     });
   }

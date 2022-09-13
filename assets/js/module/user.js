@@ -6,7 +6,28 @@ import {
   new_response_error,
   ERROR_UNAUTHORIZED,
 } from "./utils.js";
-
+export const ROLES = {
+  User: 0,
+  Owner: 1,
+  Admin: 2,
+  Manager: 3,
+  Waiter: 4,
+};
+const id_to_role = (id) => {
+  switch (id) {
+    case ROLES.User:
+      return "Usuario";
+    case ROLES.Owner:
+      return "Dueño";
+    case ROLES.Admin:
+      return "Admin";
+    case ROLES.Manager:
+      return "Gerente";
+    case ROLES.Waiter:
+      return "Mesero";
+  }
+  return "NULO";
+};
 const API_URL_USER = `${API_URL}/api/v1/user/`;
 
 /**
@@ -22,9 +43,18 @@ export class User {
     this.is_verified = data["is_verified"];
     this.role_id = data["role_id"];
     this.est_id = data["est_id"];
+    this.is_active = data["is_active"];
     this.data = data;
   }
-
+  get role() {
+    return id_to_role(this.role_id);
+  }
+  get status() {
+    if (this.is_active) {
+      return "Activo";
+    }
+    return "Inactivo";
+  }
   async generate_verification_code() {
     let t = get_token();
     if (!t) {
@@ -175,12 +205,14 @@ export async function get_user_data() {
   }
   let myHeaders = new Headers();
   myHeaders.append("Authorization", token);
-  return await fetch(`${API_URL_USER}`, { headers: myHeaders }).then((r) => {
-    if (!r.ok) {
-      throw new_response_error(r);
+  return await fetch(`${API_URL_USER}`, { headers: myHeaders }).then(
+    async (r) => {
+      if (!r.ok) {
+        throw new_response_error(r);
+      }
+      return await r.json();
     }
-    return r.json();
-  });
+  );
 }
 
 export function validate_email(email) {

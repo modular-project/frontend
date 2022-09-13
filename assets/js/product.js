@@ -6,17 +6,8 @@ import { Product } from "./module/product.js";
  */
 let ps;
 
-// var menuIsotope = $(".menu-container").isotope({
-//   itemSelector: ".menu-item",
-//   layoutMode: "fitRows",
-// });
-
 export const load_menu = async (type) => {
   await Product.get_all().then((d) => (ps = d));
-
-  // for (const [num, p] of ps) {
-  //     document.getElementById("menu-products").innerHTML += product_to_html(p)
-  // }
 
   const menu_products = document.querySelector("#menu-products");
   const template = document.querySelector("#template-menu").content;
@@ -43,24 +34,13 @@ export const load_menu = async (type) => {
   });
 
   $("#search-product-name-form button").on("click", function () {
-    //$(this).addClass("filter-active");
     const form = document.getElementById("search-product-name-form");
     const ids = search_product(form["search"].value);
     console.log("encontradoL: ", ids);
-    //$("#menu-flters li").removeClass("filter-active");
-    //$(this).addClass("filter-active");
     menuIsotope.isotope({
       filter: ids,
     });
   });
-  // $("#menu-flters li").on("click", function () {
-  //   $("#menu-flters li").removeClass("filter-active");
-  //   //$(this).addClass("filter-active");
-  //   console.log(this, $(this).data("filter"));
-  //   menuIsotope.isotope({
-  //     filter: $(this).data("filter"),
-  //   });
-  // });
   $(".venobox").venobox();
 };
 
@@ -97,3 +77,35 @@ export const search_product = (name) => {
 //     filter: ids,
 //   });
 // };
+
+window.classify_img = async () => {
+  await upload_to_classify(document.getElementById("form-img").files[0]);
+};
+
+const load = async () => {
+  /**
+   *
+   * @type {Map<BigInt, Product>}
+   */
+  let ps;
+  await Product.get_all().then((d) => (ps = d));
+
+  const menu_products = document.querySelector("#menu-products");
+  const template = document.querySelector("#template-menu").content;
+  const fragment = document.createDocumentFragment();
+
+  for (const [num, p] of ps) {
+    console.log(p);
+    template.querySelector(".menu-content a").textContent = p.name;
+    template.querySelector("span").textContent = p.price;
+    template.querySelector(".menu-ingredients").textContent = p.description;
+    const clone = template.cloneNode(true);
+    fragment.appendChild(clone);
+  }
+
+  menu_products.appendChild(fragment);
+  var menuIsotope = $(".menu-container").isotope({
+    itemSelector: ".menu-item",
+    layoutMode: "fitRows",
+  });
+};
