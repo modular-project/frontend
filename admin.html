@@ -146,8 +146,7 @@
             <label for="name"><b>Descripción</b></label>
             <textarea class="form-control" id="desc" rows="2" placeholder="Mensaje"></textarea>
           </div>
-
-          <div class="form-group">
+          <<<<<<< HEAD <div class="form-group">
             <img class="img-thumbnail img-fluid rounded mx-auto d-block" id="create-product-pic"
               src="https://i.pinimg.com/originals/fd/80/ec/fd80ecec48eba2a9adb76e4133905879.png"
               alt="Sube aqui la imagen del producto"
@@ -156,23 +155,114 @@
               <label for="formFileSm" class="form-label"><b>Imagen</b></label>
               <input class="form-control form-control-sm" id="create-img" type="file" oninput="change_prod_pic()">
             </div>
+      </div>
+
+      <div class="form-group" id="create-div-base">
+        <label><b>Base</b></label>
+        <select name="select-base" class="form-select" id="create-base" aria-label="Default select example">
+          <option selected value="null">Selecciona una opción</option>
+        </select>
+      </div>
+
+      <div class="text-center">
+        <button type="button" onclick="createProduct()" class="login" style="background: #ffb03b;">Crear
+          producto</button>
+      </div>
+
+      </form>
+      </div>
+    </section>
+
+    </form>
+    </div>
+    </section><!-- End Crear Producto -->
+
+    <!-- ======= Crear Establecimiento ======= -->
+    <section class="contact" style="padding: 1px 0;">
+      <div class="container mt-5">
+        <form method="post" role="form" class="php-email-form">
+
+          <div class="imgcontainer">
+            <img src="assets/img/restaurant-icon.png" style="border-radius: 10%; width: 8%;">
           </div>
 
-          <div class="form-group" id="create-div-base">
-            <label><b>Base</b></label>
-            <select name="select-base" class="form-select" id="create-base" aria-label="Default select example">
-              <option selected value="null">Selecciona una opción</option>
-            </select>
+          <div class="form-row">
+            <div class="col-md-6 form-group">
+              <label><b>Calle</b></label>
+              <input type="text" id="calleCE" class="form-control" placeholder="Nombre de la calle" />
+            </div>
+            <div class="col-md-6 form-group">
+              <label><b>Número</b></label>
+              <input type="number" id="numCE" class="form-control" placeholder="Número del local"
+                style="margin: 8px auto auto;" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label><b>Colonia</b></label>
+            <input type="text" id="colCE" placeholder="Colonia o condominio" />
+          </div>
+
+          <div class="form-row">
+            <div class="col-md-6 form-group">
+              <label><b>Ciudad</b></label>
+              <input type="text" id="ciudadCE" class="form-control" placeholder="Ciudad o localidad" />
+            </div>
+            <div class="col-md-6 form-group">
+              <label><b>Código Postal</b></label>
+              <input type="number" id="cpCE" class="form-control" placeholder="Código Postal"
+                style="margin: 8px auto auto;" />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="col-md-6 form-group">
+              <label><b>Estado</b></label>
+              <input type="text" id="estadoCE" class="form-control" placeholder="Estado o entidad federativa" />
+            </div>
+            <div class="col-md-6 form-group">
+              <label><b>País</b></label>
+              <input type="text" id="paisCE" class="form-control" placeholder="País" />
+            </div>
           </div>
 
           <div class="text-center">
-            <button type="button" onclick="createProduct()" class="login" style="background: #ffb03b;">Crear
-              producto</button>
+            <button type="button" onclick="createEstablishment()" class="login" style="background: #ffb03b;">Crear
+              establecimiento</button>
           </div>
 
         </form>
       </div>
-    </section>
+    </section><!-- End Crear Establecimiento -->
+
+    <!-- ======= Contratar Administrador ======= -->
+    <section class="contact" style="padding: 1px 0;">
+      <div class="container mt-5">
+        <form method="post" role="form" class="php-email-form">
+
+          <div class="imgcontainer">
+            <img src="assets/img/admin-icon.png" style="border-radius: 10%; width: 7%;">
+          </div>
+
+          <div class="form-group">
+            <label><b>Correo electrónico</b></label>
+            <input type="email" class="form-control" id="emailCA" placeholder="Ingrese un correo electrónico" />
+          </div>
+
+          <div class="form-group">
+            <label><b>Salario</b></label>
+            <input type="number" id="salarioCA" placeholder="Ingrese un salario" class="form-control"
+              style="margin: 8px auto auto;" />
+          </div>
+
+          <div class="text-center">
+            <button type="button" onclick="hireAdmin()" class="login" style="background: #ffb03b;">Contratar
+              administrador</button>
+          </div>
+
+        </form>
+      </div>
+    </section><!-- End Contratar Administrador -->
 
     <!-- ======= Buscar empleados ======= -->
     <section class="contact" style="padding: 1px 0;">
