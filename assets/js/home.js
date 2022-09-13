@@ -31,7 +31,7 @@ async function load_home() {
   let is_logged = false;
   load_menu();
   try {
-    //user = await user_module.user(); TODO: UNCOMMENT THIS
+    user = await user_module.user(); //TODO: UNCOMMENT THIS
     is_logged = true;
     console.log("usuario logeado");
   } catch (err) {

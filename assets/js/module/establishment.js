@@ -10,5 +10,5 @@ class Establishment {
   get id() {
     return this.data["id"];
   }
-  get;
+  get streat() {}
 }

@@ -1,79 +1,5 @@
 import { Product } from "./module/product.js";
 
-export const BASES = [
-  "apple_pie",
-  "baklava",
-  "beef_carpaccio",
-  "beignets",
-  "bread_pudding",
-  "breakfast_burrito",
-  "caesar_salad",
-  "caprese_salad",
-  "carrot_cake",
-  "cheesecake",
-  "chicken_curry",
-  "chicken_wings",
-  "chocolate_cake",
-  "churros",
-  "clam_chowder",
-  "club_sandwich",
-  "creme_brulee",
-  "deviled_eggs",
-  "donuts",
-  "eggs_benedict",
-  "falafel",
-  "filet_mignon",
-  "foie_gras",
-  "french_fries",
-  "french_toast",
-  "fried_calamari",
-  "fried_rice",
-  "garlic_bread",
-  "greek_salad",
-  "grilled_salmon",
-  "guacamole",
-  "hamburger",
-  "hot_dog",
-  "huevos_rancheros",
-  "ice_cream",
-  "lasagna",
-  "lobster_bisque",
-  "macaroni_and_cheese",
-  "macarons",
-  "miso_soup",
-  "nachos",
-  "omelette",
-  "onion_rings",
-  "oysters",
-  "paella",
-  "pancakes",
-  "panna_cotta",
-  "peking_duck",
-  "pizza",
-  "pork_chop",
-  "poutine",
-  "prime_rib",
-  "pulled_pork_sandwich",
-  "ramen",
-  "ravioli",
-  "red_velvet_cake",
-  "risotto",
-  "samosa",
-  "sashimi",
-  "scallops",
-  "shrimp_and_grits",
-  "spaghetti_bolognese",
-  "spaghetti_carbonara",
-  "spring_rolls",
-  "steak",
-  "strawberry_shortcake",
-  "sushi",
-  "tacos",
-  "takoyaki",
-  "tiramisu",
-  "waffles",
-];
-
 /**
  *
  * @type {Map<BigInt, Product>}
@@ -138,8 +64,6 @@ export const search_product = (name) => {
   });
   return ids;
 };
-<<<<<<< HEAD
-=======
 
 // window.search_product_name = () => {
 //   console.log("buscando");

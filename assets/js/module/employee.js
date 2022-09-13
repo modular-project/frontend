@@ -29,35 +29,78 @@ export const ORDER_BY = {
   Establishment: 3,
 };
 
+const id_to_role = (id) => {
+  switch (id) {
+    case ROLES.User:
+      return "Usuario";
+    case ROLES.Owner:
+      return "Dueño";
+    case ROLES.Admin:
+      return "Admin";
+    case ROLES.Manager:
+      return "Gerente";
+    case ROLES.Waiter:
+      return "Mesero";
+  }
+  return "NULO";
+};
+
 export class Search {
   /**
    *
    * @param {number} offset
    * @param {number} limit
-   * @param {number[] | null} order
+   * @param {any} order
+   * @param {any} querys
    * @param {number[] | null} status
    * @param {number[] | null} roles
-   * @param {number[] | null} ests
    */
   constructor(
     offset = 0,
     limit = 10,
     order = null,
+    querys = null,
     status = 0,
-    roles = null,
-    ests = null
+    roles = null
   ) {
+    if (!roles.length) {
+      roles = null;
+    } else {
+      roles = roles.map(Number);
+    }
     this.data = {
-      order: order,
-      limit: limit,
-      status: status,
+      order: parseInt(order),
+      limit: parseInt(limit),
+      status: parseInt(status),
+      querys: querys,
       roles: roles,
-      ests: ests,
       offset: offset,
     };
   }
 }
-
+// {
+//   "order":[
+//       {
+//           "by": 2,
+//           "sort":0
+//       },
+//       {
+//           "by":4
+//       }
+//   ],
+//   "limit":10,
+//   "status": 0,
+//   "roles":[
+//       1,
+//       2,
+//       3
+//   ],
+//   "querys":{
+//       "email":"nose",
+//       "name":"nombre"
+//   },
+//   "offset":0
+// }
 const is_greater = (origin, target) => {
   if (origin == target) {
     return false;
@@ -103,6 +146,10 @@ export class Job {
 
   get role_id() {
     return this.data["role_id"];
+  }
+
+  get role() {
+    return id_to_role(this.role_id);
   }
 
   get establishment_id() {
