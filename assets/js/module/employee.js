@@ -69,12 +69,13 @@ export class Search {
       roles = roles.map(Number);
     }
     this.data = {
-      order: parseInt(order),
+      order: order,
       limit: parseInt(limit),
       status: parseInt(status),
       querys: querys,
       roles: roles,
       offset: offset,
+      ests: null,
     };
   }
 }
@@ -101,14 +102,14 @@ export class Search {
 //   },
 //   "offset":0
 // }
-const is_greater = (origin, target) => {
+export const is_greater = (origin, target) => {
   if (origin == target) {
     return false;
   }
   return origin < target && (origin != ROLES.User || target == ROLES.User);
 };
 
-const is_equal = (origin, target) => {
+export const is_equal = (origin, target) => {
   if (!origin) {
     return false;
   }
@@ -366,7 +367,7 @@ export class Employee {
   /**
    *
    * @param {Search} s
-   * @returns {Promise<Map<number, User>>}
+   * @returns {Promise<User[]>}
    */
   async search(s) {
     let t = get_token();
@@ -376,7 +377,7 @@ export class Employee {
     if (!is_greater(this.role, ROLES.Manager)) {
       throw Error("No tienes el rol necesario");
     }
-    let users = new Map();
+    let users = [];
     await fetch(`${API_URL_EMPLOYEE}search/`, {
       body: JSON.stringify(s.data),
       headers: {
@@ -390,7 +391,7 @@ export class Employee {
       }
       await r.json().then((data) => {
         for (let d of data) {
-          users.set(d["id"], new User(d));
+          users.push(new User(d));
         }
       });
     });
@@ -402,16 +403,22 @@ export class Employee {
    * @param {Search} s
    * @returns {Promise<Map<number, User>>}
    */
-  async search_waiters(s) {
+  async search_waiters(s, e_id) {
     let t = get_token();
     if (!t) {
       throw ERROR_UNAUTHORIZED;
     }
-    if (!is_equal(this.role, ROLES.Manager)) {
+    if (!is_greater(this.role, ROLES.Waiter)) {
       throw Error("No tienes el rol necesario");
     }
-    let users = new Map();
-    await fetch(`${API_URL_EMPLOYEE}search/waiter/`, {
+    let url = `${API_URL_EMPLOYEE}search/`;
+    if (is_equal(this.role, ROLES.Manager)) {
+      url = `${API_URL_EMPLOYEE}search/waiter/`;
+    } else {
+      s.data.ests = [parseInt(e_id)];
+    }
+    let users = [];
+    await fetch(url, {
       body: JSON.stringify(s.data),
       headers: {
         "Content-Type": "application/json;charset=utf-8",
@@ -424,7 +431,7 @@ export class Employee {
       }
       await r.json().then((data) => {
         for (let d of data) {
-          users.set(d["id"], new User(d));
+          users.push(new User(d));
         }
       });
     });
