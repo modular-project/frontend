@@ -20,6 +20,29 @@ export const generate_header = (headers) => {
 
 /**
  *
+ * @param {any[]} data
+ * @returns
+ */
+export const generate_body_from_array = (data, headers, callback) => {
+  let b = ``;
+  let count = 1;
+  let func = callback;
+  if (!func) {
+    func = "console.log";
+  }
+  for (const d of data) {
+    b += `<tr><th scope="row" onclick="${func}('${d["id"]}');"">${count}</th>`;
+    for (const h in headers) {
+      b += `<th>${d[h]}</th>`;
+    }
+    count += 1;
+    b += `</tr>`;
+  }
+  return b;
+};
+
+/**
+ *
  * @param {Map<BigInt,any>} data
  * @returns
  */
@@ -27,18 +50,38 @@ export const generate_body_from_data = (data, headers, callback) => {
   let b = ``;
   let count = 1;
   let func = callback;
+  let temp = [];
   if (!func) {
     func = "console.log";
   }
   for (const [k, v] of data) {
-    console.log(v);
-    b += `<tr><th scope="row" onclick="${func}(${k});"">${count}</th>`;
+    temp = [];
+    b += `<tr><th scope="row" onclick="${func}('${k}');"">${count}</th>`;
     for (const h in headers) {
-      console.log(h, v[h]);
-      b += `<th>${v[h]}</th>`;
+      if (v.length) {
+        for (var i = 0; i < v.length; i++) {
+          if (temp[i]) {
+            temp[i].push(`<th>${v[i][h]}</th>`);
+          } else {
+            temp[i] = [`<th>${v[i][h]}</th>`];
+          }
+        }
+      } else {
+        b += `<th>${v[h]}</th>`;
+      }
     }
-    count += 1;
-    b += `</tr>`;
+    if (temp.length) {
+      for (var i = 0; i < temp.length; i++) {
+        b += temp[i].join("") + `</tr>`;
+        count += 1;
+        if (i < temp.length - 1) {
+          b += `<tr><th scope="row" onclick="${func}('${k}');"">${count}</th>`;
+        }
+      }
+    } else {
+      count += 1;
+      b += `</tr>`;
+    }
   }
   return b;
 };
@@ -83,7 +126,11 @@ export const data_search_from_table = (t_id) => {
     const s = ths[i].getElementsByClassName("th-search")[0];
     const name = o.name;
     let val;
-    switch (s.tagName) {
+    let tag;
+    if (s) {
+      tag = s.tagName;
+    }
+    switch (tag) {
       case "INPUT":
         val = s.value;
         break;
@@ -92,16 +139,37 @@ export const data_search_from_table = (t_id) => {
         break;
       case "DIV":
         let a = [];
-        const checks = s.getElementsByClassName("form-check-input");
-        for (var y = 0; y < checks.length; y++) {
-          if (checks[y].checked) {
-            a.push(checks[y].value);
+        const searchs = s.getElementsByClassName("form-search");
+        for (var y = 0; y < searchs.length; y++) {
+          console.log(searchs[y].type);
+          if (searchs[y].type == "checkbox") {
+            if (searchs[y].checked) {
+              a.push(searchs[y].value);
+            }
+          } else {
+            a.push(searchs[y].value);
           }
         }
         val = a;
+        break;
+      default:
         break;
     }
     data.set(name, { search: val, order: o.value });
   }
   return data;
+};
+
+export const data_to_table = (t_id, data, headers, callback) => {
+  const t = document.querySelector(`#${t_id}`);
+  t.querySelector("tbody").innerHTML = generate_body_from_data(
+    data,
+    headers,
+    callback
+  );
+};
+
+export const clear_table = (t_id) => {
+  const t = document.querySelector(`#${t_id}`);
+  t.querySelector("tbody").innerHTML = "";
 };
