@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Página principal - Punto y coma;</title>
+  <title>Administrador</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -121,10 +121,10 @@
 
     <!-- ======= Crear Producto ======= -->
     <section class="contact" style="padding: 1px 0;">
-      <div class="section-title">
-        <h2><span>Agrega</span> un nuevo producto al menú</h2>
-      </div>
       <div class="container mt-5">
+        <div class="section-title">
+          <h2><span>Agregar</span> un nuevo producto al menú</h2>
+        </div>
         <form method="post" role="form" class="php-email-form">
 
           <div class="imgcontainer">
@@ -138,7 +138,8 @@
             </div>
             <div class="col-md-6 form-group">
               <label for="name"><b>Precio</b></label>
-              <input type="number" id="precio" class="form-control" placeholder="Precio" />
+              <input type="number" id="precio" class="form-control" placeholder="Precio" 
+                step="0.01" style="margin: 8px auto auto;" min="0.01"/>
             </div>
           </div>
 
@@ -165,8 +166,8 @@
       </div>
 
       <div class="text-center">
-        <button type="button" onclick="createProduct()" class="login" style="background: #ffb03b;">Crear
-          producto</button>
+        <button type="button" onclick="createProduct()" class="login" 
+          style="background: #ffb03b;">Agregar</button>
       </div>
 
       </form>
@@ -180,6 +181,9 @@
     <!-- ======= Crear Establecimiento ======= -->
     <section class="contact" style="padding: 1px 0;">
       <div class="container mt-5">
+        <div class="section-title">
+          <h2><span>Crear </span>establecimiento</h2>
+        </div>
         <form method="post" role="form" class="php-email-form">
 
           <div class="imgcontainer">
@@ -194,7 +198,7 @@
             <div class="col-md-6 form-group">
               <label><b>Número</b></label>
               <input type="number" id="numCE" class="form-control" placeholder="Número del local"
-                style="margin: 8px auto auto;" />
+                style="margin: 8px auto auto;" min="1"/>
             </div>
           </div>
 
@@ -227,8 +231,8 @@
           </div>
 
           <div class="text-center">
-            <button type="button" onclick="createEstablishment()" class="login" style="background: #ffb03b;">Crear
-              establecimiento</button>
+            <button type="button" onclick="createEstablishment()" class="login" 
+              style="background: #ffb03b;">Crear</button>
           </div>
 
         </form>
@@ -238,6 +242,9 @@
     <!-- ======= Contratar Administrador ======= -->
     <section class="contact" style="padding: 1px 0;">
       <div class="container mt-5">
+        <div class="section-title">
+          <h2>Contratar<span> Administrador</span></h2>
+        </div>
         <form method="post" role="form" class="php-email-form">
 
           <div class="imgcontainer">
@@ -252,12 +259,12 @@
           <div class="form-group">
             <label><b>Salario</b></label>
             <input type="number" id="salarioCA" placeholder="Ingrese un salario" class="form-control"
-              style="margin: 8px auto auto;" />
+              style="margin: 8px auto auto;" step="10" min="1"/>
           </div>
 
           <div class="text-center">
-            <button type="button" onclick="hireAdmin()" class="login" style="background: #ffb03b;">Contratar
-              administrador</button>
+            <button type="button" onclick="hireAdmin()" class="login" 
+              style="background: #ffb03b;">Contratar</button>
           </div>
 
         </form>
@@ -266,11 +273,11 @@
 
     <!-- ======= Buscar empleados ======= -->
     <section class="contact" style="padding: 1px 0;">
-      <div class="section-title">
-        <h2><span>Buscador </span> de empleados</h2>
-      </div>
       <div class="container mt-5 table-responsive">
-        <table class="table caption-top" id="t-s-user">
+        <table class="table caption-top" id="t-s-user" style="margin: auto auto 50px;">
+          <div class="section-title">
+            <h2><span>Buscador </span> de empleados</h2>
+          </div>
           <thead class="table-dark">
             <tr>
               <th scope="col">#</th>
