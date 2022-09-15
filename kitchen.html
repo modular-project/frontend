@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Gerente</title>
+  <title>Cocina</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -72,82 +72,18 @@
   <section class="footcolor" style="padding: 70px 0;"></section>
 
   <div class="container">
-    <h1 class="alignanycenter" style="margin: 40px 0 0;"><strong>Herramientas del 
-      <span style="color: #ffb03b;">Gerente</span></strong>
+    <h1 class="alignanycenter" style="margin: 40px 0 0;"><strong>Herramientas de la 
+      <span style="color: #ffb03b;">Cocina</span></strong>
     </h1>
   </div>
 
   <main id="main">
 
-    <!-- ======= Actualizar Cantidad de Mesas ======= -->
-    <section class="contact" style="padding: 1px 0;">
-      <div class="container mt-5">
-        <div class="section-title">
-          <h2>Actualizar cantidad de <span>mesas</span></h2>
-        </div>
-        <form method="post" role="form" class="php-email-form">
-
-          <div class="imgcontainer">
-            <img src="assets/img/table-icon.png" style="border-radius: 10%; width: 8%;">
-          </div>
-
-          <div class="form-group">
-            <label for="dirACM"><b>Dirección</b></label>
-            <textarea class="form-control" id="dirACM" rows="2" placeholder="Dirección"></textarea>
-          </div>
-
-          <div class="form-group">
-            <label for="mesasACM"><b>Cantidad de mesas</b></label>
-            <input type="number" id="mesasACM" placeholder="Cantidad de mesas" class="form-control" 
-              value="4" min="0"/>
-          </div>
-
-          <div class="text-center">
-            <button type="button" onclick="updateNumTables()" class="login" 
-              style="background: #ffb03b;">Actualizar</button>
-          </div>
-
-        </form>
-      </div>
-    </section><!-- End Actualizar Cantidad de Mesas -->
-
-    <!-- ======= Contratar Gerente / Mesero ======= -->
-    <section class="contact" style="padding: 1px 0;">
-      <div class="container mt-5">
-        <div class="section-title">
-          <h2><span>Contratar </span>Gerente / Mesero</h2>
-        </div>
-        <form method="post" role="form" class="php-email-form">
-
-          <div class="imgcontainer">
-            <img src="assets/img/manager-icon.png" style="border-radius: 10%; width: 7%;">
-          </div>
-
-          <div class="form-group">
-            <label><b>Correo electrónico</b></label>
-            <input type="email" class="form-control" id="emailCGM" placeholder="Ingrese un correo electrónico" />
-          </div>
-
-          <div class="form-group">
-            <label><b>Salario</b></label>
-            <input type="number" id="salarioCGM" placeholder="Ingrese un salario" class="form-control"
-              style="margin: 8px auto auto;" step="10" min="1"/>
-          </div>
-
-          <div class="text-center">
-            <button type="button" onclick="hireManagerCook()" class="login" 
-              style="background: #ffb03b;">Contratar</button>
-          </div>
-
-        </form>
-      </div>
-    </section><!-- End Contratar Gerente / Mesero -->
-
-    <!-- ======= Crear Cuenta de Cocina ======= -->
+    <!-- ======= Iniciar Sesión Cocina ======= -->
     <section id="contact" class="contact" style="padding: 1px 0;">
       <div class="container mt-5">
         <div class="section-title">
-          <h2>Crear cuenta de <span>cocina</span></h2>
+          <h2>Iniciar sesión de <span>cocina</span></h2>
         </div>
         <form method="post" role="form" class="php-email-form">
 
@@ -156,24 +92,47 @@
           </div>
   
           <div class="form-group">
-            <label for="unameCCC"><b>Nombre de usuario</b></label>
-            <input type="text" class="form-control" id="unameCCC"
-              placeholder="Introduzca un nombre de usuario"/>
+            <label for="unameISC"><b>Nombre de usuario</b></label>
+            <input type="text" class="form-control" id="unameISC"
+              placeholder="Introduzca su nombre de usuario"/>
           </div>
   
           <div>
-            <label for="passCCC"><b>Contraseña</b></label>
-            <input type="password" placeholder="Introduzca una contraseña" id="passCCC">
+            <label for="passISC"><b>Contraseña</b></label>
+            <input type="password" placeholder="Introduzca su contraseña" id="passISC">
           </div>
 
           <div class="text-center">
-            <button type="button" onclick="createCookAccount()" class="login" 
-              style="background: #ffb03b;">Crear</button>
+            <button type="button" onclick="loginCook()" class="login" 
+              style="background: #ffb03b;">Iniciar sesión</button>
           </div>
 
         </form>
       </div>
-    </section><!-- End Crear Cuenta de Cocina -->
+    </section><!-- End Iniciar Sesión Cocina -->
+
+    <!-- ======= Ver Pedidos Pendientes ======= -->
+    <section id="why-us" class="why-us">
+      <div class="container">
+
+        <div class="section-title">
+          <h2>Ver pedidos <span>pendientes</span></h2>
+        </div>
+
+        <div class="row" id="orders" style="text-align: center;"></div>
+
+        <template id="ord">
+          <div class="col-lg-4 mt-4 mt-lg-0">
+            <div class="box">
+              <span>01</span>
+              <h4>Seguridad</h4>
+              <button type="button" class="login">Completar</button>
+            </div>
+          </div>
+        </template>
+
+      </div>
+    </section><!-- End Ver Pedidos Pendientes -->
 
   </main><!-- End #main -->
 
@@ -204,7 +163,7 @@
 
   <a href="#" class="back-to-top"><i class="icofont-simple-up"></i></a>
 
-  <script type="module" src="assets/js/manager.js"></script>
+  <script type="module" src="assets/js/kitchen.js"></script>
   <script type="module" src="assets\js\module\utils.js"></script>
   <!-- <script type="module" src="assets\js\module\product.js"></script>
   <script type="module" src="assets/js/product.js"></script> -->
