@@ -138,8 +138,8 @@
             </div>
             <div class="col-md-6 form-group">
               <label for="name"><b>Precio</b></label>
-              <input type="number" id="precio" class="form-control" placeholder="Precio" 
-                step="0.01" style="margin: 8px auto auto;" min="0.01"/>
+              <input type="number" id="precio" class="form-control" placeholder="Precio" step="0.01"
+                style="margin: 8px auto auto;" min="0.01" />
             </div>
           </div>
 
@@ -147,7 +147,7 @@
             <label for="name"><b>Descripción</b></label>
             <textarea class="form-control" id="desc" rows="2" placeholder="Mensaje"></textarea>
           </div>
-          <<<<<<< HEAD <div class="form-group">
+          <div class="form-group">
             <img class="img-thumbnail img-fluid rounded mx-auto d-block" id="create-product-pic"
               src="https://i.pinimg.com/originals/fd/80/ec/fd80ecec48eba2a9adb76e4133905879.png"
               alt="Sube aqui la imagen del producto"
@@ -156,21 +156,20 @@
               <label for="formFileSm" class="form-label"><b>Imagen</b></label>
               <input class="form-control form-control-sm" id="create-img" type="file" oninput="change_prod_pic()">
             </div>
-      </div>
+          </div>
 
-      <div class="form-group" id="create-div-base">
-        <label><b>Base</b></label>
-        <select name="select-base" class="form-select" id="create-base" aria-label="Default select example">
-          <option selected value="null">Selecciona una opción</option>
-        </select>
-      </div>
+          <div class="form-group" id="create-div-base">
+            <label><b>Base</b></label>
+            <select name="select-base" class="form-select" id="create-base" aria-label="Default select example">
+              <option selected value="null">Selecciona una opción</option>
+            </select>
+          </div>
 
-      <div class="text-center">
-        <button type="button" onclick="createProduct()" class="login" 
-          style="background: #ffb03b;">Agregar</button>
-      </div>
+          <div class="text-center">
+            <button type="button" onclick="createProduct()" class="login" style="background: #ffb03b;">Agregar</button>
+          </div>
 
-      </form>
+        </form>
       </div>
     </section>
 
@@ -198,7 +197,7 @@
             <div class="col-md-6 form-group">
               <label><b>Número</b></label>
               <input type="number" id="numCE" class="form-control" placeholder="Número del local"
-                style="margin: 8px auto auto;" min="1"/>
+                style="margin: 8px auto auto;" min="1" />
             </div>
           </div>
 
@@ -231,7 +230,7 @@
           </div>
 
           <div class="text-center">
-            <button type="button" onclick="createEstablishment()" class="login" 
+            <button type="button" onclick="createEstablishment()" class="login"
               style="background: #ffb03b;">Crear</button>
           </div>
 
@@ -259,17 +258,115 @@
           <div class="form-group">
             <label><b>Salario</b></label>
             <input type="number" id="salarioCA" placeholder="Ingrese un salario" class="form-control"
-              style="margin: 8px auto auto;" step="10" min="1"/>
+              style="margin: 8px auto auto;" step="10" min="1" />
           </div>
 
           <div class="text-center">
-            <button type="button" onclick="hireAdmin()" class="login" 
-              style="background: #ffb03b;">Contratar</button>
+            <button type="button" onclick="hireAdmin()" class="login" style="background: #ffb03b;">Contratar</button>
           </div>
 
         </form>
       </div>
     </section><!-- End Contratar Administrador -->
+
+    <!-- ======= Buscar ESTABLECIMIENTOS ======= -->
+    <section class="contact" style="padding: 1px 0;">
+      <div class="section-title">
+        <h2><span>Buscador </span> de empleados</h2>
+      </div>
+      <div class="container mt-5 table-responsive">
+        <table class="table caption-top" id="t-s-establishment">
+          <thead class="table-dark">
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Calle</th>
+              <th scope="col">Colonia</th>
+              <th scope="col">Ciudad</th>
+              <th scope="col">Estado</th>
+              <th scope="col">Pais</th>
+              <th scope="col">C.P.</th>
+            </tr>
+            <tr class="tr-filter">
+              <th scope="row">
+                <button type="button" class="btn btn-outline-success my-2 my-sm-0"
+                  onclick="search_establishments()">Buscar</button>
+              </th>
+              <th>
+                <form class="form-inline">
+                  <input name="street" class="form-control mr-sm-2 th-search" type="search" placeholder="Search"
+                    aria-label="Search">
+                  <select name="street" class="th-order">
+                    <option value="0" selected=""></option>
+                    <option value="1">up</option>
+                    <option value="-1">down</option>
+                  </select>
+                </form>
+              </th>
+              <th>
+                <form class="form-inline">
+                  <input name="name" class="form-control mr-sm-2 th-search" type="search" placeholder="Search"
+                    aria-label="Search">
+                  <select name="suburb" class="th-order">
+                    <option value="0" selected=""></option>
+                    <option value="1">up</option>
+                    <option value="-1">down</option>
+                  </select>
+                </form>
+              </th>
+              <th>
+                <form class="form-inline">
+                  <input name="name" class="form-control mr-sm-2 th-search" type="search" placeholder="Search"
+                    aria-label="Search">
+                  <select name="city" class="th-order">
+                    <option value="0" selected=""></option>
+                    <option value="1">up</option>
+                    <option value="-1">down</option>
+                  </select>
+                </form>
+              </th>
+
+              <th>
+                <form class="form-inline">
+                  <input name="name" class="form-control mr-sm-2 th-search" type="search" placeholder="Search"
+                    aria-label="Search">
+                  <select name="state" class="th-order">
+                    <option value="0" selected=""></option>
+                    <option value="1">up</option>
+                    <option value="-1">down</option>
+                  </select>
+                </form>
+              </th>
+              <th>
+                <form class="form-inline">
+                  <input name="name" class="form-control mr-sm-2 th-search" type="search" placeholder="Search"
+                    aria-label="Search">
+                  <select name="country" class="th-order">
+                    <option value="0" selected=""></option>
+                    <option value="1">up</option>
+                    <option value="-1">down</option>
+                  </select>
+                </form>
+              </th>
+              <th>
+                <form class="form-inline">
+                  <input name="name" class="form-control mr-sm-2 th-search" type="search" placeholder="Search"
+                    aria-label="Search">
+                  <select name="pc" class="th-order">
+                    <option value="0" selected=""></option>
+                    <option value="1">up</option>
+                    <option value="-1">down</option>
+                  </select>
+                </form>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
+      </div>
+
+    </section>
+    <!-- ======= END Buscar ESTABLECIMIENTOS ======= -->
 
     <!-- ======= Buscar empleados ======= -->
     <section class="contact" style="padding: 1px 0;">
@@ -317,19 +414,19 @@
                 <div class="row th-search" type="check" name="role">
                   <div class="form-check">
                     <!-- Obtener los check -->
-                    <input class="form-check-input" type="checkbox" value="2">
+                    <input class="form-check-input form-search" type="checkbox" value="2">
                     <label class="form-check-label">
                       Admin
                     </label>
                   </div>
                   <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="3">
+                    <input class="form-check-input form-search" type="checkbox" value="3">
                     <label class="form-check-label">
                       Gerente
                     </label>
                   </div>
                   <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="4">
+                    <input class="form-check-input form-search" type="checkbox" value="4">
                     <label class="form-check-label">
                       Mesero
                     </label>
@@ -363,9 +460,99 @@
           </tbody>
         </table>
       </div>
+
     </section>
     <!-- ======= END Buscar empleados ======= -->
 
+    <!-- ======= Buscar PEDIDOS ======= -->
+    <section class="contact" style="padding: 1px 0;">
+      <div class="section-title">
+        <h2><span>Buscador </span> de Pedidos</h2>
+      </div>
+
+      <div class="container mt-5 table-responsive">
+        <table class="table caption-top" id="t-s-order">
+          <thead class="table-dark">
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Precio Total</th>
+              <th scope="col">Estado</th>
+              <th scope="col">Fecha</th>
+            </tr>
+            <tr class="tr-filter">
+              <th scope="row">
+                <button type="button" class="btn btn-outline-success my-2 my-sm-0"
+                  onclick="search_order()">Buscar</button>
+              </th>
+              <th>
+                <div class="row form-group th-search">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="inputGroup-sizing-sm">Minimo $</span>
+                    <input name="price" class="form-control th-search mr-sm-2 form-search" type="number" min="0"
+                      value="0">
+                  </div>
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="inputGroup-sizing-sm">Maximo $</span>
+                    <input name="price" class="form-control mr-sm-2 th-search form-search" type="number" min="0"
+                      value="0">
+                  </div>
+                </div>
+                <form class="form-inline">
+                  <select name="total" class="th-order">
+                    <option value="0" selected=""></option>
+                    <option value="1">up</option>
+                    <option value="-1">down</option>
+                  </select>
+                </form>
+              </th>
+              <th>
+                <div class="row th-search" type="check" name="role">
+                  <div class="form-check">
+                    <!-- Obtener los check -->
+                    <input class="form-check-input form-search" type="checkbox" value="1">
+                    <label class="form-check-label">
+                      Sin pagar
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input form-search" type="checkbox" value="2">
+                    <label class="form-check-label">
+                      Pendiente
+                    </label>
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input form-search" type="checkbox" value="3">
+                    <label class="form-check-label">
+                      Completado
+                    </label>
+                  </div>
+                </div>
+                <form class="form-inline">
+                  <select name="status" class="th-order">
+                    <option value="0" selected=""></option>
+                    <option value="1">up</option>
+                    <option value="-1">down</option>
+                  </select>
+                </form>
+              </th>
+              <th>
+                <form class="form-inline">
+                  <select name="created_at" class="th-order">
+                    <option value="0" selected=""></option>
+                    <option value="1">up</option>
+                    <option value="-1">down</option>
+                  </select>
+                </form>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+          </tbody>
+        </table>
+      </div>
+
+    </section>
+    <!-- ======= END Buscar PEDIDOS ======= -->
   </main><!-- End #main -->
 
   <!-- ======= Footer ======= -->
