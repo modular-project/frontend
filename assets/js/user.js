@@ -9,6 +9,63 @@ let user;
 
 let is_img_updated = false;
 
+const h = {
+  jobs: new Map([
+    [
+      1,
+      {
+        id: 1,
+        c_at: "2022-07-06T22:17:09.818892-05:00",
+        u_at: "2022-07-06T22:17:09.818892-05:00",
+        user_id: 4,
+        role_id: 1,
+        est_id: 3,
+        is_active: true,
+        salary: 200
+      }
+    ],
+    [
+      2,
+      {
+        id: 2,
+        c_at: "2022-07-06T22:17:09.818892-05:00",
+        u_at: "2022-07-06T22:17:09.818892-05:00",
+        user_id: 2,
+        role_id: 1,
+        est_id: 2,
+        is_active: true,
+        salary: 400
+      }
+    ],
+    [
+      3,
+      {
+        id: 3,
+        c_at: "2022-07-06T22:17:09.818892-05:00",
+        u_at: "2022-07-06T22:17:09.818892-05:00",
+        user_id: 3,
+        role_id: 1,
+        est_id: 4,
+        is_active: true,
+        salary: 300
+      }
+    ],
+    [
+      4,
+      {
+        id: 4,
+        c_at: "2022-07-06T22:17:09.818892-05:00",
+        u_at: "2022-07-06T22:17:09.818892-05:00",
+        user_id: 1,
+        role_id: 1,
+        est_id: 1,
+        is_active: true,
+        salary: 150
+      }
+    ]
+  ])
+};
+
 window.update_user = () => {
   new_function(async () => {
     // Obtener Datos
@@ -103,6 +160,36 @@ const load_user_data = async () => {
   }
 };
 
+window.historial = () => {
+  const hist = document.querySelector('#hist');
+  const template = document.querySelector("#trabajos").content;
+  const fragment = document.createDocumentFragment();
+
+  for (const [num, ob] of h.jobs) {
+    // template.querySelector("h5 #aidi").textContent = ob.id;
+    // template.querySelector("h5 #crat").textContent = ob.c_at;
+    // template.querySelector("h5 #upat").textContent = ob.u_at;
+    // template.querySelector("h5 #userid").textContent = ob.user_id;
+    // template.querySelector("h5 #roleid").textContent = ob.role_id;
+    // template.querySelector("h5 #estid").textContent = ob.est_id;
+    // template.querySelector("h5 #isact").textContent = ob.is_active;
+    // template.querySelector("h5 #sal").textContent = ob.salary;
+
+    template.getElementById("crat").textContent = `Creado el: ${ob.c_at}`; 
+    template.getElementById("upat").textContent = `Actualizado el: ${ob.u_at}`; 
+    template.getElementById("roleid").textContent = `Rol: ${ob.role_id}`; 
+    template.getElementById("estid").textContent = `ID establecimiento: ${ob.est_id}`; 
+    template.getElementById("isact").textContent = `Está activo: ${ob.is_active}`; 
+    template.getElementById("sal").textContent = `Salario: ${ob.salary}`; 
+
+    const clone = template.cloneNode(true);
+    fragment.appendChild(clone);
+  }
+
+  hist.appendChild(fragment);
+}
+
 window.onload = function () {
   load_user_data();
+  historial();
 };
