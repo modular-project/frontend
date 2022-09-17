@@ -18,6 +18,41 @@ import { new_function } from "./module/utils.js";
  */
 let empl;
 
+const k = {
+  kitchens: new Map([
+    [
+      1,
+      {
+        user: "cuenta1"
+      }
+    ],
+    [
+      2,
+      {
+        user: "cuenta2"
+      }
+    ],
+    [
+      3,
+      {
+        user: "cuenta3"
+      }
+    ],
+    [
+      4,
+      {
+        user: "cuenta4"
+      }
+    ],
+    [
+      5,
+      {
+        user: "cuenta5"
+      }
+    ]
+  ])
+};
+
 window.search_order = () => {
   new_function(async () => {
     const tname = "t-s-order";
@@ -164,6 +199,31 @@ window.createCookAccount = () => {
   }
 };
 
+window.kitchenAccounts = () => {
+  const kitchen = document.querySelector('#kitchenAc');
+  const template = document.querySelector("#kitchenUsers").content;
+  const fragment = document.createDocumentFragment();
+
+  for (const [num, ob] of k.kitchens) {
+    template.getElementById("userk").textContent = `Usuario: ${ob.user}`; 
+    template.querySelector(".mostrar-datos button").id = num;
+    template.querySelector(".mostrar-datos button").setAttribute(
+      "onclick", 
+      `console.log(${num});return false;` 
+    );
+
+    const clone = template.cloneNode(true);
+    fragment.appendChild(clone);
+  }
+
+  kitchen.appendChild(fragment);
+};
+
+window.modalFunction = () => {
+  console.log(`El modal funciona correctamente :)`);
+};
+
 window.onload = () => {
   load_manager();
+  kitchenAccounts();
 };
