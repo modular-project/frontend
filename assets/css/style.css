@@ -1675,3 +1675,23 @@ button.login {
   transition: 0.4s;
   border-radius: 50px;
 }
+
+/*--------------------------------------------------------------
+# Random
+--------------------------------------------------------------*/
+.mostrar-datos {
+  width: 100%;
+  box-shadow: 0 0 24px 0 rgba(0, 0, 0, 0.12);
+  padding: 30px 30px 20px;
+  background: #fff;
+}
+
+button.plantilla-btn {
+  background: #ffb03b;
+  margin: 10px auto 20px;
+  border: 0;
+  padding: 10px 24px;
+  color: #fff;
+  transition: 0.4s;
+  border-radius: 50px;
+}
