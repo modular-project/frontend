@@ -30,6 +30,40 @@ const id_to_role = (id) => {
 };
 const API_URL_USER = `${API_URL}/api/v1/user/`;
 
+export class Address {
+  constructor(data) {
+    this.data = data;
+  }
+  get id() {
+    return this.data.id;
+  }
+  get street() {
+    return this.data.line1;
+  }
+  get suburb() {
+    return this.data.line2;
+  }
+  get city() {
+    return this.data.city;
+  }
+  get pc() {
+    return this.data.pc;
+  }
+  get state() {
+    return this.data.state;
+  }
+  get country() {
+    return this.data.country;
+  }
+  get is_deleted() {
+    return this.data.is_deleted;
+  }
+
+  get stringer() {
+    return `${this.street}, ${this.suburb}, ${this.city}, ${this.state}, ${this.country}, ${this.pc}`;
+  }
+}
+
 /**
  * @typedef {Object} User
  */
@@ -127,6 +161,18 @@ export class User {
     });
   }
 
+  static async signup(email, pwd) {
+    await fetch(`${API_URL_USER}signup/`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json;charset=utf-8" },
+      body: JSON.stringify({ user: email, password: pwd }),
+    }).then((r) => {
+      if (!r.ok) {
+        throw new_response_error(r);
+      }
+    });
+  }
+
   async update() {
     let t = this.token;
     if (!t) {
@@ -148,6 +194,61 @@ export class User {
 
   get token() {
     return get_token();
+  }
+
+  /**
+   * @returns {Promise<string>}
+   */
+  async add_delivery_address(data) {
+    let t = this.token;
+    if (!t) {
+      throw ERROR_UNAUTHORIZED;
+    }
+    return await fetch(`${API_URL}/api/v1/address/delivery/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json;charset=utf-8",
+        Authorization: t,
+      },
+      body: JSON.stringify(data),
+    }).then(async (r) => {
+      if (!r.ok) {
+        throw new_response_error(r);
+      } else {
+        return await r.json().then((d) => {
+          return d.id;
+        });
+      }
+    });
+  }
+
+  /**
+   *
+   * @returns {Promise<Map<BigInt, Address>>}
+   */
+  async get_my_addresses() {
+    let t = this.token;
+    if (!t) {
+      throw ERROR_UNAUTHORIZED;
+    }
+    return await fetch(`${API_URL}/api/v1/address/delivery/`, {
+      headers: {
+        "Content-Type": "application/json;charset=utf-8",
+        Authorization: t,
+      },
+    }).then(async (r) => {
+      if (!r.ok) {
+        throw new_response_error(r);
+      } else {
+        return await r.json().then((ds) => {
+          const adds = new Map();
+          for (let d of ds) {
+            adds.set(d.id, new Address(d));
+          }
+          return adds;
+        });
+      }
+    });
   }
 }
 
@@ -186,11 +287,11 @@ export async function login(user, pwd) {
     method: "POST",
     headers: { "Content-Type": "application/json;charset=utf-8" },
     body: JSON.stringify({ user: user, password: pwd }),
-  }).then((r) => {
+  }).then(async (r) => {
     if (!r.ok) {
       throw new_response_error(r);
     }
-    r.json().then((data) => save_token(data["message"]));
+    await r.json().then((data) => save_token(data["message"]));
   });
 }
 

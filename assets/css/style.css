@@ -8,6 +8,10 @@
 /*--------------------------------------------------------------
 # General
 --------------------------------------------------------------*/
+.rotate-arrow { 
+  writing-mode:vertical-rl;
+}
+
 body {
   font-family: "Poppins", sans-serif;
   color: #444444;
