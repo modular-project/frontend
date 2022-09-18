@@ -6,17 +6,28 @@ import { Product } from "./module/product.js";
  */
 let ps;
 
-export const load_menu = async (type) => {
-  await Product.get_all().then((d) => (ps = d));
+/**
+ *
+ * @type {Map<BigInt, Product>}
+ */
+let ps_deletes = new Map();
 
+export const load_menu = async (func) => {
+  await Product.get_all().then((d) => (ps = d));
   const menu_products = document.querySelector("#menu-products");
   const template = document.querySelector("#template-menu").content;
   const fragment = document.createDocumentFragment();
-
   for (const [num, p] of ps) {
-    console.log(p);
     template.querySelector(".menu-content a").textContent = p.name;
-    template.querySelector(".menu-content a").href = p.url;
+    if (func) {
+      template.querySelector(".menu-content a").href = "";
+      template
+        .querySelector(".menu-content a")
+        .setAttribute("onclick", `${func}('${num}');return false;`);
+    } else {
+      template.querySelector(".menu-content a").href = p.url;
+    }
+
     template.querySelector("span").textContent = `$${p.price}`;
     template.querySelector(".menu-ingredients").textContent = p.description;
     template.querySelector(
@@ -33,15 +44,16 @@ export const load_menu = async (type) => {
     layoutMode: "fitRows",
   });
 
-  $("#search-product-name-form button").on("click", function () {
-    const form = document.getElementById("search-product-name-form");
-    const ids = search_product(form["search"].value);
-    console.log("encontradoL: ", ids);
-    menuIsotope.isotope({
-      filter: ids,
+  if (!func) {
+    $("#search-product-name-form button").on("click", function () {
+      const form = document.getElementById("search-product-name-form");
+      const ids = search_product(form["search"].value);
+      menuIsotope.isotope({
+        filter: ids,
+      });
     });
-  });
-  $(".venobox").venobox();
+    $(".venobox").venobox();
+  }
 };
 
 /**
@@ -54,7 +66,7 @@ export const search_product = (name) => {
    */
   let ids = "";
   ps.forEach((v, k) => {
-    if (v.name.toLowerCase().includes(name)) {
+    if (v.name.toLowerCase().includes(name.toLowerCase())) {
       if (ids) {
         ids += `, .name-${k}`;
       } else {
@@ -62,50 +74,60 @@ export const search_product = (name) => {
       }
     }
   });
+  if (!ids) {
+    return ".none";
+  }
   return ids;
 };
-
-// window.search_product_name = () => {
-//   console.log("buscando");
-//   const form = document.getElementById("search-product-name-form");
-//   const ids = search_product(form["search"].value);
-//   console.log("encontradoL: ", ids);
-//   $("#menu-flters li").removeClass("filter-active");
-//   //$(this).addClass("filter-active");
-
-//   menuIsotope.isotope({
-//     filter: ids,
-//   });
-// };
 
 window.classify_img = async () => {
   await upload_to_classify(document.getElementById("form-img").files[0]);
 };
 
-const load = async () => {
-  /**
-   *
-   * @type {Map<BigInt, Product>}
-   */
-  let ps;
-  await Product.get_all().then((d) => (ps = d));
+export const product_by_id = (id) => {
+  return ps.get(id);
+};
 
-  const menu_products = document.querySelector("#menu-products");
-  const template = document.querySelector("#template-menu").content;
-  const fragment = document.createDocumentFragment();
+export const add_product = (p) => {
+  ps.set(p.id, p);
+};
 
-  for (const [num, p] of ps) {
-    console.log(p);
-    template.querySelector(".menu-content a").textContent = p.name;
-    template.querySelector("span").textContent = p.price;
-    template.querySelector(".menu-ingredients").textContent = p.description;
-    const clone = template.cloneNode(true);
-    fragment.appendChild(clone);
-  }
-
-  menu_products.appendChild(fragment);
-  var menuIsotope = $(".menu-container").isotope({
-    itemSelector: ".menu-item",
-    layoutMode: "fitRows",
+export const get_deletes = async (ids) => {
+  await Product.get_in_batch(ids).then((d) => {
+    for (const [k, val] of d) {
+      ps_deletes.set(k, val);
+    }
   });
 };
+
+export const get_product_delete = (id) => {
+  return ps_deletes.get(parseInt(id));
+};
+
+// const load = async () => {
+//   /**
+//    *
+//    * @type {Map<BigInt, Product>}
+//    */
+//   let ps;
+//   await Product.get_all().then((d) => (ps = d));
+
+//   const menu_products = document.querySelector("#menu-products");
+//   const template = document.querySelector("#template-menu").content;
+//   const fragment = document.createDocumentFragment();
+
+//   for (const [num, p] of ps) {
+//     console.log(p);
+//     template.querySelector(".menu-content a").textContent = p.name;
+//     template.querySelector("span").textContent = p.price;
+//     template.querySelector(".menu-ingredients").textContent = p.description;
+//     const clone = template.cloneNode(true);
+//     fragment.appendChild(clone);
+//   }
+
+//   menu_products.appendChild(fragment);
+//   var menuIsotope = $(".menu-container").isotope({
+//     itemSelector: ".menu-item",
+//     layoutMode: "fitRows",
+//   });
+// };

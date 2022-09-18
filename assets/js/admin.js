@@ -4,7 +4,6 @@ import { upload_img } from "./module/image.js";
 import { Product, BASES } from "./module/product.js";
 import {
   data_search_from_table,
-  generate_body_from_data,
   data_to_table,
   clear_table,
   generate_body_from_array,
@@ -279,45 +278,5 @@ window.hireAdmin = () => {
 };
 
 window.onload = function () {
-  //search_employees();
   load_admin();
-  // const h = {
-  //   name: "Nombre",
-  //   price: "Precio",
-  //   address: "Direccion",
-  //   greater: "saludo",
-  //   age: "edad",
-  //   date: "fecha",
-  // };
-  // const m = new Map([
-  //   [
-  //     1,
-  //     {
-  //       name: "Nicolas",
-  //       price: 123.34,
-  //       no1: "No mostrar this 1",
-  //       address: "Hotel",
-  //       greater: "Golang",
-  //       no2: "No mostrar this 1",
-  //       age: 14,
-  //       date: "1312321",
-  //     },
-  //   ],
-  //   [
-  //     2,
-  //     {
-  //       no1: "No mostrar this 1",
-  //       name: "Nicolas 2",
-  //       price: 123.342,
-  //       address: "Hotel 2",
-  //       no2: "No mostrar this 1",
-  //       greater: "Golang 2",
-  //       age: 142,
-  //       date: "1312321 2",
-  //     },
-  //   ],
-  // ]);
-  // document.getElementById("test-table").innerHTML += generate_header(h);
-  // const t = document.querySelector("#test-table");
-  // t.querySelector("tbody").innerHTML = generate_body_from_data(m, h);
 };

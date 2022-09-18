@@ -2,6 +2,21 @@ import { API_URL, new_response_error } from "./utils.js";
 import { is_greater, ROLES } from "./employee.js";
 const API_URL_ESTB = `${API_URL}/api/v1/establishment/`;
 
+export class Table {
+  constructor(data) {
+    this.data = data;
+  }
+
+  get id() {
+    return this.data.id;
+  }
+  get establishment_id() {
+    return this.data.establishment_id;
+  }
+  get user_id() {
+    return this.data.user_id;
+  }
+}
 export class Search {
   /**
    *
@@ -39,11 +54,13 @@ export class Search {
   }
 }
 export class Establishment {
-  constructor(data) {
+  constructor(data, q, id) {
     this.data = data;
+    this.quantity = parseInt(q);
+    this.id = id;
   }
 
-  get id() {
+  get address_Id() {
     return this.data.id;
   }
   get street() {
@@ -63,6 +80,13 @@ export class Establishment {
   }
   get country() {
     return this.data.country;
+  }
+  get cuantity() {
+    return this.quantity;
+  }
+
+  get stringer() {
+    return `${this.street}, ${this.suburb}, ${this.city}, ${this.state}, ${this.country}, ${this.pc}`;
   }
 
   /**
@@ -127,5 +151,117 @@ export class Establishment {
       });
     });
     return estbs;
+  }
+
+  // Returns id establishment and quantity tables
+  static async get_by_address(aid, t) {
+    if (!t) {
+      throw ERROR_UNAUTHORIZED;
+    }
+    return await fetch(`${API_URL_ESTB}add/${aid}`, {
+      headers: {
+        Authorization: t,
+      },
+    }).then(async (r) => {
+      if (!r.ok) {
+        throw new_response_error(r);
+      }
+      return await r.json().then((data) => {
+        console.log(data);
+        return data;
+      });
+    });
+  }
+
+  // Returns address and quantity
+  static async get_by_id(eid, t) {
+    if (!t) {
+      throw ERROR_UNAUTHORIZED;
+    }
+    return await fetch(`${API_URL_ESTB}${eid}`, {
+      headers: {
+        Authorization: t,
+      },
+    }).then(async (r) => {
+      if (!r.ok) {
+        throw new_response_error(r);
+      }
+      return await r.json().then((data) => {
+        console.log(data);
+        return new Establishment(data.address, data.quantity, eid);
+      });
+    });
+  }
+
+  static async get_tables(t, e_id) {
+    if (!t) {
+      throw ERROR_UNAUTHORIZED;
+    }
+    return await fetch(`${API_URL}/api/v1/table/${e_id}`, {
+      headers: {
+        Authorization: t,
+      },
+    }).then(async (r) => {
+      if (!r.ok) {
+        throw new_response_error(r);
+      }
+      return await r.json().then((data) => {
+        if (data) {
+          /**
+           * @type {Map<BigInt, Table>}
+           */
+          const tables = new Map();
+          for (const x of data) {
+            tables.set(x.id, x);
+          }
+          return tables;
+        }
+        throw Error("No se encontraron las mesas");
+      });
+    });
+  }
+
+  async update_table_number(q, r_id, t) {
+    if (!t) {
+      throw ERROR_UNAUTHORIZED;
+    }
+    let qo = parseInt(q);
+    if (!is_greater(r_id, ROLES.Waiter)) {
+      throw Error("No tienes el rol necesario");
+    }
+    let url = `${API_URL}/api/v1/table/`;
+    if (is_greater(r_id, ROLES.Waiter)) {
+      url += this.id;
+    }
+    let method;
+    if (q > this.quantity) {
+      q = q - this.quantity;
+      method = "POST";
+    } else if (q < this.quantity) {
+      q = this.quantity - q;
+      method = "DELETE";
+    } else {
+      throw Error("Debes especificar una nueva cantidad de mesas");
+    }
+    url += `?q=${q}`;
+    return await fetch(url, {
+      headers: {
+        Authorization: t,
+      },
+      method: method,
+    }).then(async (r) => {
+      if (!r.ok) {
+        throw new_response_error(r);
+      }
+      return await r.json().then((data) => {
+        if (method == "POST") {
+          this.quantity = qo;
+          return `Se agregaron ${q} mesas`;
+        } else {
+          this.quantity = this.quantity - data.deleted;
+        }
+        return `Se eliminaron ${data.deleted} mesas`;
+      });
+    });
   }
 }

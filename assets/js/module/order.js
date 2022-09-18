@@ -3,12 +3,44 @@ import { API_URL, new_response_error } from "./utils.js";
 
 const API_URL_ORDER = `${API_URL}/api/v1/order/`;
 
-const STATUS = {
+const PAYMENTS = {
+  CASH: 1,
+  PAYPAL: 2,
+};
+
+export const STATUS = {
   WITHOUT_PAY: 1,
   PENDING: 2,
   COMPLETED: 3,
 };
 
+export class OrderProduct {
+  constructor(data) {
+    this.data = data;
+  }
+
+  get id() {
+    return this.data.id;
+  }
+  get product_id() {
+    return this.data.product_id;
+  }
+  get quantity() {
+    return this.data.quantity;
+  }
+  get is_ready() {
+    return this.data.is_ready;
+  }
+  get is_delivered() {
+    return this.data.is_delivered;
+  }
+  set is_delivered(is) {
+    this.data.is_delivered = is;
+  }
+  set is_ready(is) {
+    this.data.is_ready = is;
+  }
+}
 export class Search {
   /**
    *
@@ -58,10 +90,20 @@ const id_to_status = (id) => {
 export class Order {
   constructor(data) {
     this.data = data;
+    const products = new Map();
+    if (data.products) {
+      data.products.forEach(function (p, i) {
+        products.set(p.id, new OrderProduct(p));
+      });
+    }
+    /**
+     * @type {Map<BigInt, OrderProduct}
+     */
+    this.products = products;
   }
 
   get id() {
-    return this.data.id;
+    return this.data.ID;
   }
   get establishment_id() {
     return this.data.establishment_id;
@@ -74,9 +116,6 @@ export class Order {
   }
   get total() {
     return this.data.total;
-  }
-  get products() {
-    return this.data.products;
   }
   get employee_id() {
     return this.data.employee_id;
@@ -100,6 +139,10 @@ export class Order {
       return "A domicilio";
     }
     return "En establecimiento";
+  }
+
+  set total(t) {
+    this.data.total = t;
   }
   /**
    *
@@ -159,5 +202,251 @@ export class Order {
     }
     let url = `${API_URL_ORDER}`;
     return await Order._search(s, t, url);
+  }
+
+  /**
+   *
+   * @param {*} t
+   * @param {*} p
+   * @returns {Promise<Map<BigInt, Order>}
+   */
+  static async waiter(t, p = "") {
+    if (!t) {
+      throw ERROR_UNAUTHORIZED;
+    }
+    const orders = new Map();
+    if (p) {
+      p = "p/";
+    }
+    await fetch(`${API_URL_ORDER}waiter/${p}`, {
+      headers: {
+        Authorization: t,
+      },
+    }).then(async (r) => {
+      if (!r.ok) {
+        throw new_response_error(r);
+      }
+      await r.json().then((data) => {
+        for (let d of data) {
+          orders.set(d["ID"], new Order(d));
+        }
+      });
+    });
+    return orders;
+  }
+
+  static async deliver_products(t, ids) {
+    if (!t) {
+      throw ERROR_UNAUTHORIZED;
+    }
+    await fetch(`${API_URL_ORDER}product/deliver/`, {
+      body: JSON.stringify(ids),
+      headers: {
+        Authorization: t,
+        "Content-Type": "application/json;charset=utf-8",
+      },
+      method: "PATCH",
+    }).then(async (r) => {
+      if (!r.ok) {
+        throw new_response_error(r);
+      }
+    });
+  }
+
+  /**
+   *
+   * @param {*} t
+   * @param {Map<BigInt, BigInt>} products
+   * @param {*} table
+   */
+  static async create_local_order(t, products, table) {
+    let ps = [];
+    if (!t) {
+      throw ERROR_UNAUTHORIZED;
+    }
+    for (const [k, val] of products) {
+      ps.push({ product_id: parseInt(k), quantity: parseInt(val) });
+    }
+    let body = { order_products: ps };
+    return await fetch(`${API_URL_ORDER}local/${table}`, {
+      body: JSON.stringify(body),
+      method: "POST",
+      headers: {
+        Authorization: t,
+        "Content-Type": "application/json;charset=utf-8",
+      },
+    }).then(async (r) => {
+      if (!r.ok) {
+        throw new_response_error(r);
+      }
+      return await r.json((data) => {
+        return data;
+      });
+    });
+  }
+
+  /**
+   *
+   * @param {*} t
+   * @param {Map<BigInt, BigInt>} products
+   * @param {*} table
+   */
+  static async create_delivery_order(t, products) {
+    let ps = [];
+    if (!t) {
+      throw ERROR_UNAUTHORIZED;
+    }
+    for (const [k, val] of products) {
+      ps.push({ product_id: parseInt(k), quantity: parseInt(val) });
+    }
+    let body = { order_products: ps };
+    return await fetch(`${API_URL_ORDER}delivery/`, {
+      body: JSON.stringify(body),
+      method: "POST",
+      headers: {
+        Authorization: t,
+        "Content-Type": "application/json;charset=utf-8",
+      },
+    }).then(async (r) => {
+      if (!r.ok) {
+        throw new_response_error(r);
+      }
+      return await r.json((data) => {
+        return data;
+      });
+    });
+  }
+
+  // ids[]
+  static async add_products_to_order(t, products, o_id) {
+    let ps = [];
+    if (!t) {
+      throw ERROR_UNAUTHORIZED;
+    }
+    for (const [k, val] of products) {
+      ps.push({ product_id: parseInt(k), quantity: parseInt(val) });
+    }
+    return await fetch(`${API_URL_ORDER}local/add/${o_id}`, {
+      body: JSON.stringify(ps),
+      method: "POST",
+      headers: {
+        Authorization: t,
+        "Content-Type": "application/json;charset=utf-8",
+      },
+    }).then(async (r) => {
+      if (!r.ok) {
+        throw new_response_error(r);
+      }
+      return await r.json((data) => {
+        console.log(data);
+        return data;
+      });
+    });
+  }
+
+  push_products(ps) {
+    if (!ps) {
+      return;
+    }
+    for (let p of ps) {
+      this.products.set(p.id, new OrderProduct(p));
+    }
+  }
+
+  static async pay_local_order(t, o_id) {
+    if (!t) {
+      throw ERROR_UNAUTHORIZED;
+    }
+    o_id = parseInt(o_id);
+    return await fetch(`${API_URL_ORDER}local/pay/`, {
+      body: JSON.stringify({
+        orde_id: o_id,
+        payment: PAYMENTS.CASH,
+      }),
+      method: "POST",
+      headers: {
+        Authorization: t,
+        "Content-Type": "application/json;charset=utf-8",
+      },
+    }).then(async (r) => {
+      if (!r.ok) {
+        throw new_response_error(r);
+      }
+      return;
+    });
+  }
+  //39J261311W877231J
+  static async capture_payment(t, o_id) {
+    if (!t) {
+      throw ERROR_UNAUTHORIZED;
+    }
+    return await fetch(`${API_URL_ORDER}delivery/pay/${o_id}`, {
+      method: "POST",
+      headers: {
+        Authorization: t,
+      },
+    }).then(async (r) => {
+      if (!r.ok) {
+        throw new_response_error(r);
+      }
+      return r.text().then((d) => {
+        return d;
+      });
+    });
+  }
+
+  static async pay_delivery_order(t, o_id, add) {
+    if (!t) {
+      throw ERROR_UNAUTHORIZED;
+    }
+    o_id = parseInt(o_id);
+    return await fetch(`${API_URL_ORDER}delivery/pay/`, {
+      body: JSON.stringify({
+        orde_id: o_id,
+        payment: PAYMENTS.PAYPAL,
+        address: add,
+      }),
+      method: "POST",
+      headers: {
+        Authorization: t,
+        "Content-Type": "application/json;charset=utf-8",
+      },
+    }).then(async (r) => {
+      if (!r.ok) {
+        throw new_response_error(r);
+      }
+      return await r.json((data) => {
+        console.log("Data: ", data);
+        return data.id;
+      });
+    });
+  }
+  static async my_orders(t, s) {
+    if (!t) {
+      throw ERROR_UNAUTHORIZED;
+    }
+    let body;
+    if (s) {
+      body = JSON.stringify(s);
+    }
+    const orders = new Map();
+    await fetch(`${API_URL_ORDER}user/`, {
+      headers: {
+        Authorization: t,
+        "Content-Type": "application/json;charset=utf-8",
+      },
+      body: body,
+      method: "POST",
+    }).then(async (r) => {
+      if (!r.ok) {
+        throw new_response_error(r);
+      }
+      await r.json().then((data) => {
+        for (let d of data) {
+          orders.set(d["ID"], new Order(d));
+        }
+      });
+    });
+    return orders;
   }
 }
