@@ -7,6 +7,7 @@ import {
   product_by_id,
 } from "./product.js";
 import { Order, OrderProduct, STATUS } from "./module/order.js";
+import { load_nav_bar } from "./module/main.js";
 
 /**
  * @type {Map<BigInt, BigInt>}
@@ -21,11 +22,11 @@ let user;
 /**
  * @type {Map<BigInt, user_module.Address}
  */
-let my_address;
+let my_address = new Map();
 /**
  * @type {Map<BigInt, Order}
  */
-let my_orders;
+let my_orders = new Map();
 
 let deletes = [];
 
@@ -55,10 +56,89 @@ function switch_log_button(is_logged) {
   let btn = document.getElementById("login-button");
   if (!is_logged) {
     btn.innerHTML = `<a href="login.html">Login</a>`;
+    document.getElementById("my-orders").remove();
+    document.getElementById("my-orders-btn").remove();
+    document.getElementById("make-order-btn").remove();
+    document.getElementById("my-cart-li").remove();
+    document.getElementById("my-addresses").remove();
+    document.getElementById("my-address-li").remove();
+    document.getElementById("my-cart").remove();
   } else {
     btn.innerHTML = `<a href="" onclick="signout(); return false">Cerrar Sesion</a>`;
+    btn.classList = "";
+    if (!user.is_verified) {
+      document.getElementById("make-order-btn").remove();
+    } else {
+      document.getElementById("verify-account-btn").remove();
+    }
+    if (user.role_id) {
+      const rli = document.getElementById("my-role-li");
+      rli.hidden = false;
+      switch (user.role_id) {
+        case user_module.ROLES.Owner:
+          rli.innerHTML = `<a href="admin.html">Dueño</a>`;
+          break;
+        case user_module.ROLES.Admin:
+          rli.innerHTML = `<a href="admin.html">Admin</a>`;
+          break;
+        case user_module.ROLES.Manager:
+          rli.innerHTML = `<a href="manager.html">Gerente</a>`;
+          break;
+        case user_module.ROLES.Waiter:
+          rli.innerHTML = `<a href="waiter.html">Mesero</a>`;
+          break;
+      }
+    }
   }
 }
+
+window.add_address = () => {
+  new_function(async () => {
+    let calle = document.getElementById("calleCE").value;
+    let numero = document.getElementById("numCE").value;
+    let colonia = document.getElementById("colCE").value;
+    let ciudad = document.getElementById("ciudadCE").value;
+    let codigoPostal = document.getElementById("cpCE").value;
+    let estado = document.getElementById("estadoCE").value;
+    let pais = document.getElementById("paisCE").value;
+
+    if (!calle) {
+      throw Error("Ingresa una calle para el establecimiento");
+    }
+    if (!numero) {
+      throw Error("Ingresa un numero para el establecimiento");
+    }
+    if (!colonia) {
+      throw Error("Ingresa una colonia para el establecimiento");
+    }
+    if (!ciudad) {
+      throw Error("Ingresa una ciudad para el establecimiento");
+    }
+    if (!codigoPostal) {
+      throw Error("Ingresa un código postal para el establecimiento");
+    }
+    if (!estado) {
+      throw Error("Ingresa un estado para el establecimiento");
+    }
+    if (!pais) {
+      throw Error("Ingresa un pais para el establecimiento");
+    }
+    const e = new user_module.Address({
+      line1: `${calle} ${numero}`,
+      line2: colonia,
+      city: ciudad,
+      pc: codigoPostal,
+      state: estado,
+      country: pais,
+    });
+    await e.save(user.token).then((r) => {
+      console.log(r.id);
+      e.id = r.id;
+      my_address.set(r, e);
+      load_address();
+    });
+  });
+};
 
 function show_user_data_button(is_logged) {
   let btn = document.getElementById("user-data-button");
@@ -97,9 +177,15 @@ async function load_home() {
   try {
     switch_log_button(is_logged); // Hacer funciones que tomen como parametro al usuario o el estado is_logged
     show_user_data_button(is_logged);
+    load_nav_bar();
     if (is_logged) {
       await load_menu("add_item");
-      load_my_orders();
+      await user.get_my_addresses().then((r) => {
+        my_address = r;
+      });
+      load_my_orders().catch((e) => {
+        console.error(e);
+      });
     } else {
       load_menu();
     }
@@ -181,6 +267,7 @@ const add_order_to_card = (o) => {
 const load_address = () => {
   const ads = document.getElementsByClassName("select-address");
   for (let ad of ads) {
+    ad.innerHTML = `<option selected value="0">Selecciona una direccion</option>`;
     for (const [k, a] of my_address) {
       if (!a.is_deleted) {
         ad.appendChild(new Option(a.stringer, a.id));
@@ -287,13 +374,11 @@ const generate_order_card = (o) => {
 };
 
 const load_my_orders = async () => {
-  await Order.my_orders(user.token, { limit: -1, offset: 0 }).then((r) => {
+  await Order.my_orders(user.token, { limit: 0, offset: 0 }).then((r) => {
     my_orders = r;
   });
   await find_deletes();
-  await user.get_my_addresses().then((r) => {
-    my_address = r;
-  });
+
   const card = document.getElementById("card-row");
   for (const [k, o] of my_orders) {
     card.innerHTML += generate_order_card(o);

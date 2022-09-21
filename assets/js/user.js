@@ -1,5 +1,7 @@
+import { Employee, is_greater } from "./module/employee.js";
 import { upload_img } from "./module/image.js";
-import { User, validate_password } from "./module/user.js";
+import { load_nav_bar } from "./module/main.js";
+import { ROLES, User, validate_password } from "./module/user.js";
 import { new_function } from "./module/utils.js";
 
 /**
@@ -7,64 +9,14 @@ import { new_function } from "./module/utils.js";
  */
 let user;
 
+/**
+ * @type {Employee}
+ */
+let empl;
+
 let is_img_updated = false;
 
-const h = {
-  jobs: new Map([
-    [
-      1,
-      {
-        id: 1,
-        c_at: "2022-07-06T22:17:09.818892-05:00",
-        u_at: "2022-07-06T22:17:09.818892-05:00",
-        user_id: 4,
-        role_id: 1,
-        est_id: 3,
-        is_active: true,
-        salary: 200
-      }
-    ],
-    [
-      2,
-      {
-        id: 2,
-        c_at: "2022-07-06T22:17:09.818892-05:00",
-        u_at: "2022-07-06T22:17:09.818892-05:00",
-        user_id: 2,
-        role_id: 1,
-        est_id: 2,
-        is_active: true,
-        salary: 400
-      }
-    ],
-    [
-      3,
-      {
-        id: 3,
-        c_at: "2022-07-06T22:17:09.818892-05:00",
-        u_at: "2022-07-06T22:17:09.818892-05:00",
-        user_id: 3,
-        role_id: 1,
-        est_id: 4,
-        is_active: true,
-        salary: 300
-      }
-    ],
-    [
-      4,
-      {
-        id: 4,
-        c_at: "2022-07-06T22:17:09.818892-05:00",
-        u_at: "2022-07-06T22:17:09.818892-05:00",
-        user_id: 1,
-        role_id: 1,
-        est_id: 1,
-        is_active: true,
-        salary: 150
-      }
-    ]
-  ])
-};
+let jobs = new Map();
 
 window.update_user = () => {
   new_function(async () => {
@@ -73,12 +25,12 @@ window.update_user = () => {
     let bdate = document.getElementById("bdate").value;
     if (bdate) {
       const date = new Date(bdate);
+      date.setHours(36);
       bdate = date.toISOString();
     } else {
       bdate = null;
     }
     let url = user.url;
-    // Conectar con el modulo o Hacer peticion
     if (is_img_updated) {
       let n = user.email;
       n = `${n}.png`;
@@ -93,9 +45,11 @@ window.update_user = () => {
       user.url = url;
     }
     let u = new User(JSON.stringify({ name: name, url: url, bdate: bdate }));
-    // Aqui conectamos antes con el modulo y luego hacemos peticion
-    // Depente de la funcion a utilizar
-    await u.update();
+    if (!empl) {
+      await u.update();
+    } else {
+      await empl.update_by_user_id(user.id, u.data);
+    }
   }, "Información actualizada con exito");
 };
 
@@ -114,6 +68,7 @@ window.verify = () =>
   new_function(async () => {
     let code = document.getElementById("verify_code").value;
     await user.verify(code);
+    window.location.reload();
   }, "Usuario verificado satisfactoriamente");
 
 window.enable_ch_btn = function enable_ch_btn() {
@@ -137,8 +92,38 @@ window.change_prof_pic = () => {
 
 const load_user_data = async () => {
   try {
-    await User.get_data().then((d) => (user = d));
-    console.log(user);
+    const params = new Proxy(new URLSearchParams(window.location.search), {
+      get: (searchParams, prop) => searchParams.get(prop),
+    });
+    const uid = params.uid;
+    if (uid) {
+      await User.get_data().then((d) => (empl = new Employee(new User(d))));
+      if (empl.user.id != uid) {
+        document.getElementById("ch-pass-sec").remove();
+        document.getElementById("ch-pwd-li").remove();
+        await empl.get_user_data_by_id(uid).then((d) => {
+          user = d.user;
+          jobs = d.jobs;
+          console.log(user);
+        });
+        if (is_greater(empl.user.role_id, user.role_id)) {
+          document.getElementById("fire-sec").hidden = false;
+        } else {
+          document.getElementById("fire-li").remove();
+        }
+      } else {
+        user = empl.user;
+        document.getElementById("fire-li").remove();
+        await empl.get_my_jobs((r) => (jobs = r));
+      }
+    } else {
+      document.getElementById("fire-li").remove();
+      await User.get_data().then((d) => (user = new User(d)));
+      const e = new Employee(user);
+      await e.get_my_jobs().then((r) => {
+        jobs = r;
+      });
+    }
     if (user.name) {
       document.getElementById("name").value = user.name;
     }
@@ -154,42 +139,59 @@ const load_user_data = async () => {
     if (user.is_verified) {
       document.getElementById("gen_ver_code_form").hidden = true;
       document.getElementById("ver_user_form").hidden = true;
+      document.getElementById("generate-li").remove();
+      document.getElementById("verify-li").remove();
     }
   } catch (error) {
     console.log(error);
   }
 };
 
+window.fire = () => {
+  new_function(async () => {
+    await empl.fire(user.id);
+  }, "Usuario despedido con exito");
+};
+
 window.historial = () => {
-  const hist = document.querySelector('#hist');
+  const hist = document.querySelector("#hist");
   const template = document.querySelector("#trabajos").content;
   const fragment = document.createDocumentFragment();
 
-  for (const [num, ob] of h.jobs) {
-    // template.querySelector("h5 #aidi").textContent = ob.id;
-    // template.querySelector("h5 #crat").textContent = ob.c_at;
-    // template.querySelector("h5 #upat").textContent = ob.u_at;
-    // template.querySelector("h5 #userid").textContent = ob.user_id;
-    // template.querySelector("h5 #roleid").textContent = ob.role_id;
-    // template.querySelector("h5 #estid").textContent = ob.est_id;
-    // template.querySelector("h5 #isact").textContent = ob.is_active;
-    // template.querySelector("h5 #sal").textContent = ob.salary;
+  for (const [num, ob] of jobs) {
+    console.log(ob);
+    template.getElementById("crat").textContent = `Contratado el: ${new Date(
+      ob.created_at
+    ).toLocaleString()}`;
 
-    template.getElementById("crat").textContent = `Creado el: ${ob.c_at}`; 
-    template.getElementById("upat").textContent = `Actualizado el: ${ob.u_at}`; 
-    template.getElementById("roleid").textContent = `Rol: ${ob.role_id}`; 
-    template.getElementById("estid").textContent = `ID establecimiento: ${ob.est_id}`; 
-    template.getElementById("isact").textContent = `Está activo: ${ob.is_active}`; 
-    template.getElementById("sal").textContent = `Salario: ${ob.salary}`; 
+    template.getElementById("roleid").textContent = `Rol: ${ob.role}`;
+    if (ob.establishment_id) {
+      template.getElementById(
+        "estid"
+      ).textContent = `ID establecimiento: ${ob.establishment_id}`;
+    } else {
+      template.getElementById("estid").textContent = "";
+    }
+    let is = "Inactivo";
+    template.getElementById("upat").textContent = `Despedido el: ${new Date(
+      ob.updated_at
+    ).toLocaleString()}`;
+    if (ob.is_active) {
+      is = "Activo";
+      template.getElementById("upat").textContent = "";
+    }
+    template.getElementById("isact").textContent = `Estado: ${is}`;
+    template.getElementById("sal").textContent = `Salario: $${ob.salary}`;
 
     const clone = template.cloneNode(true);
     fragment.appendChild(clone);
   }
 
   hist.appendChild(fragment);
-}
+};
 
-window.onload = function () {
-  load_user_data();
+window.onload = async function () {
+  await load_user_data();
+  load_nav_bar();
   historial();
 };

@@ -8,13 +8,14 @@ import {
   clear_table,
   generate_body_from_array,
 } from "./search.js";
-import { Employee, Search } from "./module/employee.js";
+import { Employee, Search, ROLES } from "./module/employee.js";
 import { User, user as new_user, validate_email } from "./module/user.js";
 import { Search as Order_Search, Order } from "./module/order.js";
 import {
   Search as Estb_Search,
   Establishment,
 } from "./module/establishment.js";
+import { load_nav_bar } from "./module/main.js";
 
 /**
  * @type {Employee}
@@ -52,18 +53,18 @@ window.createProduct = () => {
     if (!descripcion) {
       throw Error("Ingresa una descripción para el producto");
     }
-    // await upload_img(
-    //   "product",
-    //   document.getElementById("create-img").files[0],
-    //   `${nombre}.png`
-    // ).then(
-    //   (r) => (url = `https://drive.google.com/uc?export=view&id=${r.message}`)
-    // );
+    await upload_img(
+      "product",
+      document.getElementById("create-img").files[0],
+      `${nombre}.png`
+    ).then(
+      (r) => (url = `https://drive.google.com/uc?export=view&id=${r.message}`)
+    );
     let p = new Product({
       name: nombre,
-      price: precio,
+      price: parseFloat(precio),
       description: descripcion,
-      base: base,
+      base: parseInt(base),
       url: url,
     });
     await p.save().then((id) => {
@@ -89,6 +90,11 @@ const load_admin = async () => {
   try {
     user = await new_user();
     empl = new Employee(user);
+    if (empl.user.role_id == ROLES.Admin) {
+      document.getElementById("hire-ad-sec").remove();
+      document.getElementById("hire-ad-li").remove();
+    }
+    load_nav_bar();
   } catch (error) {
     throw error;
   }
@@ -165,9 +171,14 @@ window.search_employees = async () => {
     const t = document.querySelector("#t-s-user");
     t.querySelector("tbody").innerHTML = generate_body_from_array(
       user_search,
-      headers
+      headers,
+      "select_employee"
     );
   }, "Busqueda completada con exito");
+};
+
+window.select_employee = (id) => {
+  window.open(`user.html?uid=${id}`);
 };
 
 window.search_order = () => {
@@ -209,7 +220,7 @@ window.search_establishments = () => {
     console.log(s);
     await Establishment.search(s, empl.user.role_id, empl.user.token)
       .then((r) => {
-        data_to_table(tname, r, headers);
+        data_to_table(tname, r, headers, "select_establishment");
       })
       .catch((err) => {
         clear_table(tname);
@@ -217,6 +228,10 @@ window.search_establishments = () => {
         throw Error("Sin resultados");
       });
   });
+};
+
+window.select_establishment = (id) => {
+  window.location.href = `manager.html?aid=${id}`;
 };
 
 window.createEstablishment = async () => {
@@ -261,20 +276,21 @@ window.createEstablishment = async () => {
 };
 
 window.hireAdmin = () => {
-  let email = document.getElementById("emailCA").value;
-  let salario = document.getElementById("salarioCA").value;
+  new_function(async () => {
+    let email = document.getElementById("emailCA").value;
+    let salario = document.getElementById("salarioCA").value;
 
-  if (!email) {
-    throw Error("Ingresa un correo electrónico para el administrador");
-  }
-  if (!validate_email(email)) {
-    throw Error("Ingresa un correo electrónico válido");
-  }
-  if (!salario) {
-    throw Error("Ingresa un salario para el administrador");
-  } else {
-    console.log(`${email} ${salario}`);
-  }
+    if (!email) {
+      throw Error("Ingresa un correo electrónico para el administrador");
+    }
+    if (!validate_email(email)) {
+      throw Error("Ingresa un correo electrónico válido");
+    }
+    if (!salario) {
+      throw Error("Ingresa un salario para el administrador");
+    }
+    await empl.hire(email, ROLES.Admin, parseFloat(salario));
+  }, "Usuario contratado con exito");
 };
 
 window.onload = function () {

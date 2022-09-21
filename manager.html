@@ -61,7 +61,13 @@
 
       <nav class="nav-menu d-none d-lg-block">
         <ul>
-          <li class="book-a-table text-center"><a href="index.html">Inicio</a></li>
+          <li><a href="#tables-sec">Mesas</a></li>
+          <li><a href="#hire-sec">Contratar</a></li>
+          <li id="create-kitchen-li"><a href="#create-kitchen-sec">Crear Cocina</a></li>
+          <li id="show-kitchen-li"><a href="#show-kitchen-sec">Cocinas</a></li>
+          <li><a href="#search-empl-sec">Empleados</a></li>
+          <li><a href="#search-order-sec">Pedidos</a></li>
+
         </ul>
       </nav><!-- .nav-menu -->
 
@@ -80,7 +86,7 @@
   <main id="main">
 
     <!-- ======= Actualizar Cantidad de Mesas ======= -->
-    <section class="contact" style="padding: 1px 0;">
+    <section id="tables-sec" class="contact" style="padding: 1px 0;">
       <div class="container mt-5">
         <div class="section-title">
           <h2>Actualizar cantidad de <span>mesas</span></h2>
@@ -111,10 +117,10 @@
     </section><!-- End Actualizar Cantidad de Mesas -->
 
     <!-- ======= Contratar Gerente / Mesero ======= -->
-    <section class="contact" style="padding: 1px 0;">
+    <section id="hire-sec" class="contact" style="padding: 1px 0;">
       <div class="container mt-5">
         <div class="section-title">
-          <h2><span>Contratar </span>Gerente / Mesero</h2>
+          <h2><span>Contratar </span>Empleado</h2>
         </div>
         <form method="post" role="form" class="php-email-form">
 
@@ -151,7 +157,7 @@
     </section><!-- End Contratar Gerente / Mesero -->
 
     <!-- ======= Crear Cuenta de Cocina ======= -->
-    <section id="contact" class="contact" style="padding: 1px 0;">
+    <section id="create-kitchen-sec" class="contact" style="padding: 1px 0;">
       <div class="container mt-5">
         <div class="section-title">
           <h2>Crear cuenta de <span>cocina</span></h2>
@@ -182,7 +188,7 @@
     </section><!-- End Crear Cuenta de Cocina -->
 
     <!-- ======= Mostrar Cuentas de Cocina ======= -->
-    <section id="contact" class="contact" style="padding: 1px 0;">
+    <section id="show-kitchen-sec" class="contact" style="padding: 1px 0;">
       <div class="container mt-5">
         <div class="section-title">
           <h2>Mostrar cuentas de <span>cocina</span></h2>
@@ -190,10 +196,10 @@
         <div class="row" id="kitchenAc" style="text-align: center;"></div>
 
         <template id="kitchenUsers">
-          <div class="col-12 col-sm-6 col-md-4 col-lg-3 mt-3">
+          <div class="col-12 col-sm-6 col-md-4 col-lg-3 mt-3 element">
             <div class="mostrar-datos">
               <p id="userk">creado el</p>
-              <button type="button" class="plantilla-btn">Editar</button>
+              <button type="button" class="plantilla-btn">Eliminar</button>
             </div>
           </div>
         </template>
@@ -210,8 +216,8 @@
         </button>
 
         <!-- Modal -->
-        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" 
-          aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+          aria-hidden="true">
           <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
               <div class="modal-header">
@@ -236,7 +242,7 @@
     </section><!-- End Modal de ejemplo -->
 
     <!-- ======= Buscar empleados dentro del establecimiento ======= -->
-    <section class="contact" style="padding: 1px 0;">
+    <section id="search-empl-sec" class="contact" style="padding: 1px 0;">
       <div class="section-title">
         <h2><span>Buscador </span> de empleados</h2>
       </div>
@@ -260,9 +266,9 @@
                   <input name="name" class="form-control mr-sm-2 th-search" type="search" placeholder="Search"
                     aria-label="Search">
                   <select name="name" class="th-order">
-                    <option value="0" selected=""></option>
-                    <option value="1">up</option>
-                    <option value="-1">down</option>
+                    <option value="" selected=""></option>
+                    <option value="0">up</option>
+                    <option value="1">down</option>
                   </select>
                 </form>
               </th>
@@ -271,9 +277,9 @@
                   <input name="email" class="form-control mr-sm-2 th-search" type="search" placeholder="Search"
                     aria-label="Search">
                   <select name="email" class="th-order">
-                    <option value="0" selected=""></option>
-                    <option value="1">up</option>
-                    <option value="-1">down</option>
+                    <option value="" selected=""></option>
+                    <option value="0">up</option>
+                    <option value="1">down</option>
                   </select>
                 </form>
               </th>
@@ -294,8 +300,8 @@
                 </div>
                 <form class="form-inline">
                   <select name="role" class="th-order">
-                    <option value="0" selected=""></option>
-                    <option value="-1">up</option>
+                    <option value="" selected=""></option>
+                    <option value="0">up</option>
                     <option value="1">down</option>
                   </select>
                 </form>
@@ -308,9 +314,9 @@
                     <option value="2">Cualquiera</option>
                   </select>
                   <select name="status" class="th-order">
-                    <option value="0" selected=""></option>
-                    <option value="1">up</option>
-                    <option value="-1">down</option>
+                    <option value="" selected=""></option>
+                    <option value="0">up</option>
+                    <option value="1">down</option>
                   </select>
                 </form>
               </th>
@@ -325,7 +331,7 @@
     <!-- ======= END Buscar empleados ======= -->
 
     <!-- ======= Buscar PEDIDOS ======= -->
-    <section class="contact" style="padding: 1px 0;">
+    <section id="search-order-sec" class="contact" style="padding: 1px 0;">
       <div class="section-title">
         <h2><span>Buscador </span> de pedidos</h2>
       </div>
@@ -359,9 +365,9 @@
                 </div>
                 <form class="form-inline">
                   <select name="total" class="th-order">
-                    <option value="0" selected=""></option>
-                    <option value="1">up</option>
-                    <option value="-1">down</option>
+                    <option value="" selected=""></option>
+                    <option value="0">up</option>
+                    <option value="1">down</option>
                   </select>
                 </form>
               </th>
@@ -389,18 +395,18 @@
                 </div>
                 <form class="form-inline">
                   <select name="status" class="th-order">
-                    <option value="0" selected=""></option>
-                    <option value="1">up</option>
-                    <option value="-1">down</option>
+                    <option value="" selected=""></option>
+                    <option value="0">up</option>
+                    <option value="1">down</option>
                   </select>
                 </form>
               </th>
               <th>
                 <form class="form-inline">
                   <select name="created_at" class="th-order">
-                    <option value="0" selected=""></option>
-                    <option value="1">up</option>
-                    <option value="-1">down</option>
+                    <option value="" selected=""></option>
+                    <option value="0">up</option>
+                    <option value="1">down</option>
                   </select>
                 </form>
               </th>

@@ -15,6 +15,7 @@ import {
 import { new_function } from "./module/utils.js";
 import { Establishment } from "./module/establishment.js";
 import { Kitchen } from "./module/kitchen.js";
+import { load_nav_bar } from "./module/main.js";
 
 /**
  * @type {Employee}
@@ -28,40 +29,43 @@ let add_id = "";
 let _estb;
 let quantity_tables = 0;
 
-const k = {
-  kitchens: new Map([
-    [
-      1,
-      {
-        user: "cuenta1",
-      },
-    ],
-    [
-      2,
-      {
-        user: "cuenta2",
-      },
-    ],
-    [
-      3,
-      {
-        user: "cuenta3",
-      },
-    ],
-    [
-      4,
-      {
-        user: "cuenta4",
-      },
-    ],
-    [
-      5,
-      {
-        user: "cuenta5",
-      },
-    ],
-  ]),
-};
+/**
+ * @type {Map<BigInt, Kitchen>}
+ */
+let k = new Map();
+
+// const k = new Map([
+//   [
+//     1,
+//     {
+//       user: "cuenta1",
+//     },
+//   ],
+//   [
+//     2,
+//     {
+//       user: "cuenta2",
+//     },
+//   ],
+//   [
+//     3,
+//     {
+//       user: "cuenta3",
+//     },
+//   ],
+//   [
+//     4,
+//     {
+//       user: "cuenta4",
+//     },
+//   ],
+//   [
+//     5,
+//     {
+//       user: "cuenta5",
+//     },
+//   ],
+// ]);
 
 window.search_order = () => {
   new_function(async () => {
@@ -89,6 +93,19 @@ window.search_order = () => {
       });
     data_to_table(tname, data, headers);
   }, "Busqueda realizada con exito");
+};
+
+const key_to_int = (key) => {
+  switch (key) {
+    case "name":
+      return 0;
+    case "email":
+      return 1;
+    case "role":
+      return 2;
+    case "status":
+      return 3;
+  }
 };
 
 window.search_employees = async () => {
@@ -208,7 +225,7 @@ window.createCookAccount = () => {
     if (!validate_password(password)) {
       throw Error("Ingresa una contraseña válida");
     }
-    await Kitchen.create_account(uname, password);
+    await Kitchen.create_account(empl.user.token, uname, password);
   }, "Cuenta de cocina creada con exito");
 };
 
@@ -228,18 +245,34 @@ const load_manager = async () => {
         get: (searchParams, prop) => searchParams.get(prop),
       });
       add_id = params.aid;
-      await Establishment.get_by_address(add_id, empl.user.token).then(
-        (data) => {
-          console.log(data);
-          estb_id = data.id;
-        }
-      );
-      console.log(estb_id, params, add_id);
+      if (add_id) {
+        await Establishment.get_by_address(add_id, empl.user.token).then(
+          (data) => {
+            estb_id = data.id;
+            window.history.replaceState(
+              {},
+              document.title,
+              "/" + `manager.html?eid=${estb_id}`
+            );
+          }
+        );
+      } else {
+        estb_id = params.eid;
+      }
     }
+    if (!estb_id) {
+      window.location.href = "index.html";
+    }
+    if (user.role_id == ROLES.Admin) {
+      document.getElementById("create-kitchen-sec").remove();
+      document.getElementById("show-kitchen-sec").remove();
+      document.getElementById("create-kitchen-li").remove();
+      document.getElementById("show-kitchen-li").remove();
+    }
+    load_nav_bar();
     await Establishment.get_by_id(estb_id, empl.user.token).then(
       (d) => (_estb = d)
     );
-    console.log(_estb);
     document.getElementById("dirACM").value = _estb.stringer;
     document.getElementById("mesasACM").value = _estb.quantity;
   } catch (error) {
@@ -251,17 +284,20 @@ window.modalFunction = () => {
   console.log(`El modal funciona correctamente :)`);
 };
 
-window.kitchenAccounts = () => {
+window.kitchenAccounts = async () => {
   const kitchen = document.querySelector("#kitchenAc");
   const template = document.querySelector("#kitchenUsers").content;
   const fragment = document.createDocumentFragment();
 
-  for (const [num, ob] of k.kitchens) {
+  await Kitchen.get_kitchens(empl.user.token).then((r) => (k = r));
+  console.log(k);
+  for (const [num, ob] of k) {
+    template.querySelector(".element").id = `element-k-${num}`;
     template.getElementById("userk").textContent = `Usuario: ${ob.user}`;
     template.querySelector(".mostrar-datos button").id = num;
     template
       .querySelector(".mostrar-datos button")
-      .setAttribute("onclick", `console.log(${num});return false;`);
+      .setAttribute("onclick", `delete_kitchen(${num});return false;`);
 
     const clone = template.cloneNode(true);
     fragment.appendChild(clone);
@@ -270,11 +306,18 @@ window.kitchenAccounts = () => {
   kitchen.appendChild(fragment);
 };
 
+window.delete_kitchen = (id) => {
+  new_function(async () => {
+    await Kitchen.delete_by_id(empl.user.token, id);
+    document.getElementById(`element-k-${id}`).remove();
+  });
+};
+
 window.modalFunction = () => {
   console.log(`El modal funciona correctamente :)`);
 };
 
-window.onload = () => {
-  load_manager();
+window.onload = async () => {
+  await load_manager();
   kitchenAccounts();
 };
