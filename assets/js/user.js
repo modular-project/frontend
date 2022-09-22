@@ -67,6 +67,7 @@ const h = {
 };
 
 window.update_user = () => {
+  const form = document.getElementById("formADP");
   new_function(async () => {
     // Obtener Datos
     let name = document.getElementById("name").value;
@@ -96,25 +97,33 @@ window.update_user = () => {
     // Aqui conectamos antes con el modulo y luego hacemos peticion
     // Depente de la funcion a utilizar
     await u.update();
+    form.reset();
   }, "Información actualizada con exito");
 };
 
-window.change_password = () =>
+window.change_password = () => {
+  const form = document.getElementById("chpdw");
   new_function(async () => {
     let pwd = document.getElementById("ch_pwd").value;
     await User.change_password(pwd);
+    form.reset();
   }, "Contraseña actualizada");
+}
 
-window.generate_verification_code = () =>
+window.generate_verification_code = () => {
+  const form = document.getElementById("formGCV");
   new_function(async () => {
     await user.generate_verification_code();
+    form.reset();
   }, "El código de verificación fue enviado con éxito a su correo");
+}
 
-window.verify = () =>
+window.verify = () => {
   new_function(async () => {
     let code = document.getElementById("verify_code").value;
     await user.verify(code);
-  }, "Usuario verificado satisfactoriamente");
+  }, "Usuario verificado satisfactoriamente"); 
+}
 
 window.enable_ch_btn = function enable_ch_btn() {
   let pwd = document.getElementById("ch_pwd").value;

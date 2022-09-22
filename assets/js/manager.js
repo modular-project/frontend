@@ -155,6 +155,7 @@ window.search_employees = async () => {
 
 window.updateNumTables = async () => {
   let msg = "Operacion completada";
+  const form = document.getElementById("formACM");
   new_function(async () => {
     let cantidadMesas = document.getElementById("mesasACM").value;
     if (!cantidadMesas) {
@@ -167,10 +168,12 @@ window.updateNumTables = async () => {
         msg = r;
       });
     console.log(msg);
+    form.reset();
   }, msg);
 };
 
 window.hireManagerCook = () => {
+  const form = document.getElementById("formCGM");
   new_function(async () => {
     let email = document.getElementById("emailCGM").value;
     let salario = document.getElementById("salarioCGM").value;
@@ -189,10 +192,12 @@ window.hireManagerCook = () => {
     } else {
       await empl.hire(email, role, salario, _estb.id);
     }
+    form.reset();
   }, "Usuario contratado");
 };
 
 window.createCookAccount = () => {
+  const form = document.getElementById("formCCC");
   new_function(async () => {
     let uname = document.getElementById("unameCCC").value;
     let password = document.getElementById("passCCC").value;
@@ -209,6 +214,7 @@ window.createCookAccount = () => {
       throw Error("Ingresa una contraseña válida");
     }
     await Kitchen.create_account(uname, password);
+    form.reset();
   }, "Cuenta de cocina creada con exito");
 };
 

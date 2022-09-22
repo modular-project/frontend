@@ -81,7 +81,7 @@
         <h2>Actualización de <span>información personal</span></h2>
       </div>
 
-      <form method="post" role="form" class="php-email-form">
+      <form method="post" role="form" class="php-email-form" id="formADP">
         <!-- <div class="imgcontainer">
           <img src="assets/img/dataUpdateIcon.png" alt="Avatar" class="avatar" style="border-radius: 10%;">
         </div> -->
@@ -107,8 +107,8 @@
         </div>
 
         <div class="text-center">
-          <button type="button" id="updatebtn" onclick="update_user()" class="login"
-            style="background: #ffb03b;">Actualizar</button>
+          <button type="button" id="updatebtn" onclick="update_user()" 
+            class="plantilla-btn">Actualizar</button>
         </div>
 
       </form>
@@ -122,7 +122,7 @@
         <h2>Cambiar <span>contraseña</span></h2>
       </div>
 
-      <form method="post" role="form" class="php-email-form">
+      <form method="post" role="form" class="php-email-form" id="chpdw">
         <div class="imgcontainer">
           <img src="assets/img/password-icon.png" style="border-radius: 10%; width: 4%;">
         </div>
@@ -138,8 +138,8 @@
         </div>
 
         <div class="text-center">
-          <button type="button" id="ch_pwd_btn" onclick="change_password()" class="login" disabled="true"
-            style="background: #ffb03b;">Cambiar</button>
+          <button type="button" id="ch_pwd_btn" onclick="change_password()" 
+            class="plantilla-btn" disabled="true">Cambiar</button>
         </div>
 
       </form>
@@ -153,14 +153,14 @@
         <h2><span>Generar </span>código de verificación</h2>
       </div>
 
-      <form method="post" role="form" class="php-email-form">
+      <form method="post" role="form" class="php-email-form" id="formGCV">
         <div class="imgcontainer">
           <img src="assets/img/verification-icon.png" style="border-radius: 10%; width: 5%;">
         </div>
 
         <div class="text-center">
-          <button type="button" id="gen_ver_cod_btn" onclick="generate_verification_code()" class="login"
-            style="background: #ffb03b;">Generar</button>
+          <button type="button" id="gen_ver_cod_btn" onclick="generate_verification_code()" 
+            class="plantilla-btn">Generar</button>
         </div>
 
       </form>
@@ -174,7 +174,7 @@
         <h2>Verificar <span>cuenta</span></h2>
       </div>
 
-      <form method="post" role="form" class="php-email-form">
+      <form method="post" role="form" class="php-email-form" id="formVer">
         <div class="imgcontainer">
           <img src="assets/img/verified-icon.png" style="border-radius: 10%; width: 8%;">
         </div>
@@ -186,8 +186,7 @@
         </div>
 
         <div class="text-center">
-          <button type="button" id="verify_btn" onclick="verify()" class="login" 
-            style="background: #ffb03b;">Verificar</button>
+          <button type="button" id="verify_btn" onclick="verify()" class="plantilla-btn">Verificar</button>
         </div>
       </form>
     </div>

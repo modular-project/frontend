@@ -85,7 +85,7 @@
         <div class="section-title">
           <h2>Actualizar cantidad de <span>mesas</span></h2>
         </div>
-        <form method="post" role="form" class="php-email-form">
+        <form method="post" role="form" class="php-email-form" id="formACM">
 
           <div class="imgcontainer">
             <img src="assets/img/table-icon.png" style="border-radius: 10%; width: 8%;">
@@ -102,8 +102,7 @@
           </div>
 
           <div class="text-center">
-            <button type="button" onclick="updateNumTables()" class="login"
-              style="background: #ffb03b;">Actualizar</button>
+            <button type="button" onclick="updateNumTables()" class="plantilla-btn">Actualizar</button>
           </div>
 
         </form>
@@ -116,7 +115,7 @@
         <div class="section-title">
           <h2><span>Contratar </span>Gerente / Mesero</h2>
         </div>
-        <form method="post" role="form" class="php-email-form">
+        <form method="post" role="form" class="php-email-form" id="formCGM">
 
           <div class="imgcontainer">
             <img src="assets/img/manager-icon.png" style="border-radius: 10%; width: 7%;">
@@ -142,8 +141,7 @@
           </div>
 
           <div class="text-center">
-            <button type="button" onclick="hireManagerCook()" class="login"
-              style="background: #ffb03b;">Contratar</button>
+            <button type="button" onclick="hireManagerCook()" class="plantilla-btn">Contratar</button>
           </div>
 
         </form>
@@ -156,7 +154,7 @@
         <div class="section-title">
           <h2>Crear cuenta de <span>cocina</span></h2>
         </div>
-        <form method="post" role="form" class="php-email-form">
+        <form method="post" role="form" class="php-email-form" id="formCCC">
 
           <div class="imgcontainer">
             <img src="assets/img/cook-icon.png" style="border-radius: 10%; width: 8%;">
@@ -173,8 +171,7 @@
           </div>
 
           <div class="text-center">
-            <button type="button" onclick="createCookAccount()" class="login"
-              style="background: #ffb03b;">Crear</button>
+            <button type="button" onclick="createCookAccount()" class="plantilla-btn">Crear</button>
           </div>
 
         </form>
@@ -237,10 +234,10 @@
 
     <!-- ======= Buscar empleados dentro del establecimiento ======= -->
     <section class="contact" style="padding: 1px 0;">
-      <div class="section-title">
-        <h2><span>Buscador </span> de empleados</h2>
-      </div>
       <div class="container mt-5 table-responsive">
+        <div class="section-title">
+          <h2><span>Buscador </span> de empleados</h2>
+        </div>
         <table class="table caption-top" id="t-s-user">
           <thead class="table-dark">
             <tr>
@@ -326,11 +323,10 @@
 
     <!-- ======= Buscar PEDIDOS ======= -->
     <section class="contact" style="padding: 1px 0;">
-      <div class="section-title">
-        <h2><span>Buscador </span> de pedidos</h2>
-      </div>
-
       <div class="container mt-5 table-responsive">
+        <div class="section-title">
+          <h2><span>Buscador </span> de pedidos</h2>
+        </div>
         <table class="table caption-top" id="t-s-order">
           <thead class="table-dark">
             <tr>

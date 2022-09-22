@@ -65,7 +65,7 @@
 
   <section id="contact" class="contact" style="padding: 1px 0;">
     <div class="container mt-5">
-      <form method="post" role="form" class="php-email-form">
+      <form method="post" role="form" class="php-email-form" id="formLogin">
         <div class="imgcontainer">
           <img src="assets/img/Avatar-Profile.png" alt="Avatar" class="avatar">
         </div>
@@ -83,12 +83,13 @@
         </div>
 
         <div class="text-center">
-          <button type="button" disabled="true" onclick="login()" id="loginbtn" class="login">Iniciar Sesión</button>
+          <button type="button" disabled="true" onclick="login()" id="loginbtn" 
+            class="login">Iniciar Sesión</button>
         </div>
 
         <div class="container footcolor text-center">
-          <button type="button" disabled="true" id="signupbtn" class="login" style="background-color: #1f73f1">Crear
-            cuenta nueva</button>
+          <button type="button" disabled="true" id="signupbtn" class="login" 
+            style="background-color: #1f73f1">Crear cuenta nueva</button>
         </div>
       </form>
     </div>
