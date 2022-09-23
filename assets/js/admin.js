@@ -280,10 +280,10 @@ window.createEstablishment = async () => {
 };
 
 window.hireAdmin = () => {
+  const form = document.getElementById("formHireA");
   new_function(async () => {
     let email = document.getElementById("emailCA").value;
     let salario = document.getElementById("salarioCA").value;
-    const form = document.getElementById("formHireA");
 
     if (!email) {
       throw Error("Ingresa un correo electrónico para el administrador");

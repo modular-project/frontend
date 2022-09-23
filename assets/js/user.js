@@ -76,13 +76,9 @@ window.verify = () => {
   new_function(async () => {
     let code = document.getElementById("verify_code").value;
     await user.verify(code);
-<<<<<<< HEAD
-  }, "Usuario verificado satisfactoriamente"); 
-}
-=======
     window.location.reload();
   }, "Usuario verificado satisfactoriamente");
->>>>>>> f5630d51e175a4447bc8d9994704921fd0dcce91
+}
 
 window.enable_ch_btn = function enable_ch_btn() {
   let pwd = document.getElementById("ch_pwd").value;

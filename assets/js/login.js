@@ -15,11 +15,13 @@ const login = () => {
 window.login = login;
 
 window.signup = async () => {
+  const form = document.getElementById("formLogin");
   new_function(async () => {
     let pass = document.getElementById("password").value;
     let email = document.getElementById("email").value;
     await user_module.User.signup(email, pass);
     login();
+    form.reset();
   }, "Usuario creado con exito, Intenta iniciar sesion");
 };
 
