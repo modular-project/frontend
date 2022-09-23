@@ -187,7 +187,7 @@ export class Employee {
   }
 
   async update_by_user_id(uid, user) {
-    if (!id) {
+    if (!uid) {
       throw Error("Se necesita especificar un usuario");
     }
     if (!user) {
@@ -215,7 +215,7 @@ export class Employee {
   }
 
   async fire(uid) {
-    if (!id) {
+    if (!uid) {
       throw Error("Se necesita especificar un usuario a despedir");
     }
     if (!is_greater(this.role, ROLES.Waiter)) {
@@ -238,6 +238,9 @@ export class Employee {
   }
 
   async hire(email, role, salary, est) {
+    role = parseInt(role);
+    salary = parseFloat(salary);
+    est = parseInt(est);
     if (!email) {
       throw Error("Se necesita especificar un email");
     }
@@ -250,7 +253,7 @@ export class Employee {
     if (!is_greater(this.role, ROLES.Manager)) {
       throw Error("No tienes el rol necesario");
     }
-    if (!is_greater(role, Manager) && !est) {
+    if (!is_greater(role, ROLES.Manager) && !est) {
       throw Error("Se necesita especificar un establecimiento para este rol");
     }
     let t = get_token();
@@ -317,7 +320,7 @@ export class Employee {
     if (!t) {
       throw ERROR_UNAUTHORIZED;
     }
-    let u = User;
+    let u;
     let jobs = new Map();
     await fetch(`${API_URL_EMPLOYEE}${uid}`, {
       headers: {
@@ -329,8 +332,12 @@ export class Employee {
       }
       await r.json().then((data) => {
         u = new User(data["user"]);
-        for (let d of data) {
+        for (let d of data.jobs) {
           jobs.set(d["id"], new Job(d));
+          if (d.is_active) {
+            u.role_id = d.role_id;
+            u.est_id = d.est_id;
+          }
         }
       });
     });
@@ -361,6 +368,7 @@ export class Employee {
         }
       });
     });
+    console.log("r ", jobs);
     return jobs;
   }
 

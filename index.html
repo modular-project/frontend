@@ -61,14 +61,14 @@
 
       <nav class="nav-menu d-none d-lg-block">
         <ul>
-          <li class="active"><a href="index.html">Inicio</a></li>
           <li><a href="#about">Acerca de</a></li>
           <li><a href="#menu">Menú</a></li>
-          <li><a href="#contact">Contacto</a></li>
+          <li id="my-cart-li"><a href="#my-cart">Hacer Pedido</a></li>
+          <li id="my-address-li"><a href="#my-addresses">Mis direcciones</a></li>
+          <li id="my-orders-btn"><a href="#my-orders">Mis pedidos</a></li>
+          <li id="login-button" class="book-a-table text-center"><a id="" href="login.html">Login</a></li>
           <li id="user-data-button"></li>
-          <li id="login-button"><a id="" href="login.html">Login</a></li>
-
-          <li class="book-a-table text-center"><a href="#book-a-table">Reserva aquí</a></li>
+          <li id="my-role-li" class="book-a-table text-center" hidden></li>
         </ul>
       </nav><!-- .nav-menu -->
     </div>
@@ -257,9 +257,9 @@
             <p>¿No conoces el nombre del producto? Prueba a buscarlo por su imagen:</p>
           </nav>
           <nav class="navbar navbar-light col-lg-12 d-flex justify-content-center">
-            <form class="form-inline">
-              <input class="form-control mr-sm-2" type="file" id="formFile" aria-label="Buscar por imagen">
-              <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            <form class="form-inline" id="search-product-base-form">
+              <input class="form-control mr-sm-2" type="file" id="form-img" aria-label="Buscar por imagen">
+              <button class="btn btn-outline-success my-2 my-sm-0" type="button">Search</button>
             </form>
           </nav>
         </div>
@@ -279,87 +279,104 @@
       <!-- </section>End Menu Section -->
 
       <!-- My Cart Section -->
-      <section id="menu" class="menu">
+      <section id="my-cart" class="menu">
         <div class="container">
+          <div class="section-title">
+            <h2>Hacer <span>Pedido</span></h2>
+            <p>De click sobre un producto para agregarlo a su pedido.</p>
+          </div>
           <div class="row" id="my-cart-row">
           </div>
         </div>
         <div class="row text-center justify-content-center">
-          <div class="col-sm-3">
-            <button type="button" class="btn btn-primary" onclick="make_order()">Realizar pedido</button>
+          <div id="make-order-btn" class="col-sm-3">
+            <button type="button" class="btn btn-primary" onclick="make_order()">Realizar
+              pedido</button>
+          </div>
+          <div class="col-sm-3" id="verify-account-btn">
+            <a id="make-order-btn" href="user.html">Quieres hacer un pedido a domicilio? Pulsa aqui para Verificar tu
+              cuenta</a>
           </div>
         </div>
       </section>
       <!-- END My Cart Section -->
 
+      <!-- ======= Crear Establecimiento ======= -->
+      <section id="my-addresses" class="contact" style="padding: 1px 0;">
+        <div class="container mt-5">
+          <div class="section-title">
+            <h2>Actualizar informacion de<span> envio</span> </h2>
+          </div>
+          <div class="text-center">
+            <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#add-address"
+              aria-expanded="false" aria-controls="collapseExample">
+              Agregar dirección de envio
+            </button>
+          </div>
+          <form method="post" role="form" class="php-email-form collapse" id="add-address">
+            <div class="imgcontainer">
+              <img src="assets/img/restaurant-icon.png" style="border-radius: 10%; width: 8%;">
+            </div>
+
+            <div class="form-row">
+              <div class="col-md-6 form-group">
+                <label><b>Calle</b></label>
+                <input type="text" id="calleCE" class="form-control" placeholder="Nombre de la calle" />
+              </div>
+              <div class="col-md-6 form-group">
+                <label><b>Número</b></label>
+                <input type="number" id="numCE" class="form-control" placeholder="Número del local"
+                  style="margin: 8px auto auto;" min="1" />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label><b>Colonia</b></label>
+              <input type="text" id="colCE" placeholder="Colonia o condominio" />
+            </div>
+
+            <div class="form-row">
+              <div class="col-md-6 form-group">
+                <label><b>Ciudad</b></label>
+                <input type="text" id="ciudadCE" class="form-control" placeholder="Ciudad o localidad" />
+              </div>
+              <div class="col-md-6 form-group">
+                <label><b>Código Postal</b></label>
+                <input type="number" id="cpCE" class="form-control" placeholder="Código Postal"
+                  style="margin: 8px auto auto;" />
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="col-md-6 form-group">
+                <label><b>Estado</b></label>
+                <input type="text" id="estadoCE" class="form-control" placeholder="Estado o entidad federativa" />
+              </div>
+              <div class="col-md-6 form-group">
+                <label><b>País</b></label>
+                <input type="text" id="paisCE" class="form-control" placeholder="País" />
+              </div>
+            </div>
+
+            <div class="text-center">
+              <button type="button" onclick="add_address()" class="login" style="background: #ffb03b;">Crear</button>
+            </div>
+
+          </form>
+        </div>
+      </section><!-- End Crear Establecimiento -->
+
       <!-- My Orders Section -->
-      <section id="menu" class="menu">
+      <section id="my-orders" class="menu">
+        <div class="section-title">
+          <h2>Mis <span>Pedidos</span></h2>
+        </div>
         <div class="container">
           <div class="row" id="card-row">
           </div>
         </div>
       </section>
       <!-- END My Orders Section -->
-
-      <!-- ======= Book A Table Section ======= -->
-      <section id="book-a-table" class="book-a-table">
-
-        <div class="container">
-
-          <div class="section-title">
-            <h2>Reserva una <span>Mesa</span></h2>
-            <p>Ya que somos de los mejores restaurantes del país y del mundo, te solicitamos de la manera más atenta que
-              reserves una mesa con el tiempo necesario en esta sección</p>
-          </div>
-
-          <form action="forms/book-a-table.php" method="post" role="form" class="php-email-form">
-            <div class="form-row">
-              <div class="col-lg-4 col-md-6 form-group">
-                <input type="text" name="name" class="form-control" id="name" placeholder="Tu Nombre"
-                  data-rule="minlen:4" data-msg="Please enter at least 4 chars">
-                <div class="validate"></div>
-              </div>
-              <div class="col-lg-4 col-md-6 form-group">
-                <input type="email" class="form-control" name="email" id="email" placeholder="Tu Correo Electrónico"
-                  data-rule="email" data-msg="Please enter a valid email">
-                <div class="validate"></div>
-              </div>
-              <div class="col-lg-4 col-md-6 form-group">
-                <input type="text" class="form-control" name="phone" id="phone" placeholder="Tu Número De Teléfono"
-                  data-rule="minlen:4" data-msg="Please enter at least 4 chars">
-                <div class="validate"></div>
-              </div>
-              <div class="col-lg-4 col-md-6 form-group">
-                <input type="text" name="date" class="form-control" id="date" placeholder="Fecha" data-rule="minlen:4"
-                  data-msg="Please enter at least 4 chars">
-                <div class="validate"></div>
-              </div>
-              <div class="col-lg-4 col-md-6 form-group">
-                <input type="text" class="form-control" name="time" id="time" placeholder="Duración"
-                  data-rule="minlen:4" data-msg="Please enter at least 4 chars">
-                <div class="validate"></div>
-              </div>
-              <div class="col-lg-4 col-md-6 form-group">
-                <input type="number" class="form-control" name="people" id="people" placeholder="# De Personas"
-                  data-rule="minlen:1" data-msg="Please enter at least 1 chars">
-                <div class="validate"></div>
-              </div>
-            </div>
-            <div class="form-group">
-              <textarea class="form-control" name="Mensaje" rows="5" placeholder="Message"></textarea>
-              <div class="validate"></div>
-            </div>
-            <div class="mb-3">
-              <div class="loading">Cargando...</div>
-              <div class="error-message"></div>
-              <div class="sent-message">Se envió su solicitud de reserva. Le devolveremos la llamada o le enviaremos un
-                correo electrónico para confirmar su reserva. ¡Gracias!</div>
-            </div>
-            <div class="text-center"><button type="submit">Mandar Mensaje</button></div>
-          </form>
-
-        </div>
-      </section><!-- End Book A Table Section -->
   </main><!-- End #main -->
 
   <!-- ======= Footer ======= -->

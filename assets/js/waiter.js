@@ -180,6 +180,7 @@ window.pay_order = (t_id) => {
         throw Error("Necesitas entregar todos los productos antes de pagar");
       }
     }
+
     await Order.pay_local_order(user.token, o_id);
     my_cart.delete(o_id);
     table_order.delete(t_id);
@@ -300,7 +301,9 @@ window.make_order = () => {
           products: ops,
         });
         my_orders.set(new_order.id, new_order);
+        console.log;
         set_price(card, r.total);
+        table_order.set(parseInt(t), new_order.id);
       });
     } else {
       if (!my_cart.size) {

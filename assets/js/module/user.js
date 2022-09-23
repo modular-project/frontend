@@ -62,6 +62,37 @@ export class Address {
   get stringer() {
     return `${this.street}, ${this.suburb}, ${this.city}, ${this.state}, ${this.country}, ${this.pc}`;
   }
+
+  set id(i) {
+    this.data.id = i;
+  }
+
+  async save(t) {
+    if (!t) {
+      throw ERROR_UNAUTHORIZED;
+    }
+    return await fetch(`${API_URL}/api/v1/address/delivery/`, {
+      headers: {
+        Authorization: t,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(this.data),
+      method: "POST",
+    })
+      .then(async (r) => {
+        if (!r.ok) {
+          throw new_response_error(r);
+        }
+        return await r.json((data) => {
+          console.log(data, data.id);
+          return data.id;
+        });
+      })
+      .catch((e) => {
+        console.error(e);
+        throw Error("No se pudo realizar la peticion");
+      });
+  }
 }
 
 /**
@@ -80,6 +111,7 @@ export class User {
     this.is_active = data["is_active"];
     this.data = data;
   }
+
   get role() {
     return id_to_role(this.role_id);
   }
@@ -242,8 +274,10 @@ export class User {
       } else {
         return await r.json().then((ds) => {
           const adds = new Map();
-          for (let d of ds) {
-            adds.set(d.id, new Address(d));
+          if (ds) {
+            for (let d of ds) {
+              adds.set(d.id, new Address(d));
+            }
           }
           return adds;
         });

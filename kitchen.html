@@ -54,14 +54,15 @@
     <div class="container d-flex align-items-center">
 
       <div class="logo mr-auto">
-        <h1 class="text-light"><a href="index.html"><span>Punto y coma;</span></a></h1>
+        <h1 class="text-light"><a href="#"><span>Punto y coma;</span></a></h1>
         <!-- Uncomment below if you prefer to use an image logo -->
         <!-- <a href="index.html"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
       </div>
 
       <nav class="nav-menu d-none d-lg-block">
         <ul>
-          <li class="book-a-table text-center"><a href="index.html">Inicio</a></li>
+          <li id="signout-btn" class="book-a-table text-center"><a href="" onclick="signout(); return false">Cerrar
+              sesion</a></li>
         </ul>
       </nav><!-- .nav-menu -->
 
@@ -72,8 +73,8 @@
   <section class="footcolor" style="padding: 70px 0;"></section>
 
   <div class="container">
-    <h1 class="alignanycenter" style="margin: 40px 0 0;"><strong>Herramientas de la 
-      <span style="color: #ffb03b;">Cocina</span></strong>
+    <h1 class="alignanycenter" style="margin: 40px 0 0;"><strong>Herramientas de la
+        <span style="color: #ffb03b;">Cocina</span></strong>
     </h1>
   </div>
 
@@ -90,13 +91,12 @@
           <div class="imgcontainer">
             <img src="assets/img/cook-icon.png" style="border-radius: 10%; width: 8%;">
           </div>
-  
+
           <div class="form-group">
             <label for="unameISC"><b>Nombre de usuario</b></label>
-            <input type="text" class="form-control" id="unameISC"
-              placeholder="Introduzca su nombre de usuario"/>
+            <input type="text" class="form-control" id="unameISC" placeholder="Introduzca su nombre de usuario" />
           </div>
-  
+
           <div>
             <label for="passISC"><b>Contraseña</b></label>
             <input type="password" placeholder="Introduzca su contraseña" id="passISC">
@@ -121,7 +121,7 @@
         <div class="row" id="orders" style="text-align: center;"></div>
 
         <template id="ord">
-          <div class="col-sm-12 col-md-6 col-lg-4 mt-4 mt-lg-0">
+          <div class="col-sm-12 col-md-6 col-lg-4 mt-4 mt-lg-0 element-order">
             <div class="box">
               <span>01</span>
               <h4>Seguridad</h4>

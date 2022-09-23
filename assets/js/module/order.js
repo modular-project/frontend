@@ -68,7 +68,7 @@ export class Search {
         filters.set("status", p.map(Number));
       }
     }
-    filters.set("default", { order_by: order, offset: offset, limit: limit });
+    filters.set("default", { search_by: order, offset: offset, limit: limit });
     this.filters = filters;
   }
   get djson() {
@@ -131,8 +131,11 @@ export class Order {
   }
   get created_at() {
     let u = this.data.created_at;
-    let d = new Date(u * 1000);
-    return `${d.getDay()}/${d.getMonth()}/${d.getFullYear()} ${d.getHours()}:${d.getMinutes()}`;
+    let d = new Date();
+    d.setTime(parseInt(u) * 1000);
+    // d.
+    // return `${d.getDay()}/${d.getMonth()}/${d.getFullYear()} ${d.getHours()}:${d.getMinutes()}  ${d.toISOString()}`;
+    return `${d.toLocaleDateString()} ${d.toLocaleTimeString()}`;
   }
   get type() {
     if (this.user_id) {
@@ -167,11 +170,14 @@ export class Order {
       if (!r.ok) {
         throw new_response_error(r);
       }
-      await r.json().then((data) => {
-        for (let d of data) {
-          orders.set(d["ID"], new Order(d));
-        }
-      });
+      console.log(r.headers.get("Content-Length"));
+      if (r.headers.get("Content-Length")) {
+        await r.json().then((data) => {
+          for (let d of data) {
+            orders.set(d["ID"], new Order(d));
+          }
+        });
+      }
     });
     return orders;
   }
@@ -205,9 +211,6 @@ export class Order {
   }
 
   /**
-   *
-   * @param {*} t
-   * @param {*} p
    * @returns {Promise<Map<BigInt, Order>}
    */
   static async waiter(t, p = "") {
@@ -226,13 +229,58 @@ export class Order {
       if (!r.ok) {
         throw new_response_error(r);
       }
-      await r.json().then((data) => {
-        for (let d of data) {
-          orders.set(d["ID"], new Order(d));
-        }
-      });
+      console.log(r.headers.get("Content-Length"));
+      if (r.headers.get("Content-Length") != "0") {
+        await r.json().then((data) => {
+          for (let d of data) {
+            orders.set(d["ID"], new Order(d));
+          }
+        });
+      }
     });
     return orders;
+  }
+
+  static async kitchen(t, last) {
+    if (!t) {
+      throw ERROR_UNAUTHORIZED;
+    }
+    const orders = new Map();
+    last = parseInt(last);
+    await fetch(`${API_URL_ORDER}kitchen/?last=${last}`, {
+      headers: {
+        Authorization: t,
+      },
+    }).then(async (r) => {
+      if (!r.ok) {
+        throw new_response_error(r);
+      }
+      if (r.headers.get("Content-Length") != "0") {
+        await r.json().then((data) => {
+          for (let d of data) {
+            orders.set(d["id"], new OrderProduct(d));
+            last = d["id"];
+          }
+        });
+      }
+    });
+    return [orders, parseInt(last)];
+  }
+
+  static async complete_product(t, id) {
+    if (!t) {
+      throw ERROR_UNAUTHORIZED;
+    }
+    await fetch(`${API_URL_ORDER}product/${id}`, {
+      headers: {
+        Authorization: t,
+      },
+      method: "PATCH",
+    }).then(async (r) => {
+      if (!r.ok) {
+        throw new_response_error(r);
+      }
+    });
   }
 
   static async deliver_products(t, ids) {

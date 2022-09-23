@@ -1,4 +1,5 @@
 import { Product } from "./module/product.js";
+import { upload_to_classify } from "./module/image.js";
 
 /**
  *
@@ -44,22 +45,26 @@ export const load_menu = async (func) => {
     layoutMode: "fitRows",
   });
 
-  if (!func) {
-    $("#search-product-name-form button").on("click", function () {
-      const form = document.getElementById("search-product-name-form");
-      const ids = search_product(form["search"].value);
-      menuIsotope.isotope({
-        filter: ids,
-      });
+  $("#search-product-name-form button").on("click", function () {
+    const form = document.getElementById("search-product-name-form");
+    const ids = search_product(form["search"].value);
+    menuIsotope.isotope({
+      filter: ids,
     });
-    $(".venobox").venobox();
-  }
+  });
+  $(".venobox").venobox();
+
+  $("#search-product-base-form button").on("click", async function () {
+    const b_id = await classify_img();
+    console.log("b: ", b_id);
+    const ids = search_by_base(b_id);
+    menuIsotope.isotope({
+      filter: ids,
+    });
+  });
+  $(".venobox").venobox();
 };
 
-/**
- *
- * @param {Map<BigInt, Product>} ps
- */
 export const search_product = (name) => {
   /**
    * @type {String}
@@ -80,8 +85,32 @@ export const search_product = (name) => {
   return ids;
 };
 
-window.classify_img = async () => {
-  await upload_to_classify(document.getElementById("form-img").files[0]);
+const search_by_base = (base_id) => {
+  /**
+   * @type {String}
+   */
+  let ids = "";
+  ps.forEach((v, k) => {
+    if (v.base == base_id) {
+      if (ids) {
+        ids += `, .name-${k}`;
+      } else {
+        ids += `.name-${k}`;
+      }
+    }
+  });
+  if (!ids) {
+    return ".none";
+  }
+  return ids;
+};
+
+const classify_img = async () => {
+  return await upload_to_classify(
+    document.getElementById("form-img").files[0]
+  ).then((r) => {
+    return r.id;
+  });
 };
 
 export const product_by_id = (id) => {

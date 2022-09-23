@@ -61,7 +61,13 @@
 
       <nav class="nav-menu d-none d-lg-block">
         <ul>
-          <li class="book-a-table text-center"><a href="index.html">Inicio</a></li>
+          <li><a href="#menu">Menu</a></li>
+          <li><a href="#add-menu-sec">Agregar Producto</a></li>
+          <li><a href="#add-estb-sec">Agregar Establecimiento</a></li>
+          <li id="hire-ad-li"><a href="#hire-ad-sec">Contratar</a></li>
+          <li><a href="#search-estb-sec">Establecimientos</a></li>
+          <li><a href="#search-empl-sec">Empleados</a></li>
+          <li><a href="#search-order-sec">Pedidos</a></li>
         </ul>
       </nav><!-- .nav-menu -->
 
@@ -98,9 +104,9 @@
             <p>¿No conoces el nombre del producto? Prueba a buscarlo por su imagen:</p>
           </nav>
           <nav class="navbar navbar-light col-lg-12 d-flex justify-content-center">
-            <form class="form-inline">
-              <input class="form-control mr-sm-2" type="file" id="formFile" aria-label="Buscar por imagen">
-              <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            <form class="form-inline" id="search-product-base-form">
+              <input class="form-control mr-sm-2" type="file" id="form-img" aria-label="Buscar por imagen">
+              <button class="btn btn-outline-success my-2 my-sm-0" type="button">Search</button>
             </form>
           </nav>
         </div>
@@ -120,7 +126,7 @@
     </section><!-- End Menu Section -->
 
     <!-- ======= Crear Producto ======= -->
-    <section class="contact" style="padding: 1px 0;">
+    <section class="contact" id="add-menu-sec" style="padding: 1px 0;">
       <div class="container mt-5">
         <div class="section-title">
           <h2><span>Agregar</span> un nuevo producto al menú</h2>
@@ -178,7 +184,7 @@
     </section><!-- End Crear Producto -->
 
     <!-- ======= Crear Establecimiento ======= -->
-    <section class="contact" style="padding: 1px 0;">
+    <section class="contact" style="padding: 1px 0;" id="add-estb-sec">
       <div class="container mt-5">
         <div class="section-title">
           <h2><span>Crear </span>establecimiento</h2>
@@ -239,7 +245,7 @@
     </section><!-- End Crear Establecimiento -->
 
     <!-- ======= Contratar Administrador ======= -->
-    <section class="contact" style="padding: 1px 0;">
+    <section class="contact" style="padding: 1px 0;" id="hire-ad-sec">
       <div class="container mt-5">
         <div class="section-title">
           <h2>Contratar<span> Administrador</span></h2>
@@ -270,7 +276,7 @@
     </section><!-- End Contratar Administrador -->
 
     <!-- ======= Buscar ESTABLECIMIENTOS ======= -->
-    <section class="contact" style="padding: 10px 0;">
+    <section class="contact" style="padding: 10px 0;" id="search-estb-sec">
       <div class="container mt-5 table-responsive">
         <div class="section-title">
           <h2><span>Buscador</span> de establecimientos</h2>
@@ -369,7 +375,7 @@
     <!-- ======= END Buscar ESTABLECIMIENTOS ======= -->
 
     <!-- ======= Buscar empleados ======= -->
-    <section class="contact" style="padding: 1px 0;">
+    <section class="contact" style="padding: 1px 0;" id="search-empl-sec">
       <div class="container mt-5 table-responsive">
         <div class="section-title">
           <h2><span>Buscador </span> de empleados</h2>
@@ -464,7 +470,7 @@
     <!-- ======= END Buscar empleados ======= -->
 
     <!-- ======= Buscar PEDIDOS ======= -->
-    <section class="contact" style="padding: 1px 0 40px;">
+    <section class="contact" style="padding: 1px 0 40px;" id="search-order-sec">
       <div class="container mt-5 table-responsive">
         <div class="section-title">
           <h2><span>Buscador </span> de Pedidos</h2>
@@ -497,9 +503,9 @@
                 </div>
                 <form class="form-inline">
                   <select name="total" class="th-order">
-                    <option value="0" selected=""></option>
-                    <option value="1">up</option>
-                    <option value="-1">down</option>
+                    <option value="" selected=""></option>
+                    <option value="0">up</option>
+                    <option value="1">down</option>
                   </select>
                 </form>
               </th>
@@ -527,18 +533,18 @@
                 </div>
                 <form class="form-inline">
                   <select name="status" class="th-order">
-                    <option value="0" selected=""></option>
-                    <option value="1">up</option>
-                    <option value="-1">down</option>
+                    <option value="" selected=""></option>
+                    <option value="0">up</option>
+                    <option value="1">down</option>
                   </select>
                 </form>
               </th>
               <th>
                 <form class="form-inline">
                   <select name="created_at" class="th-order">
-                    <option value="0" selected=""></option>
-                    <option value="1">up</option>
-                    <option value="-1">down</option>
+                    <option value="" selected=""></option>
+                    <option value="0">up</option>
+                    <option value="1">down</option>
                   </select>
                 </form>
               </th>
