@@ -30,6 +30,7 @@ window.change_prod_pic = () => {
 };
 
 window.createProduct = () => {
+  const form = document.getElementById("formCreateP");
   new_function(async () => {
     let nombre = document.getElementById("nombre").value;
     let precio = document.getElementById("precio").value;
@@ -70,6 +71,7 @@ window.createProduct = () => {
     await p.save().then((id) => {
       console.log("TODO: Show Product to menu", id);
     });
+    form.reset();
   }, "Producto creado con exito");
 };
 
@@ -242,6 +244,7 @@ window.createEstablishment = async () => {
   let codigoPostal = document.getElementById("cpCE").value;
   let estado = document.getElementById("estadoCE").value;
   let pais = document.getElementById("paisCE").value;
+  const form = document.getElementById("formCreateE");
 
   if (!calle) {
     throw Error("Ingresa una calle para el establecimiento");
@@ -273,9 +276,11 @@ window.createEstablishment = async () => {
     country: pais,
   });
   await e.save(empl.user.token, empl.user.role_id).then((r) => console.log(r));
+  form.reset();
 };
 
 window.hireAdmin = () => {
+  const form = document.getElementById("formHireA");
   new_function(async () => {
     let email = document.getElementById("emailCA").value;
     let salario = document.getElementById("salarioCA").value;
@@ -290,6 +295,7 @@ window.hireAdmin = () => {
       throw Error("Ingresa un salario para el administrador");
     }
     await empl.hire(email, ROLES.Admin, parseFloat(salario));
+    form.reset();
   }, "Usuario contratado con exito");
 };
 

@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: front-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: front-app
+  template:
+    metadata:
+      labels:
+        app: front-app
+    spec:
+      containers:
+      - name: front-app
+        image: LOCATION-docker.pkg.dev/PROJECT_ID/REPOSITORY/IMAGE:TAG
+        ports:
+        - containerPort: 80
+          protocol: TCP
+        resources:
+          requests:
+            memory: "1Gi"
+            cpu: "250m"
+            ephemeral-storage: "128Mi"
+          limits:
+            memory: "2Gi"
+            cpu: "500m"
+            ephemeral-storage: "256Mi"
+
+---
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: front-app
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: front-app
+  minReplicas: 1
+  maxReplicas: 3
+  targetCPUUtilizationPercentage: 80
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: front-svc
+spec:
+  selector:
+    app: front-app
+  type: NodePort
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
