@@ -17,6 +17,16 @@ spec:
         image: LOCATION-docker.pkg.dev/PROJECT_ID/REPOSITORY/IMAGE:TAG
         ports:
         - containerPort: 80
+          protocol: TCP
+        resources:
+          requests:
+            memory: "1Gi"
+            cpu: "250m"
+            ephemeral-storage: "128Mi"
+          limits:
+            memory: "2Gi"
+            cpu: "500m"
+            ephemeral-storage: "256Mi"
 
 ---
 apiVersion: autoscaling/v1
@@ -29,7 +39,7 @@ spec:
     kind: Deployment
     name: front-app
   minReplicas: 1
-  maxReplicas: 5
+  maxReplicas: 3
   targetCPUUtilizationPercentage: 80
 
 ---
@@ -40,9 +50,8 @@ metadata:
 spec:
   selector:
     app: front-app
-  type: LoadBalancer
+  type: NodePort
   ports:
     - protocol: TCP
       port: 80
       targetPort: 80
-      nodePort: 30000
