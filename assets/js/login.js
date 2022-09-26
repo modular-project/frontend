@@ -1,6 +1,6 @@
 import * as user_module from "./module/user.js";
 import { handler_errors, new_function } from "./module/utils.js";
-  
+
 const login = () => {
   const form = document.getElementById("formLogin");
   new_function(async () => {

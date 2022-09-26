@@ -62,7 +62,7 @@ window.change_password = () => {
     await User.change_password(pwd);
     form.reset();
   }, "Contraseña actualizada");
-}
+};
 
 window.generate_verification_code = () => {
   const form = document.getElementById("formGCV");
@@ -70,7 +70,7 @@ window.generate_verification_code = () => {
     await user.generate_verification_code();
     form.reset();
   }, "El código de verificación fue enviado con éxito a su correo");
-}
+};
 
 window.verify = () => {
   new_function(async () => {
@@ -78,7 +78,7 @@ window.verify = () => {
     await user.verify(code);
     window.location.reload();
   }, "Usuario verificado satisfactoriamente");
-}
+};
 
 window.enable_ch_btn = function enable_ch_btn() {
   let pwd = document.getElementById("ch_pwd").value;
