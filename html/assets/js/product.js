@@ -52,7 +52,6 @@ export const load_menu = async (func) => {
       filter: ids,
     });
   });
-  $(".venobox").venobox();
 
   $("#search-product-base-form button").on("click", async function () {
     const b_id = await classify_img();
@@ -62,7 +61,9 @@ export const load_menu = async (func) => {
       filter: ids,
     });
   });
-  $(".venobox").venobox();
+  if (!func) {
+    $(".venobox").venobox();
+  }
 };
 
 export const search_product = (name) => {
