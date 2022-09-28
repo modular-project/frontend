@@ -65,7 +65,7 @@ window.createProduct = () => {
       name: nombre,
       price: parseFloat(precio),
       description: descripcion,
-      base: parseInt(base),
+      base_id: parseInt(base),
       url: url,
     });
     await p.save().then((id) => {
