@@ -40,3 +40,4 @@
 2022/09/26 15:37:24 [emerg] 5212#7012: unexpected "}" in C:\Users\ULTIMATE\Documents\Proyectos\Modular\frontend/conf/nginx.conf:27
 2022/09/26 15:37:45 [emerg] 3680#5464: unexpected "}" in C:\Users\ULTIMATE\Documents\Proyectos\Modular\frontend/conf/nginx.conf:27
 2022/09/27 20:46:36 [notice] 6352#1368: signal process started
+2022/09/28 15:19:05 [notice] 4056#4748: signal process started
