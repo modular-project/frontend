@@ -192,7 +192,7 @@ export class Order {
     }
     let url = `${API_URL_ORDER}`;
     if (!is_greater(u_rol, ROLES.Manager)) {
-      url = `${API_URL_ORDER}/establishment/`;
+      url = `${API_URL_ORDER}establishment/`;
     }
     s.filters.set("establishments", [parseInt(e_id)]);
     return await Order._search(s, t, url);

@@ -105,7 +105,7 @@ const load_user_data = async () => {
     });
     const uid = params.uid;
     if (uid) {
-      await User.get_data().then((d) => (empl = new Employee(new User(d))));
+      await User.get_data().then((d) => (empl = new Employee(d)));
       if (empl.user.id != uid) {
         document.getElementById("ch-pass-sec").remove();
         document.getElementById("ch-pwd-li").remove();
@@ -126,18 +126,26 @@ const load_user_data = async () => {
       }
     } else {
       document.getElementById("fire-li").remove();
-      await User.get_data().then((d) => (user = new User(d)));
+      await User.get_data().then((d) => (user = d));
       const e = new Employee(user);
-      await e.get_my_jobs().then((r) => {
-        jobs = r;
-      });
+      try {
+        await e.get_my_jobs().then((r) => {
+          jobs = r;
+        });
+      } catch (error) {
+        console.error(error);
+      }
     }
     if (user.name) {
       document.getElementById("name").value = user.name;
     }
+    console.log(user);
     if (user.bdata) {
+      console.log(user.bdata.substring(0, 10));
       document.getElementById("bdate").value = user.bdata.substring(0, 10);
     }
+    document.getElementById("read-email").placeholder = user.email;
+
     if (user.url) {
       document.getElementById("profile-pic").src = user.url;
     } else {

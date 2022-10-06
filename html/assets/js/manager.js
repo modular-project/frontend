@@ -177,7 +177,6 @@ window.search_employees = async () => {
 
 window.updateNumTables = async () => {
   let msg = "Operacion completada";
-  const form = document.getElementById("formACM");
   new_function(async () => {
     let cantidadMesas = document.getElementById("mesasACM").value;
     if (!cantidadMesas) {
@@ -190,7 +189,6 @@ window.updateNumTables = async () => {
         msg = r;
       });
     console.log(msg);
-    form.reset();
   }, msg);
 };
 
