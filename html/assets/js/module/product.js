@@ -212,7 +212,7 @@ export class Product {
     }
     return await fetch(`${API_URL_PRODUCT}${id}`, {
       headers: { Authorization: t, "Content-Type": "application/json" },
-      body: this.data,
+      body: JSON.stringify(this.data),
       method: "PUT",
     }).then(async (r) => {
       if (!r.ok) {
@@ -224,7 +224,7 @@ export class Product {
     });
   }
 
-  async delete_by_id(id) {
+  static async delete_by_id(id) {
     let t = get_token();
     if (!t) {
       throw ERROR_UNAUTHORIZED;

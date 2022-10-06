@@ -51,7 +51,6 @@ window.update_user = () => {
     } else {
       await empl.update_by_user_id(user.id, u.data);
     }
-    form.reset();
   }, "Información actualizada con exito");
 };
 

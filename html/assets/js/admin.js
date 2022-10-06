@@ -1,4 +1,4 @@
-import { load_menu } from "./product.js";
+import { load_menu, product_by_id } from "./product.js";
 import { new_function } from "./module/utils.js";
 import { upload_img } from "./module/image.js";
 import { Product, BASES } from "./module/product.js";
@@ -22,11 +22,40 @@ import { load_nav_bar } from "./module/main.js";
  */
 let empl;
 
+let n_img = false;
+
 window.change_prod_pic = () => {
   let new_img = document.getElementById("create-img");
   document.getElementById("create-product-pic").src = URL.createObjectURL(
     new_img.files[0]
   );
+};
+
+window.change_prod_pic_u = () => {
+  let new_img = document.getElementById("create-img-u");
+  document.getElementById("create-product-pic-u").src = URL.createObjectURL(
+    new_img.files[0]
+  );
+  n_img = true;
+};
+
+window.showProduct = (pid) => {
+  /**
+   * @type {Product}
+   */
+  const p = product_by_id(parseInt(pid));
+  n_img = false;
+  document.getElementById("nombre-u").value = p.name;
+  document.getElementById("precio-u").value = p.price;
+  document.getElementById("desc-u").value = p.description;
+  document.getElementById("create-base-u").value = p.base;
+  document.getElementById("product-id-u").value = p.id;
+  if (p.url) {
+    document.getElementById("create-product-pic-u").src = p.url;
+  } else {
+    document.getElementById("create-product-pic-u").src =
+      "https://i.pinimg.com/originals/fd/80/ec/fd80ecec48eba2a9adb76e4133905879.png";
+  }
 };
 
 window.createProduct = () => {
@@ -72,21 +101,95 @@ window.createProduct = () => {
       console.log("TODO: Show Product to menu", id);
     });
     form.reset();
+    document.getElementById("create-product-pic-u").src =
+      "https://i.pinimg.com/originals/fd/80/ec/fd80ecec48eba2a9adb76e4133905879.png";
   }, "Producto creado con exito");
+};
+
+window.deleteProduct = () => {
+  const form = document.getElementById("formUpdateP");
+  new_function(async () => {
+    let old_id = document.getElementById("product-id-u").value;
+    await Product.delete_by_id(old_id).then(() => {
+      console.log("TODO: Remove Product from menu", old_id);
+    });
+    form.reset();
+    document.getElementById("create-product-pic-u").src =
+      "https://i.pinimg.com/originals/fd/80/ec/fd80ecec48eba2a9adb76e4133905879.png";
+  }, "Producto Eliminado con exito");
+};
+
+window.updateProduct = () => {
+  const form = document.getElementById("formUpdateP");
+  new_function(async () => {
+    let nombre = document.getElementById("nombre-u").value;
+    let precio = document.getElementById("precio-u").value;
+    let descripcion = document.getElementById("desc-u").value;
+    let base = document.getElementById("create-base-u").value;
+    let f = document.getElementById("create-img-u").files[0];
+    let old_id = document.getElementById("product-id-u").value;
+    console.log(base);
+    if (base == "null" || base == "") {
+      throw Error("Selecciona un producto base");
+    }
+    let url = "";
+
+    if (!nombre) {
+      throw Error("Ingresa un nombre para el producto");
+    }
+    if (!precio) {
+      throw Error("Ingresa un precio para el producto");
+    }
+    if (!descripcion) {
+      throw Error("Ingresa una descripción para el producto");
+    }
+    if (n_img) {
+      if (!f) {
+        throw Error("Ingresa una imagen");
+      }
+      await upload_img(
+        "product",
+        document.getElementById("create-img-u").files[0],
+        `${nombre}.png`
+      ).then(
+        (r) => (url = `https://drive.google.com/uc?export=view&id=${r.message}`)
+      );
+    } else {
+      const p = product_by_id(parseInt(old_id));
+      url = p.url;
+    }
+    let p = new Product({
+      id: parseInt(old_id),
+      name: nombre,
+      price: parseFloat(precio),
+      description: descripcion,
+      base_id: parseInt(base),
+      url: url,
+    });
+    await p.update_by_id(parseInt(old_id)).then((id) => {
+      console.log("TODO: Show Product to menu", id);
+    });
+    form.reset();
+  }, "Producto Actualizado con exito");
 };
 
 const load_bases = () => {
   const f = document.getElementById("create-base");
+  const u = document.getElementById("create-base-u");
   BASES.forEach((val, i) => {
     var opt = document.createElement("option");
     opt.value = i;
     opt.innerHTML = val;
-    f.appendChild(opt);
+    var opt2 = document.createElement("option");
+    opt2.value = i;
+    opt2.innerHTML = val;
+    u.appendChild(opt);
+    f.appendChild(opt2);
   });
 };
 
 const load_admin = async () => {
-  load_menu();
+  load_menu("showProduct", "update-modal");
   load_bases();
   let user;
   try {

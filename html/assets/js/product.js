@@ -13,7 +13,7 @@ let ps;
  */
 let ps_deletes = new Map();
 
-export const load_menu = async (func) => {
+export const load_menu = async (func, modal = "") => {
   await Product.get_all().then((d) => (ps = d));
   const menu_products = document.querySelector("#menu-products");
   const template = document.querySelector("#template-menu").content;
@@ -27,6 +27,14 @@ export const load_menu = async (func) => {
         .setAttribute("onclick", `${func}('${num}');return false;`);
     } else {
       template.querySelector(".menu-content a").href = p.url;
+    }
+    if (modal) {
+      template
+        .querySelector(".menu-content a")
+        .setAttribute("data-toggle", "modal");
+      template
+        .querySelector(".menu-content a")
+        .setAttribute("data-target", `#${modal}`);
     }
 
     template.querySelector("span").textContent = `$${p.price}`;
