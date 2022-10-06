@@ -5,10 +5,15 @@ import {
   data_to_table,
   generate_body_from_array,
 } from "./search.js";
-import { Employee, Search as Empl_Search } from "./module/employee.js";
+import {
+  Employee,
+  is_greater,
+  Search as Empl_Search,
+} from "./module/employee.js";
 import {
   ROLES,
   user as new_user,
+  user,
   validate_email,
   validate_password,
 } from "./module/user.js";
@@ -269,11 +274,13 @@ const load_manager = async () => {
     if (!estb_id) {
       window.location.href = "index.html";
     }
-    if (user.role_id == ROLES.Admin) {
+
+    if (is_greater(user.role_id, ROLES.Admin)) {
       document.getElementById("create-kitchen-sec").remove();
       document.getElementById("show-kitchen-sec").remove();
       document.getElementById("create-kitchen-li").remove();
       document.getElementById("show-kitchen-li").remove();
+      document.getElementById("delete-sec").hidden = false;
     }
     load_nav_bar();
     await Establishment.get_by_id(estb_id, empl.user.token).then(
@@ -310,6 +317,13 @@ window.kitchenAccounts = async () => {
   }
 
   kitchen.appendChild(fragment);
+};
+
+window.deleteEstablishment = () => {
+  new_function(async () => {
+    await Establishment.delete_by_id(estb_id, empl.user.token);
+    window.location.href = "/";
+  });
 };
 
 window.delete_kitchen = (id) => {

@@ -193,6 +193,22 @@ export class Establishment {
     });
   }
 
+  static async delete_by_id(eid, t) {
+    if (!t) {
+      throw ERROR_UNAUTHORIZED;
+    }
+    await fetch(`${API_URL_ESTB}${eid}`, {
+      headers: {
+        Authorization: t,
+      },
+      method: "DELETE",
+    }).then(async (r) => {
+      if (!r.ok) {
+        throw new_response_error(r);
+      }
+    });
+  }
+
   static async get_tables(t, e_id) {
     if (!t) {
       throw ERROR_UNAUTHORIZED;
