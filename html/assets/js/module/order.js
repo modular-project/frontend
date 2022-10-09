@@ -497,4 +497,21 @@ export class Order {
     });
     return orders;
   }
+
+  static async cancel_orders(t) {
+    if (!t) {
+      throw ERROR_UNAUTHORIZED;
+    }
+    const orders = new Map();
+    await fetch(`${API_URL_ORDER}user/`, {
+      headers: {
+        Authorization: t,
+      },
+      method: "DELETE",
+    }).then(async (r) => {
+      if (!r.ok) {
+        throw new_response_error(r);
+      }
+    });
+  }
 }

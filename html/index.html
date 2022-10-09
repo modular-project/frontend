@@ -290,7 +290,8 @@
         </div>
         <div class="row text-center justify-content-center">
           <div id="make-order-btn" class="col-sm-3">
-            <button type="button" class="btn btn-primary" onclick="make_order()">Realizar
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#pay-order-modal"
+              onclick="loadPayOrder()">Realizar
               pedido</button>
           </div>
           <div class="col-sm-3" id="verify-account-btn">
@@ -377,6 +378,56 @@
         </div>
       </section>
       <!-- END My Orders Section -->
+
+      <!-- Modal -->
+      <div class="modal fade" id="pay-order-modal" tabindex="-1" role="dialog" aria-labelledby="pay-order-modal-label"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content text-center">
+            <div class="modal-header text-center">
+              <h5 class="modal-title text-center" id=" pay-order-modal-label">Realizar pedido</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body text-center" id="modal-order-body">
+              <ul class="list-group list-group-flush text-white bg-primary text-center" id="modal-list">
+                <li class="list-group-item">
+                  Producto 1 - 34.5 x 3 = 45
+                </li>
+                <li class="list-group-item">
+                  Producto 1 - 34.5 x 3 = 45
+                </li>
+                <li class="list-group-item">
+                  Producto 1 - 34.5 x 3 = 45
+                </li>
+                <li class="list-group-item">
+                  Producto 1 - 34.5 x 3 = 45
+                </li>
+                <li class="list-group-item">
+                  Total: <b>123.4</b>
+                </li>
+              </ul>
+              <div>
+                <p>Selecciona una dirección de entrega</p>
+                <select class="form-select w-100 select-address" id="modal-address">
+                  <option selected="" value="0" disabled>Selecciona una direccion</option>
+                  <option value="6311211ce21ee5599535bb68">undefined, undefined, Guadalajara, Jalisco, Mexico, 45138
+                  </option>
+                  <option value="6311364f3e081257f5589632">undefined, undefined, Guadalajara, Jalisco, Mexico, 45138
+                  </option>
+                  <option value="6341d650aa5720e59c223577">Masaya 1785, Colomos Providencia, Guadalajara, Jalisco,
+                    Mexico, 44620</option>
+                </select>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+              <button type="button" class="btn btn-primary" onclick="make_order()">Pagar</button>
+            </div>
+          </div>
+        </div>
+      </div>
   </main><!-- End #main -->
 
   <!-- ======= Footer ======= -->

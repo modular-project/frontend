@@ -38,14 +38,23 @@ window.signout = function () {
 };
 
 const find_deletes = async () => {
+  let havePending = false;
   for (const [k, val] of my_orders) {
-    for (const [kp, p] of val.products)
-      if (!product_by_id(p.product_id)) {
-        deletes.push(parseInt(p.product_id));
-      }
+    if (val.status_id == STATUS.WITHOUT_PAY) {
+      my_orders.delete(k);
+      havePending = true;
+    } else {
+      for (const [kp, p] of val.products)
+        if (!product_by_id(p.product_id)) {
+          deletes.push(parseInt(p.product_id));
+        }
+    }
   }
   if (deletes.length) {
     await get_deletes(deletes);
+  }
+  if (havePending) {
+    await Order.cancel_orders(user.token);
   }
 };
 
@@ -224,6 +233,10 @@ function add_product_to_cart(p) {
       document.getElementById(this.classList[0]).remove();
       my_cart.delete(parseInt(this.classList[0].slice(10)));
     } else {
+      document
+        .getElementById(this.classList[0])
+        .getElementsByTagName("input")[0]
+        .setAttribute("value", `${$(this).val()}`);
       my_cart.set(
         parseInt(this.classList[0].slice(10)),
         parseInt($(this).val())
@@ -232,6 +245,24 @@ function add_product_to_cart(p) {
     console.log(my_cart);
   });
 }
+
+window.loadPayOrder = () => {
+  let list = document.getElementById("modal-list");
+  list.innerHTML = "";
+  let total = 0;
+  for (const [pID, q] of my_cart) {
+    const p = product_by_id(pID);
+    total += p.price * q;
+    list.innerHTML += `
+    <li class="list-group-item">
+      ${p.name} - $${p.price} x ${q} = $${parseFloat(p.price * q).toFixed(2)}
+    </li>`;
+  }
+  list.innerHTML += `
+  <li class="list-group-item">
+    Total: <b>$${parseFloat(total).toFixed(2)}</b>
+  </li>`;
+};
 
 const generate_product = (op_id, name, quantity, price) => {
   return `
@@ -256,7 +287,6 @@ const add_product_to_card = (pro, card) => {
 const add_order_to_card = (o) => {
   const t_id = o.id;
   const card = document.getElementById(`card-table-${t_id}`);
-  console.log(card);
   if (o.products.size) {
     for (const [k, pro] of o.products) {
       add_product_to_card(pro, card);
@@ -297,12 +327,24 @@ window.pay_order = (id) => {
   });
 };
 
+const pay_delivery = async (add, id) => {
+  let pay_id;
+  await Order.pay_delivery_order(user.token, parseInt(id), add).then((r) => {
+    pay_id = r.id;
+  });
+  window.location.href = `https://www.sandbox.paypal.com/checkoutnow?token=${pay_id}`;
+};
+
 window.make_order = () => {
   new_function(async () => {
     if (!my_cart.size) {
       throw Error("Necesitas agregar al menos un producto al pedido");
     }
-    await Order.create_delivery_order(user.token, my_cart).then((r) => {
+    const add = document.getElementById("modal-address");
+    if (add.value == "0") {
+      throw Error("Necesitas seleccionar una direccion de entrega");
+    }
+    await Order.create_delivery_order(user.token, my_cart).then(async (r) => {
       let ops = [];
       let i = 0;
       for (const [k, val] of my_cart) {
@@ -315,17 +357,19 @@ window.make_order = () => {
         });
         i += 1;
       }
+
       let new_order = new Order({
         ID: r.order_id,
         total: r.total,
         user_id: user.id,
         products: ops,
-        status: STATUS.WITHOUT_PAY,
+        status: STATUS.COMPLETED,
       });
       my_orders.set(new_order.id, new_order);
-      document.getElementById("card-row").innerHTML +=
-        generate_order_card(new_order);
-      add_order_to_card(new_order);
+      await pay_delivery(add.value, new_order.id);
+      // document.getElementById("card-row").innerHTML +=
+      //   generate_order_card(new_order);
+      // add_order_to_card(new_order);
     });
     console.log(my_orders);
   }, "Pedido realizado con exito");
@@ -356,27 +400,36 @@ const generate_order_card = (o) => {
   }
   return `
 <div class="col-sm-4  text-center">
+<div>
 <div class="card" id="card-table-${o.id}">
   <div class="card-header">
-      <h4 class="card-title">Pedido No. ${count}</h4>
+      <h4 class="card-title">Pedido No. ${my_orders.size - count + 1}</h4>
   </div>
   <div class="card-body">
-      <p class="card-text"><b class="price-total total-${o.id}">Total: $${o.total}</b></p>
+      <p class="card-text"><b class="price-total total-${o.id}">Total: $${
+    o.total
+  }</b></p>
       ${add}
   </div>
-  <ul class="list-group list-group-flush text-white bg-primary ul-c-p" data-bs-toggle="collapse" href="#div-c-p-${o.id}">
+  <ul class="list-group list-group-flush text-white bg-primary ul-c-p" data-bs-toggle="collapse" href="#div-c-p-${
+    o.id
+  }">
       <h5 class="card-title"><b>&#8811</b> Productos</h5>
       <div class="c-product collapse" id="div-c-p-${o.id}"></div>
   </ul>
   ${btn}
 </div>
+</div>
+<div style="height: 49px"></div>
 </div>`;
 };
 
 const load_my_orders = async () => {
-  await Order.my_orders(user.token, { limit: 0, offset: 0 }).then((r) => {
-    my_orders = r;
-  });
+  await Order.my_orders(user.token, { default: { limit: 0, offset: 0 } }).then(
+    (r) => {
+      my_orders = r;
+    }
+  );
   await find_deletes();
 
   const card = document.getElementById("card-row");

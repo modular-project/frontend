@@ -254,7 +254,7 @@ window.search_employees = async () => {
 
     const SO = new Search(
       0,
-      10,
+      0,
       o,
       s,
       search.get("status").search,
@@ -321,7 +321,7 @@ window.search_establishments = () => {
     const tname = "t-s-establishment";
     const filters = data_search_from_table(tname);
     console.log(filters);
-    const s = new Estb_Search(filters, headers, 10, 0);
+    const s = new Estb_Search(filters, headers, 0, 0);
     console.log(s);
     await Establishment.search(s, empl.user.role_id, empl.user.token)
       .then((r) => {
@@ -336,7 +336,7 @@ window.search_establishments = () => {
 };
 
 window.select_establishment = (id) => {
-  window.location.href = `manager.html?aid=${id}`;
+  window.open(`manager.html?aid=${id}`);
 };
 
 window.createEstablishment = async () => {

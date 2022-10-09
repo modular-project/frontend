@@ -149,7 +149,7 @@ window.search_employees = async () => {
 
     const SO = new Empl_Search(
       0,
-      10,
+      0,
       o,
       s,
       search.get("status").search,
@@ -170,9 +170,14 @@ window.search_employees = async () => {
     const t = document.querySelector("#t-s-user");
     t.querySelector("tbody").innerHTML = generate_body_from_array(
       user_search,
-      headers
+      headers,
+      "select_employee"
     );
   }, "Busqueda completada con exito");
+};
+
+window.select_employee = (id) => {
+  window.open(`user.html?uid=${id}`);
 };
 
 window.updateNumTables = async () => {
