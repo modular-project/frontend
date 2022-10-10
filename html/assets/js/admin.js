@@ -5,7 +5,7 @@ import {
   product_by_id,
 } from "./product.js";
 import { new_function } from "./module/utils.js";
-import { upload_img } from "./module/image.js";
+import { upload_img, upload_to_classify } from "./module/image.js";
 import { Product, BASES } from "./module/product.js";
 import {
   data_search_from_table,
@@ -34,11 +34,30 @@ let n_img = false;
  */
 let lastest_orders;
 
-window.change_prod_pic = () => {
+const classify_img = async () => {
+  return await upload_to_classify(
+    document.getElementById("create-img").files[0]
+  ).then((r) => {
+    return r.id;
+  });
+};
+
+window.change_prod_pic = async () => {
   let new_img = document.getElementById("create-img");
   document.getElementById("create-product-pic").src = URL.createObjectURL(
     new_img.files[0]
   );
+
+  const b_id = await classify_img();
+  const base = BASES[parseInt(b_id)];
+  let name = document.getElementById("nombre");
+  if (!name.value) {
+    name.value = base;
+  }
+  let base_id_doc = document.getElementById("create-base");
+  if (base_id_doc.value == "null") {
+    base_id_doc.value = `${b_id}`;
+  }
 };
 
 window.change_prod_pic_u = () => {
