@@ -57,7 +57,7 @@ export class Search {
    */
   constructor(
     offset = 0,
-    limit = 10,
+    limit = 0,
     order = null,
     querys = null,
     status = 0,

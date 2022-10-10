@@ -170,7 +170,6 @@ export class Order {
       if (!r.ok) {
         throw new_response_error(r);
       }
-      console.log(r.headers.get("Content-Length"));
       if (r.headers.get("Content-Length")) {
         await r.json().then((data) => {
           for (let d of data) {
@@ -180,6 +179,39 @@ export class Order {
       }
     });
     return orders;
+  }
+
+  /**
+   *
+   * @returns {Promise<Map<BigInt, OrderProduct>>}
+   */
+  static async get_by_id(t, u_rol, o_id) {
+    if (!t) {
+      throw ERROR_UNAUTHORIZED;
+    }
+    if (!is_greater(u_rol, ROLES.Waiter)) {
+      throw Error("No tienes el rol necesario");
+    }
+    const products = new Map();
+    await fetch(`${API_URL_ORDER}${o_id}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json;charset=utf-8",
+        Authorization: t,
+      },
+    }).then(async (r) => {
+      if (!r.ok) {
+        throw new_response_error(r);
+      }
+      if (r.headers.get("Content-Length")) {
+        await r.json().then((data) => {
+          data.forEach(function (p, i) {
+            products.set(p.id, new OrderProduct(p));
+          });
+        });
+      }
+    });
+    return products;
   }
 
   /**

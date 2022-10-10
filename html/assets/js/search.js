@@ -46,7 +46,7 @@ export const generate_body_from_array = (data, headers, callback) => {
  * @param {Map<BigInt,any>} data
  * @returns
  */
-export const generate_body_from_data = (data, headers, callback) => {
+export const generate_body_from_data = (data, headers, callback, opt) => {
   let b = ``;
   let count = 1;
   let func = callback;
@@ -56,7 +56,7 @@ export const generate_body_from_data = (data, headers, callback) => {
   }
   for (const [k, v] of data) {
     temp = [];
-    b += `<tr><th scope="row" onclick="${func}('${k}');"">${count}</th>`;
+    b += `<tr><th scope="row" onclick="${func}('${k}');" ${opt}>${count}</th>`;
     for (const h in headers) {
       if (v.length) {
         for (var i = 0; i < v.length; i++) {
@@ -160,12 +160,13 @@ export const data_search_from_table = (t_id) => {
   return data;
 };
 
-export const data_to_table = (t_id, data, headers, callback) => {
+export const data_to_table = (t_id, data, headers, callback, opt) => {
   const t = document.querySelector(`#${t_id}`);
   t.querySelector("tbody").innerHTML = generate_body_from_data(
     data,
     headers,
-    callback
+    callback,
+    opt
   );
 };
 

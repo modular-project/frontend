@@ -190,8 +190,10 @@ export class Product {
       if (!r.ok) {
         throw new_response_error(r);
       }
+
       const ps = new Map();
       await r.json().then((data) => {
+        console.log(data);
         for (let d of data) {
           ps.set(d["id"], new Product(d));
         }

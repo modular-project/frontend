@@ -1,4 +1,9 @@
-import { load_menu, product_by_id } from "./product.js";
+import {
+  get_deletes,
+  get_product_delete,
+  load_menu,
+  product_by_id,
+} from "./product.js";
 import { new_function } from "./module/utils.js";
 import { upload_img } from "./module/image.js";
 import { Product, BASES } from "./module/product.js";
@@ -23,6 +28,11 @@ import { load_nav_bar } from "./module/main.js";
 let empl;
 
 let n_img = false;
+
+/**
+ * @type {Map<BigInt, Order>}
+ */
+let lastest_orders;
 
 window.change_prod_pic = () => {
   let new_img = document.getElementById("create-img");
@@ -297,15 +307,69 @@ window.search_order = () => {
     };
 
     const s = new Order_Search(filters, headers);
-    let data;
     await Order.search(s, empl.user.token, empl.user.role_id)
-      .then((r) => (data = r))
+      .then((r) => (lastest_orders = r))
       .catch((err) => {
         clear_table(tname);
         throw Error("Sin resultados");
       });
-    data_to_table(tname, data, headers);
+    data_to_table(
+      tname,
+      lastest_orders,
+      headers,
+      "show_products_from_order",
+      `data-toggle="modal" data-target="#pay-order-modal"`
+    );
   }, "Busqueda realizada con exito");
+};
+
+/**
+ *
+ * @param {Order} order
+ */
+const showOrder = async (order) => {
+  let list = document.getElementById("modal-list");
+  list.innerHTML = "";
+  // let total = 0;
+  let not = [];
+  for (const [pID, q] of order.products) {
+    const p = product_by_id(q.product_id);
+    if (!p) {
+      not.push(q.product_id);
+    }
+  }
+  if (not.length) {
+    await get_deletes(not);
+  }
+  for (const [pID, q] of order.products) {
+    let p = product_by_id(q.product_id);
+    if (!p) {
+      p = get_product_delete(q.product_id);
+    }
+    // total += p.price * q;
+    list.innerHTML += `
+    <li class="list-group-item">
+      ${p.name} - $${p.price} x ${q.quantity} = $${parseFloat(
+      p.price * q.quantity
+    ).toFixed(2)}
+    </li>`;
+  }
+  list.innerHTML += `
+  <li class="list-group-item">
+    Total: <b>$${parseFloat(order.total).toFixed(2)}</b>
+  </li>`;
+};
+
+window.show_products_from_order = async (o_id) => {
+  console.log("mostrando: ", o_id);
+  await Order.get_by_id(empl.user.token, empl.user.role_id, o_id).then(
+    async (ops) => {
+      let order = lastest_orders.get(parseInt(o_id));
+      order.products = ops;
+      await showOrder(order);
+      console.log(order);
+    }
+  );
 };
 
 window.search_establishments = () => {
