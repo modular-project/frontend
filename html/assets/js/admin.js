@@ -132,6 +132,7 @@ window.createProduct = () => {
     form.reset();
     document.getElementById("create-product-pic-u").src =
       "https://i.pinimg.com/originals/fd/80/ec/fd80ecec48eba2a9adb76e4133905879.png";
+    window.location.reload();
   }, "Producto creado con exito");
 };
 
@@ -145,6 +146,7 @@ window.deleteProduct = () => {
     form.reset();
     document.getElementById("create-product-pic-u").src =
       "https://i.pinimg.com/originals/fd/80/ec/fd80ecec48eba2a9adb76e4133905879.png";
+    window.location.reload();
   }, "Producto Eliminado con exito");
 };
 
@@ -199,6 +201,7 @@ window.updateProduct = () => {
       console.log("TODO: Show Product to menu", id);
     });
     form.reset();
+    window.location.reload();
   }, "Producto Actualizado con exito");
 };
 
@@ -422,47 +425,51 @@ window.select_establishment = (id) => {
   window.open(`manager.html?aid=${id}`);
 };
 
-window.createEstablishment = async () => {
-  let calle = document.getElementById("calleCE").value;
-  let numero = document.getElementById("numCE").value;
-  let colonia = document.getElementById("colCE").value;
-  let ciudad = document.getElementById("ciudadCE").value;
-  let codigoPostal = document.getElementById("cpCE").value;
-  let estado = document.getElementById("estadoCE").value;
-  let pais = document.getElementById("paisCE").value;
-  const form = document.getElementById("formCreateE");
+window.createEstablishment = () => {
+  new_function(async () => {
+    let calle = document.getElementById("calleCE").value;
+    let numero = document.getElementById("numCE").value;
+    let colonia = document.getElementById("colCE").value;
+    let ciudad = document.getElementById("ciudadCE").value;
+    let codigoPostal = document.getElementById("cpCE").value;
+    let estado = document.getElementById("estadoCE").value;
+    let pais = document.getElementById("paisCE").value;
+    const form = document.getElementById("formCreateE");
 
-  if (!calle) {
-    throw Error("Ingresa una calle para el establecimiento");
-  }
-  if (!numero) {
-    throw Error("Ingresa un numero para el establecimiento");
-  }
-  if (!colonia) {
-    throw Error("Ingresa una colonia para el establecimiento");
-  }
-  if (!ciudad) {
-    throw Error("Ingresa una ciudad para el establecimiento");
-  }
-  if (!codigoPostal) {
-    throw Error("Ingresa un código postal para el establecimiento");
-  }
-  if (!estado) {
-    throw Error("Ingresa un estado para el establecimiento");
-  }
-  if (!pais) {
-    throw Error("Ingresa un pais para el establecimiento");
-  }
-  const e = new Establishment({
-    line1: `${calle} ${numero}`,
-    line2: colonia,
-    city: ciudad,
-    pc: codigoPostal,
-    state: estado,
-    country: pais,
+    if (!calle) {
+      throw Error("Ingresa una calle para el establecimiento");
+    }
+    if (!numero) {
+      throw Error("Ingresa un numero para el establecimiento");
+    }
+    if (!colonia) {
+      throw Error("Ingresa una colonia para el establecimiento");
+    }
+    if (!ciudad) {
+      throw Error("Ingresa una ciudad para el establecimiento");
+    }
+    if (!codigoPostal) {
+      throw Error("Ingresa un código postal para el establecimiento");
+    }
+    if (!estado) {
+      throw Error("Ingresa un estado para el establecimiento");
+    }
+    if (!pais) {
+      throw Error("Ingresa un pais para el establecimiento");
+    }
+    const e = new Establishment({
+      line1: `${calle} ${numero}`,
+      line2: colonia,
+      city: ciudad,
+      pc: codigoPostal,
+      state: estado,
+      country: pais,
+    });
+    await e
+      .save(empl.user.token, empl.user.role_id)
+      .then((r) => console.log(r));
+    form.reset();
   });
-  await e.save(empl.user.token, empl.user.role_id).then((r) => console.log(r));
-  form.reset();
 };
 
 window.hireAdmin = () => {
