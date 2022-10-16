@@ -66,7 +66,22 @@ export class Search {
     if ((p = filters.get("status"))) {
       if (p.length) {
         filters.set("status", p.map(Number));
+      } else {
+        filters.set("status", [2, 3]);
       }
+    }
+    if ((p = filters.get("types"))) {
+      if (p.length) {
+        filters.set("types", p.map(Number));
+      }
+    }
+    if ((p = filters.get("created_at"))) {
+      console.log("filtrops de creado", p);
+      if (!((!p[0] && !p[1]) || (p[0] && p[1]))) {
+        throw Error("Ingresa ambas fechas");
+      }
+      filters.set("start", p[0]);
+      filters.set("end", p[1]);
     }
     filters.set("default", { search_by: order, offset: offset, limit: limit });
     this.filters = filters;
@@ -129,8 +144,27 @@ export class Order {
   get user_id() {
     return this.data.user_id;
   }
+  get date() {
+    const d = this.c_at;
+    if (!d) {
+      return null;
+    }
+    return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
+  }
+  get c_at() {
+    let u = this.data.created_at;
+    if (!u) {
+      return null;
+    }
+    let d = new Date();
+    d.setTime((parseInt(u) - 3600 * 5) * 1000);
+    return d;
+  }
   get created_at() {
     let u = this.data.created_at;
+    if (!u) {
+      return undefined;
+    }
     let d = new Date();
     d.setTime(parseInt(u) * 1000);
     // d.
@@ -142,6 +176,12 @@ export class Order {
       return "A domicilio";
     }
     return "En establecimiento";
+  }
+  get types() {
+    if (this.user_id) {
+      return "Domicilio";
+    }
+    return "Local";
   }
 
   set total(t) {
@@ -170,7 +210,7 @@ export class Order {
       if (!r.ok) {
         throw new_response_error(r);
       }
-      if (r.headers.get("Content-Length")) {
+      if (r.headers.get("Content-Type")) {
         await r.json().then((data) => {
           for (let d of data) {
             orders.set(d["ID"], new Order(d));
@@ -433,7 +473,7 @@ export class Order {
     }
   }
 
-  static async pay_local_order(t, o_id) {
+  static async pay_local_order(t, o_id, tip) {
     if (!t) {
       throw ERROR_UNAUTHORIZED;
     }
@@ -442,6 +482,7 @@ export class Order {
       body: JSON.stringify({
         orde_id: o_id,
         payment: PAYMENTS.CASH,
+        tip: tip,
       }),
       method: "POST",
       headers: {
@@ -455,7 +496,7 @@ export class Order {
       return;
     });
   }
-  //39J261311W877231J
+
   static async capture_payment(t, o_id) {
     if (!t) {
       throw ERROR_UNAUTHORIZED;
@@ -471,6 +512,35 @@ export class Order {
       }
       return r.text().then((d) => {
         return d;
+      });
+    });
+  }
+
+  static async tips_by_waiter(t, s, e, e_id = "") {
+    if (!t) {
+      throw ERROR_UNAUTHORIZED;
+    }
+    let url = `${API_URL_ORDER}waiter/tips/`;
+    if (e_id) {
+      url += `${e_id}`;
+    }
+    return await fetch(url, {
+      body: JSON.stringify({
+        start: s,
+        end: e,
+      }),
+      method: "POST",
+      headers: {
+        Authorization: t,
+        "Content-Type": "application/json;charset=utf-8",
+      },
+    }).then(async (r) => {
+      if (!r.ok) {
+        throw new_response_error(r);
+      }
+      return await r.json((data) => {
+        console.log("Data: ", data);
+        return data.tips;
       });
     });
   }

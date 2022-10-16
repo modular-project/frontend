@@ -146,6 +146,7 @@ window.add_address = () => {
       my_address.set(r, e);
       load_address();
     });
+    window.location.reload();
   });
 };
 

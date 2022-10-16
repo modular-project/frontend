@@ -9,6 +9,7 @@ export const ROLES = {
   Admin: 2,
   Manager: 3,
   Waiter: 4,
+  Chef: 5,
 };
 
 export const STATUS = {
@@ -41,6 +42,8 @@ const id_to_role = (id) => {
       return "Gerente";
     case ROLES.Waiter:
       return "Mesero";
+    case ROLES.Chef:
+      return "Chef";
   }
   return "NULO";
 };
@@ -148,7 +151,13 @@ export class Job {
   get role_id() {
     return this.data["role_id"];
   }
-
+  get reason() {
+    let r = this.data["reason"];
+    if (!r) {
+      return "Cambio de puesto";
+    }
+    return r;
+  }
   get role() {
     return id_to_role(this.role_id);
   }
@@ -214,12 +223,15 @@ export class Employee {
     });
   }
 
-  async fire(uid) {
+  async fire(uid, reason) {
     if (!uid) {
       throw Error("Se necesita especificar un usuario a despedir");
     }
     if (!is_greater(this.role, ROLES.Waiter)) {
       throw Error("No tienes el rol necesario");
+    }
+    if (!reason) {
+      throw Error("Debes especificar la razon del despido");
     }
     let t = get_token();
     if (!t) {
@@ -228,7 +240,9 @@ export class Employee {
     await fetch(`${API_URL_EMPLOYEE}fire/${uid}`, {
       headers: {
         Authorization: t,
+        "Content-Type": "application/json;charset=utf-8",
       },
+      body: JSON.stringify({ reason: reason }),
       method: "PATCH",
     }).then((r) => {
       if (!r.ok) {

@@ -26,7 +26,7 @@ import { load_nav_bar } from "./module/main.js";
  * @type {Employee}
  */
 let empl;
-
+let mol;
 let n_img = false;
 
 /**
@@ -34,6 +34,82 @@ let n_img = false;
  */
 let lastest_orders;
 
+window.orders_chart = () => {
+  /**
+   * @type {Map<string, any>}
+   */
+  const oc = new Map();
+  document.getElementById("myfirstchart").innerHTML = "";
+  let total = 0;
+  let tlocal = 0;
+  let tdel = 0;
+  lastest_orders.forEach((val, k) => {
+    const d = val.date;
+    if (d != "NaN-NaN-NaN") {
+      let ck = oc.get(d);
+      let add = { total: parseFloat(val.total), local: null, delivery: null };
+      if (val.user_id) {
+        add.delivery += parseFloat(val.total);
+        tdel += parseFloat(val.total);
+      } else {
+        add.local += parseFloat(val.total);
+        tlocal += parseFloat(val.total);
+      }
+      if (!ck) {
+        oc.set(d, add);
+      } else {
+        ck.total += add.total;
+        ck.local += add.local;
+        ck.delivery += add.delivery;
+        oc.set(d, ck);
+      }
+      total += parseFloat(val.total);
+    }
+  });
+  const ac = [];
+  oc.forEach((v, k) => {
+    const n = {
+      date: k,
+      total: v.total.toFixed(2),
+      local: null,
+      delivery: null,
+    };
+    if (v.local) {
+      n.local = v.local.toFixed(2);
+    } else {
+      n.local = "0.00";
+    }
+    if (v.delivery) {
+      n.delivery = v.delivery.toFixed(2);
+    } else {
+      n.delivery = "0.00";
+    }
+    ac.push(n);
+  });
+  console.log(oc, ac, total.toFixed(2));
+  mol = new Morris.Line({
+    // ID of the element in which to draw the chart.
+    element: "myfirstchart",
+    // Chart data records -- each entry in this array corresponds to a point on
+    // the chart.
+    data: ac,
+    // The name of the data record attribute that contains x-values.
+    xkey: "date",
+    // A list of names of data record attributes that contain y-values.
+    ykeys: ["total", "local", "delivery"],
+    // Labels for the ykeys -- will be displayed when you hover over the
+    // chart.
+    labels: ["Total", "Local", "Domicilio"],
+    ymin: "0",
+  });
+  document.getElementById("total-search").innerHTML = `
+  <p>Local: <b>$${tlocal.toFixed(2)}</b>  Domicilio: <b>$${tdel.toFixed(
+    2
+  )}</b>  Total: <b>$${total.toFixed(2)}</b></p>`;
+};
+$(window).on("resize", function () {
+  window.orders_chart();
+});
 const classify_img = async () => {
   return await upload_to_classify(
     document.getElementById("create-img").files[0]
@@ -324,10 +400,10 @@ window.search_order = () => {
     const filters = data_search_from_table(tname);
     const headers = {
       total: 1,
+      types: 4,
       status: 3,
       created_at: 0,
     };
-
     const s = new Order_Search(filters, headers);
     await Order.search(s, empl.user.token, empl.user.role_id)
       .then((r) => (lastest_orders = r))
@@ -342,6 +418,7 @@ window.search_order = () => {
       "show_products_from_order",
       `data-toggle="modal" data-target="#pay-order-modal"`
     );
+    window.orders_chart();
   }, "Busqueda realizada con exito");
 };
 

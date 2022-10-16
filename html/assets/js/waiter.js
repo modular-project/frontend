@@ -32,6 +32,8 @@ let table_order;
  */
 let my_cart = new Map();
 
+let my_total = 0;
+
 window.set_checked = (id) => {
   var ck = document.getElementById(id);
   if (ck.checked) ck.setAttribute("checked", "checked");
@@ -62,7 +64,7 @@ function sleep(ms) {
 
 const refresh_orders = async () => {
   while (true) {
-    await sleep(60000);
+    await sleep(30000);
     console.log("refresh", my_orders);
     await Order.waiter(user.token, "p/").then((r) => {
       for (const [k, o] of r) {
@@ -154,7 +156,8 @@ const generate_card = (t_id) => {
   <div class="card-body">
       <p class="card-text"><b class="price-total total-${t_id}"></b></p>
       <a class="btn btn-primary" onclick="deliver_products('${t_id}'); return false;">Entregar Pedidos</a>
-      <a class="btn btn-success" onclick="pay_order('${t_id}'); return false;">Pagar</a>
+      <a class="btn btn-success" data-toggle="modal" data-target="#pay-order-modal" onclick="loadPayOrder('${t_id}'); return false;">Pagar</a>
+      
   </div>
 </div>
 </div>`;
@@ -170,6 +173,69 @@ const clear_card = (t_id) => {
 
 window.clear_c = clear_card;
 
+window.update_total = () => {
+  let mtip = document.getElementById("modal-tip");
+  let mt = document.getElementById("total-modal");
+  let msub = document.getElementById("modal-tip-sub");
+  let sub = document.getElementById("modal-subtotal");
+  let is_null = false;
+  let tip = parseInt(mtip.value);
+  if (!tip) {
+    is_null = true;
+  }
+  if (tip < 0) {
+    tip = 0;
+  }
+  if (tip > 100) {
+    tip = 100;
+  }
+  if (!is_null) {
+    mtip.value = tip;
+    sub.textContent = parseFloat(my_total).toFixed(2);
+    let ex = (parseFloat(my_total) * tip) / 100;
+    mt.textContent = parseFloat(parseFloat(my_total) + ex).toFixed(2);
+    msub.textContent = parseFloat(ex).toFixed(2);
+  } else {
+    mt.textContent = parseFloat(my_total).toFixed(2);
+    msub.textContent = "0";
+  }
+};
+
+window.loadPayOrder = (t_id) => {
+  t_id = parseInt(t_id);
+  const o_id = table_order.get(t_id);
+  const order = my_orders.get(o_id);
+  let list = document.getElementById("modal-list");
+  list.innerHTML = "";
+  for (const [pID, q] of order.products) {
+    const p = product_by_id(q.product_id);
+
+    list.innerHTML += `
+    <li class="list-group-item">
+      ${p.name} - $${p.price} x ${q.quantity} = $${parseFloat(
+      p.price * q.quantity
+    ).toFixed(2)}
+    </li>`;
+  }
+  list.innerHTML += `
+  <li class="list-group-item">
+    SubTotal: <b>$</b><b id="modal-subtotal">${parseFloat(order.total).toFixed(
+      2
+    )}</b>
+  </li>
+  <li class="list-group-item">
+    Propinas: <b>$</b><b id="modal-tip-sub">0</b>
+  </li>
+  <li class="list-group-item">
+    Total: <b>$</b><b id="total-modal">${parseFloat(order.total).toFixed(2)}</b>
+  </li>`;
+  my_total = order.total;
+  document.getElementById("modal-tip").value = 0;
+  document.getElementById("modal-btns").innerHTML = `
+  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+  <button type="button" class="btn btn-primary" onclick="pay_order(${t_id})" data-dismiss="modal">Pagar</button>`;
+};
+
 window.pay_order = (t_id) => {
   new_function(async () => {
     t_id = parseInt(t_id);
@@ -181,7 +247,11 @@ window.pay_order = (t_id) => {
       }
     }
 
-    await Order.pay_local_order(user.token, o_id);
+    await Order.pay_local_order(
+      user.token,
+      o_id,
+      parseFloat(document.getElementById("modal-tip").value)
+    );
     my_cart.delete(o_id);
     table_order.delete(t_id);
     clear_card(t_id);

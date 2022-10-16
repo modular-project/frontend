@@ -62,7 +62,7 @@ function sleep(ms) {
 
 const refresh = async () => {
   while (true) {
-    await sleep(60000);
+    await sleep(30000);
     pendingOrders();
   }
 };

@@ -12,6 +12,7 @@ export const ROLES = {
   Admin: 2,
   Manager: 3,
   Waiter: 4,
+  Chef: 5,
 };
 const id_to_role = (id) => {
   switch (id) {
@@ -25,6 +26,8 @@ const id_to_role = (id) => {
       return "Gerente";
     case ROLES.Waiter:
       return "Mesero";
+    case ROLES.Chef:
+      return "Chef";
   }
   return "NULO";
 };
@@ -109,6 +112,8 @@ export class User {
     this.role_id = data["role_id"];
     this.est_id = data["est_id"];
     this.is_active = data["is_active"];
+    this.nss = data["nss"];
+    this.rfc = data["rfc"];
     this.data = data;
   }
 

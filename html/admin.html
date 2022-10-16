@@ -27,7 +27,7 @@
   <link href="assets/vendor/animate.css/animate.min.css" rel="stylesheet">
   <link href="assets/vendor/venobox/venobox.css" rel="stylesheet">
   <link href="assets/vendor/owl.carousel/assets/owl.carousel.min.css" rel="stylesheet">
-
+  <link rel="stylesheet" href="assets/css/morris.css">
   <!-- Template Main CSS File -->
   <link href="assets/css/style.css" rel="stylesheet">
 
@@ -336,7 +336,7 @@
           </div>
 
           <div class="form-group">
-            <label><b>Salario</b></label>
+            <label><b>Salario Quincenal</b></label>
             <input type="number" id="salarioCA" placeholder="Ingrese un salario" class="form-control"
               style="margin: 8px auto auto;" step="10" min="1" />
           </div>
@@ -509,6 +509,12 @@
                       Mesero
                     </label>
                   </div>
+                  <div class="form-check">
+                    <input class="form-check-input form-search" type="checkbox" value="5">
+                    <label class="form-check-label">
+                      Chef
+                    </label>
+                  </div>
                 </div>
                 <form class="form-inline">
                   <select name="role" class="th-order">
@@ -548,11 +554,14 @@
         <div class="section-title">
           <h2><span>Buscador </span> de Pedidos</h2>
         </div>
+        <div id="myfirstchart" class="mw-100"></div>
+        <div id="total-search" class="mw-100 text-center"></div>
         <table class="table caption-top" id="t-s-order">
           <thead class="thead-dark">
             <tr>
               <th scope="col">#</th>
               <th scope="col">Precio Total</th>
+              <th scope="col">Tipo</th>
               <th scope="col">Estado</th>
               <th scope="col">Fecha</th>
             </tr>
@@ -564,12 +573,12 @@
               <th>
                 <div class="row form-group th-search">
                   <div class="input-group-prepend">
-                    <span class="input-group-text" id="inputGroup-sizing-sm">Minimo $</span>
+                    <span class="input-group-text" id="inputGroup-sizing-sm">Min $</span>
                     <input name="price" class="form-control th-search mr-sm-2 form-search" type="number" min="0"
                       value="0">
                   </div>
                   <div class="input-group-prepend">
-                    <span class="input-group-text" id="inputGroup-sizing-sm">Maximo $</span>
+                    <span class="input-group-text" id="inputGroup-sizing-sm">Max $</span>
                     <input name="price" class="form-control mr-sm-2 th-search form-search" type="number" min="0"
                       value="0">
                   </div>
@@ -583,14 +592,30 @@
                 </form>
               </th>
               <th>
-                <div class="row th-search" type="check" name="role">
+                <div class="row th-search" type="check" name="types">
                   <div class="form-check">
-                    <!-- Obtener los check -->
                     <input class="form-check-input form-search" type="checkbox" value="1">
                     <label class="form-check-label">
-                      Sin pagar
+                      Local
                     </label>
                   </div>
+                  <div class="form-check">
+                    <input class="form-check-input form-search" type="checkbox" value="2">
+                    <label class="form-check-label">
+                      Domicilio
+                    </label>
+                  </div>
+                </div>
+                <form class="form-inline">
+                  <select name="types" class="th-order">
+                    <option value="" selected=""></option>
+                    <option value="1">ascendente</option>
+                    <option value="0">descendente</option>
+                  </select>
+                </form>
+              </th>
+              <th>
+                <div class="row th-search" type="check" name="role">
                   <div class="form-check">
                     <input class="form-check-input form-search" type="checkbox" value="2">
                     <label class="form-check-label">
@@ -613,6 +638,16 @@
                 </form>
               </th>
               <th>
+                <div class="row form-group th-search">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">Desde</span>
+                    <input name="date" class="form-control th-search mr-sm-2 form-search" type="date">
+                  </div>
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">Hasta</span>
+                    <input name="date" class="form-control mr-sm-2 th-search form-search" type="date">
+                  </div>
+                </div>
                 <form class="form-inline">
                   <select name="created_at" class="th-order">
                     <option value="" selected=""></option>
@@ -627,7 +662,6 @@
           </tbody>
         </table>
       </div>
-
     </section>
     <!-- Modal -->
     <div class="modal fade" id="pay-order-modal" tabindex="-1" role="dialog" aria-labelledby="pay-order-modal-label"
@@ -694,7 +728,8 @@
   <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
   <script src="assets/vendor/venobox/venobox.min.js"></script>
   <script src="assets/vendor/owl.carousel/owl.carousel.min.js"></script>
-
+  <script src="assets/css/morris.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
   <!-- Template Main JS File -->
   <script src="assets/js/main.js"></script>
 

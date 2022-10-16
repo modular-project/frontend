@@ -125,6 +125,7 @@ export const data_search_from_table = (t_id) => {
     const o = ths[i].getElementsByClassName("th-order")[0];
     const s = ths[i].getElementsByClassName("th-search")[0];
     const name = o.name;
+    console.log("name", name);
     let val;
     let tag;
     if (s) {

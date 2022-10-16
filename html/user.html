@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mis Datos</title>
+  <title>Datos del usuario</title>
 
   <!-- Favicons -->
   <link href="assets/img/favicon.png" rel="icon">
@@ -73,7 +73,8 @@
   <section class="footcolor" style="padding: 70px 0;"></section>
 
   <div class="container">
-    <h1 class="alignanycenter" style="margin: 40px 0 0;"><strong>Mis <span style="color: #ffb03b;">Datos</span></strong>
+    <h1 class="alignanycenter" style="margin: 40px 0 0;"><strong>Datos del <span
+          style="color: #ffb03b;">Usuario</span></strong>
     </h1>
   </div>
 
@@ -106,6 +107,16 @@
         <div class="form-group">
           <label for="name"><b>Nombre</b></label>
           <input type="text" name="name" id="name" placeholder="Introduzca su nombre" data-rule="minlen:4" />
+        </div>
+
+        <div class="form-group">
+          <label for="name"><b>RFC</b></label>
+          <input type="text" name="name" id="rfc" placeholder="Introduzca su RFC" data-rule="minlen:8" />
+        </div>
+
+        <div class="form-group">
+          <label for="name"><b>NSS</b></label>
+          <input type="text" name="name" id="nss" placeholder="Introduzca su NSS" data-rule="minlen:4" />
         </div>
 
         <div class="form-group">
@@ -193,6 +204,37 @@
     </div>
   </section>
 
+  <section id="my-tips" class="contact" style="padding: 1px 0;" hidden>
+    <div class="container mt-5">
+      <div class="section-title">
+        <h2>Propinas del <span>Mesero</span></h2>
+      </div>
+
+      <form method="post" role="form" class="php-email-form text-center">
+        <!-- <div class="imgcontainer">
+          <img src="assets/img/password-icon.png" style="border-radius: 10%; width: 4%;">
+        </div> -->
+        <div class="form-group">
+          <label for="date-start"><b>Fecha de inicio</b></label>
+          <input id="date-start" name="date-start" type="date" />
+          <label for="date-end"><b>Fecha de fin </b></label>
+          <input id="date-end" name="date-end" type="date" />
+          <button type="button" class="plantilla-btn" onclick="getTips('0')">Buscar por fecha</button>
+        </div>
+        <div class="form-group">
+          <button type="button" class="plantilla-btn" id="current-q" onclick="getTips('1')">10/01/2022 -
+            10/16/2022</button>
+        </div>
+        <div class="form-group">
+          <button type="button" class="plantilla-btn" id="prev-q" onclick="getTips('2')">09/16/2022 - 10/1/2022</button>
+        </div>
+        <div class="form-group">
+          <input name="" type="number" readonly placeholder="Propinas" id="tips-holder" />
+        </div>
+      </form>
+    </div>
+  </section>
+
   <!-- ======= Ver Historial de Trabajo ======= -->
   <section id="my-jobs-sec" class="contact" style="padding: 30px 0 0;">
     <div class="container">
@@ -210,6 +252,7 @@
             <h5 id="estid">establishment id</h5>
             <h5 id="isact">is active</h5>
             <h5 id="sal">salary</h5>
+            <h5 id="reasont"></h5>
           </div>
         </div>
       </template>
@@ -225,6 +268,8 @@
         <h2>Despedir <span>Usuario</span></h2>
       </div>
       <div class="row" id="kitchenAc" style="text-align: center;">
+        <label for="reason-fire">Razon de despido</label>
+        <input type="text" name="reason-fire" id="reason-fire">
         <button type="button" class="btn btn-primary" onclick="fire()">
           Despedir
         </button>

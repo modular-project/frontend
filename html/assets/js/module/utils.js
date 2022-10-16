@@ -80,8 +80,8 @@ export const add_alert = (type, msg, strong) => {
   );
   setTimeout(() => {
     remove_alert(count);
-  }, 5000);
-  $(".my-alert").fadeOut(5000);
+  }, 8000);
+  $(".my-alert").fadeOut(8000);
   //fade_out($(".my-alert"));
   // $(`#alert-${count}`).fadeOut(5000);
 };
