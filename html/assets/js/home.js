@@ -303,7 +303,7 @@ const load_address = () => {
   ads.innerHTML = `<option selected value="0">Selecciona una direccion</option>`;
   for (const [k, a] of my_address) {
     if (!a.is_deleted) {
-      ad.appendChild(new Option(a.stringer, a.id));
+      ads.appendChild(new Option(a.stringer, a.id));
     }
   }
 };
