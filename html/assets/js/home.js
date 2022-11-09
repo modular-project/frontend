@@ -193,6 +193,7 @@ async function load_home() {
       await user.get_my_addresses().then((r) => {
         my_address = r;
       });
+      load_address();
       load_my_orders().catch((e) => {
         console.error(e);
       });
@@ -259,10 +260,12 @@ window.loadPayOrder = () => {
       ${p.name} - $${p.price} x ${q} = $${parseFloat(p.price * q).toFixed(2)}
     </li>`;
   }
+
   list.innerHTML += `
   <li class="list-group-item">
     Total: <b>$${parseFloat(total).toFixed(2)}</b>
   </li>`;
+  load_address();
 };
 
 const generate_product = (op_id, name, quantity, price) => {
@@ -296,13 +299,11 @@ const add_order_to_card = (o) => {
 };
 
 const load_address = () => {
-  const ads = document.getElementsByClassName("select-address");
-  for (let ad of ads) {
-    ad.innerHTML = `<option selected value="0">Selecciona una direccion</option>`;
-    for (const [k, a] of my_address) {
-      if (!a.is_deleted) {
-        ad.appendChild(new Option(a.stringer, a.id));
-      }
+  const ads = document.getElementById("modal-address");
+  ads.innerHTML = `<option selected value="0">Selecciona una direccion</option>`;
+  for (const [k, a] of my_address) {
+    if (!a.is_deleted) {
+      ad.appendChild(new Option(a.stringer, a.id));
     }
   }
 };
@@ -443,8 +444,6 @@ const load_my_orders = async () => {
     this.getElementsByTagName("b")[0].classList.toggle("rotate-arrow");
     return true;
   });
-
-  load_address();
 };
 
 window.onload = function () {
